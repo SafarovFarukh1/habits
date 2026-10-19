@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Один процент</title>
+<meta name="description" content="Трекер привычек по книге «Атомные привычки»">
+<meta name="theme-color" content="#EDF1EF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1412" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Один процент">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one phone-width column, bottom tab bar, bottom sheets for detail and the habit wizard */
+:root{
+  --bg:#EDF1EF; --surface:#FFFFFF; --surface-2:#E2E8E5; --fg:#13201B; --muted:#56665F; --line:#D0D9D5;
+  --accent:#0B7A62; --accent-ink:#FFFFFF; --accent-soft:#D2ECE4;
+  --amber:#B97806; --amber-soft:#FBEED2; --danger:#BF3B27; --danger-soft:#F8DDD7;
+  --cell0:#DAE2DE; --shadow:0 1px 2px rgba(19,32,27,.06),0 6px 20px rgba(19,32,27,.06);
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1412; --surface:#17201D; --surface-2:#202B27; --fg:#E3EBE7; --muted:#91A29B; --line:#2A3632;
+  --accent:#3CC4A0; --accent-ink:#04211A; --accent-soft:#143A30;
+  --amber:#F0B443; --amber-soft:#382C10; --danger:#F07C68; --danger-soft:#3C1E19;
+  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1412; --surface:#17201D; --surface-2:#202B27; --fg:#E3EBE7; --muted:#91A29B; --line:#2A3632;
+  --accent:#3CC4A0; --accent-ink:#04211A; --accent-soft:#143A30;
+  --amber:#F0B443; --amber-soft:#382C10; --danger:#F07C68; --danger-soft:#3C1E19;
+  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+html,body{overscroll-behavior-y:none}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.app{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:calc(18px + env(safe-area-inset-top,0px)) calc(110px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:1.75rem;line-height:1.1}
+h2{font-size:1.25rem;line-height:1.2}
+h3{font-size:1rem;line-height:1.25;font-weight:500}
+p{margin:0}
+.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.view{display:flex;flex-direction:column;gap:18px}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top-l{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ring{position:relative;width:60px;height:60px;flex:none}
+.ring svg{display:block}
+.ring .bg{fill:none;stroke:var(--cell0);stroke-width:6}
+.ring .fg{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:.85rem;font-weight:500}
+
+/* banner */
+.banner{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;background:var(--amber-soft);color:var(--fg)}
+.banner b{color:var(--amber)}
+.banner.danger{background:var(--danger-soft)}
+.banner.danger b{color:var(--danger)}
+.banner .small{font-size:.85rem;color:var(--muted)}
+
+/* habit cards */
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.hcard{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;background:var(--surface);border-radius:18px;padding:12px 14px 12px 12px;box-shadow:var(--shadow)}
+.check{width:52px;height:52px;border-radius:50%;border:2.5px solid var(--line);background:transparent;display:grid;place-items:center;transition:background .2s,border-color .2s,transform .15s}
+.check svg{width:26px;height:26px;stroke:var(--accent-ink);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s}
+.check:hover{border-color:var(--accent)}
+.check[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
+.check[aria-pressed="true"] svg{opacity:1;transform:scale(1)}
+.check.pop{animation:pop .35s ease}
+@keyframes pop{40%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hbody{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-width:0}
+.hbody:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+.hname{font-weight:600;font-size:1.05rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hcard.done .hname{color:var(--muted)}
+.hline{font-size:.85rem;color:var(--muted);overflow-wrap:anywhere}
+.tag{font-size:.7rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.tag.warn{background:var(--amber-soft);color:var(--amber)}
+.tag.bad{background:var(--danger-soft);color:var(--danger)}
+.tag.acc{background:var(--accent-soft);color:var(--accent)}
+.hstreak{display:flex;flex-direction:column;align-items:center;min-width:40px}
+.hstreak b{font-family:var(--display);font-weight:500;font-size:1.15rem;line-height:1}
+.hstreak small{font-size:.68rem;color:var(--muted)}
+details.later summary{cursor:pointer;color:var(--muted);font-size:.9rem;font-weight:600;padding:4px 0;list-style:none}
+details.later summary::-webkit-details-marker{display:none}
+details.later summary::before{content:"▸ ";}
+details.later[open] summary::before{content:"▾ ";}
+details.later .list{margin-top:10px;opacity:.75}
+
+/* empty */
+.empty{background:var(--surface);border-radius:22px;padding:22px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.empty h2{font-size:1.35rem}
+.tpls{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-size:.92rem;font-weight:500}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn{border:none;border-radius:14px;padding:13px 18px;font-weight:600;background:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:var(--surface-2);color:var(--fg)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.link{background:none;color:var(--accent);padding:8px 0}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow);min-width:0}
+.stat b{font-family:var(--display);font-weight:500;font-size:1.35rem;line-height:1.1}
+.stat span{font-size:.75rem;color:var(--muted)}
+.sheet .stat{background:var(--surface-2);box-shadow:none}
+
+/* heatmap */
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,auto);gap:3px;align-items:center}
+.heat .lbl{font-size:.62rem;color:var(--muted);padding-right:4px;line-height:1}
+.heat .c{aspect-ratio:1;border-radius:3px;background:var(--cell0);border:none;padding:0;width:100%}
+.heat .c.on{background:var(--accent)}
+.heat .c.miss{background:var(--cell0);box-shadow:inset 0 0 0 1.5px var(--danger-soft)}
+.heat .c.off{background:transparent;box-shadow:inset 0 0 0 1px var(--cell0)}
+.heat .c.fut{visibility:hidden}
+.heat .c.today{outline:2px solid var(--fg);outline-offset:1px}
+.heat button.c{cursor:pointer}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.75rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px;background:var(--cell0)}
+.legend i.on{background:var(--accent)}
+.legend i.off{background:transparent;box-shadow:inset 0 0 0 1px var(--cell0)}
+
+.pcard{all:unset;cursor:pointer;background:var(--surface);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.pcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pcard-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pcard-h .meta{font-size:.8rem;color:var(--muted);white-space:nowrap}
+.sync{font-size:.8rem;color:var(--muted);text-align:center}
+.toggle{display:flex;gap:12px;align-items:flex-start;background:var(--surface-2);border-radius:14px;padding:12px;cursor:pointer}
+.toggle input{width:22px;height:22px;accent-color:var(--accent);flex:none;margin:1px 0 0}
+.toggle span{display:flex;flex-direction:column;gap:2px}
+.toggle small{font-size:.8rem;color:var(--muted)}
+.alarm-wrap{position:fixed;inset:0;z-index:80;background:var(--bg);overflow-y:auto;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px));animation:fade .2s ease}
+.alarm{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.al-top{display:flex;align-items:baseline;gap:12px}
+.al-time{font-family:var(--display);font-weight:700;font-size:3.4rem;line-height:1;color:var(--accent)}
+.al-time.ringing{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+.alarm h1{font-size:2rem}
+.al-min{font-size:1.05rem;color:var(--muted)}
+.quote{margin:4px 0;background:var(--surface);border-radius:20px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.quote blockquote{margin:0;font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.4;text-wrap:balance}
+.quote figcaption{font-size:.82rem;color:var(--muted)}
+.al-warn{background:var(--danger-soft);color:var(--danger);border-radius:12px;padding:10px 12px;font-weight:600;font-size:.92rem}
+.al-actions,.al-skip{display:flex;flex-direction:column;gap:10px}
+.al-skip label{font-size:.95rem}
+.btn.big{padding:17px;font-size:1.08rem}
+.al-skiplink{color:var(--muted);font-weight:500;font-size:.9rem}
+
+.backup{gap:10px}
+.row2{display:flex;gap:8px;flex-wrap:wrap}
+.row2 .btn{flex:1;min-width:140px;text-align:center}
+.filebtn{display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* guide */
+.card{background:var(--surface);border-radius:20px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.hero-num{display:flex;gap:18px;flex-wrap:wrap;align-items:baseline}
+.hero-num div{display:flex;flex-direction:column}
+.hero-num b{font-family:var(--display);font-size:1.6rem;font-weight:700;line-height:1.1}
+.hero-num b.up{color:var(--accent)}
+.hero-num b.down{color:var(--danger)}
+.hero-num span{font-size:.8rem;color:var(--muted)}
+.chart{width:100%;height:auto;display:block}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .t{fill:var(--muted);font-size:9px;font-family:var(--body)}
+.chart .up{fill:none;stroke:var(--accent);stroke-width:2.5}
+.chart .down{fill:none;stroke:var(--danger);stroke-width:2.5}
+.chart .lu{fill:var(--accent);font-size:10px;font-weight:700;font-family:var(--body)}
+.chart .ld{fill:var(--danger);font-size:10px;font-weight:700;font-family:var(--body)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:30px 1fr;gap:10px;counter-increment:s}
+.steps li::before{content:counter(s);font-family:var(--display);font-weight:500;font-size:.85rem;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.steps b{display:block}
+.steps p{font-size:.92rem;color:var(--muted)}
+.law{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
+.law:first-of-type{border-top:none;padding-top:0}
+.law-h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.law-h .eyebrow{font-size:.68rem}
+.law-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.law-cols div{border-radius:12px;padding:10px;font-size:.86rem;min-width:0}
+.law-cols .g{background:var(--accent-soft)}
+.law-cols .b{background:var(--danger-soft)}
+.law-cols strong{display:block;margin-bottom:3px;font-size:.9rem}
+.ideas{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.ideas b{display:block}
+.ideas span{color:var(--muted);font-size:.92rem}
+@media (max-width:420px){.law-cols{grid-template-columns:1fr}}
+
+/* tab bar & fab */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.tab{background:none;border:none;padding:10px 4px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:.74rem;font-weight:600}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--accent)}
+.fab{position:fixed;z-index:21;right:max(calc(16px + env(safe-area-inset-right,0px)),calc((100vw - 560px)/2 + 16px));bottom:calc(76px + env(safe-area-inset-bottom,0px));height:56px;padding:0 20px 0 16px;border-radius:28px;border:none;background:var(--accent);color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(11,122,98,.35)}
+.fab svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round}
+
+/* sheet */
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(8,14,12,.45);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s ease}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:92%;border-radius:24px 24px 0 0;display:flex;flex-direction:column;animation:up .25s ease}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px max(18px,env(safe-area-inset-right,0px)) 8px max(18px,env(safe-area-inset-left,0px))}
+.sheet-b{overflow-y:auto;padding:6px max(18px,env(safe-area-inset-right,0px)) 18px max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
+.sheet-f{display:flex;gap:10px;padding:12px max(18px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));border-top:1px solid var(--line)}
+.sheet-f .btn{flex:1}
+.x{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface-2);display:grid;place-items:center;flex:none}
+.x svg{width:18px;height:18px;stroke:var(--fg);stroke-width:2.2;fill:none;stroke-linecap:round}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@keyframes fade{from{opacity:0}}
+.dots{display:flex;gap:5px}
+.dots i{width:22px;height:5px;border-radius:3px;background:var(--cell0)}
+.dots i.on{background:var(--accent)}
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:.92rem}
+.field .help{font-size:.8rem;color:var(--muted)}
+.input{width:100%;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 12px;font-size:1rem}
+.input:focus{outline:none;border-color:var(--accent)}
+.prefix{display:flex;align-items:center;gap:8px}
+.prefix span{font-weight:600;white-space:nowrap}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.opt b{font-size:.95rem}
+.opt span{font-size:.8rem;color:var(--muted)}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.days{display:flex;gap:6px;flex-wrap:wrap}
+.days .chip{padding:7px 0;width:42px;text-align:center}
+.hint{background:var(--surface-2);border-radius:14px;padding:12px 14px;font-size:.88rem;color:var(--fg)}
+.hint b{color:var(--accent)}
+.plan{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.plan li{display:grid;grid-template-columns:96px 1fr;gap:10px;font-size:.92rem;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.plan li:last-child{border-bottom:none}
+.plan li span:first-child{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.ident{font-family:var(--display);font-weight:500;font-size:1.05rem;line-height:1.35}
+.confirm{background:var(--danger-soft);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.confirm .row{display:flex;gap:8px}
+.confirm .row .btn{flex:1}
+
+.toast{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(144px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:14px;font-size:.9rem;font-weight:500;max-width:calc(100% - 32px);box-shadow:var(--shadow);animation:up .25s ease}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="view" id="v-today" aria-label="Сегодня"></section>
+  <section class="view" id="v-progress" aria-label="Прогресс" hidden></section>
+  <section class="view" id="v-guide" aria-label="Методика" hidden></section>
+</main>
+
+<button class="fab" id="fab" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Привычка</button>
+
+<nav class="tabs" aria-label="Разделы">
+  <div class="tabs-in">
+    <button class="tab" data-tab="today" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg>Сегодня</button>
+    <button class="tab" data-tab="progress" type="button"><svg viewBox="0 0 24 24"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>Прогресс</button>
+    <button class="tab" data-tab="guide" type="button"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16"/></svg>Методика</button>
+  </div>
+</nav>
+<div id="layer"></div>
+<div id="alarm"></div>
+
+<script>
+(function(){
+const DAYS=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+const MONTHS=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+const WDF=['Понедельник','Вторник','Среда','Четверг','Пятница','Суббота','Воскресенье'];
+const ALL=[0,1,2,3,4,5,6];
+const LS='one-percent-v1';
+
+const TPL={
+ build:[
+  {label:'Чтение',f:{name:'Читать',identity:'человек, который читает каждый день',cueMode:'stack',after:'налью утренний кофе',tiny:'прочитать 1 страницу',prep:'положить книгу рядом с кофеваркой',bundle:'',reward:'допить кофе с книгой и отметить день'}},
+  {label:'Спорт',f:{name:'Тренировка',identity:'человек, который не пропускает тренировки',cueMode:'stack',after:'вернусь домой с работы',tiny:'переодеться в форму и сделать 5 приседаний',prep:'сложить форму у двери с вечера',bundle:'слушаю любимый подкаст только во время тренировки',reward:'душ и отметка в трекере',days:[0,2,4]}},
+  {label:'Английский',f:{name:'Английский',identity:'человек, который каждый день говорит по-английски',cueMode:'time',time:'08:30',where:'в транспорте',tiny:'выучить 3 слова',prep:'приложение на первом экране телефона',bundle:'',reward:''}},
+  {label:'Медитация',f:{name:'Медитация',identity:'спокойный человек, который управляет вниманием',cueMode:'stack',after:'почищу зубы утром',tiny:'1 минута спокойного дыхания',prep:'таймер на 1 минуту в избранном',bundle:'',reward:''}},
+  {label:'Вода',f:{name:'Стакан воды',identity:'человек, который заботится о теле',cueMode:'stack',after:'проснусь',tiny:'выпить стакан воды',prep:'поставить графин и стакан у кровати',bundle:'',reward:''}},
+  {label:'Дневник',f:{name:'Дневник',identity:'человек, который осмысляет свой день',cueMode:'stack',after:'лягу в кровать',tiny:'написать одну строчку о дне',prep:'блокнот и ручка на тумбочке',bundle:'',reward:''}}
+ ],
+ brk:[
+  {label:'Соцсети',f:{name:'Меньше соцсетей',identity:'человек, который сам управляет своим вниманием',trigger:'скука и паузы, телефон в руке',invisible:'убрать приложения с главного экрана, телефон в другой комнате во время работы',hard:'выйти из аккаунтов, лимит экранного времени 30 минут',stake:'',replace:'открыть книгу или выйти на 5 минут пройтись'}},
+  {label:'Сладкое',f:{name:'Без сладкого',identity:'человек, который ест осознанно',trigger:'стресс и сладости на виду',invisible:'не держать сладкое дома, обходить кондитерский отдел',hard:'покупать только одну порцию за раз',stake:'',replace:'фрукты или чай с орехами'}},
+  {label:'Телефон в кровати',f:{name:'Без телефона перед сном',identity:'человек, который высыпается',trigger:'телефон рядом с подушкой',invisible:'заряжать телефон на кухне',hard:'блокировка приложений после 23:00',stake:'',replace:'10 минут бумажной книги'}}
+ ]
+};
+
+let S={v:1,habits:[],log:{}};
+let tab='today', sheet=null, draft=null, step=0, confirmDel=false;
+
+/* ---------- utils ---------- */
+const $=s=>document.querySelector(s);
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function pd(s){const a=s.split('-').map(Number);return new Date(a[0],a[1]-1,a[2])}
+function add(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function wd(d){return (d.getDay()+6)%7}
+function uid(){return Math.random().toString(36).slice(2,10)}
+function plural(n,a,b,c){const m=n%10,h=n%100;if(m===1&&h!==11)return a;if(m>=2&&m<=4&&(h<12||h>14))return b;return c}
+const today=()=>new Date();
+
+/* ---------- habit logic ---------- */
+function done(h,k){return !!(S.log[h.id]&&S.log[h.id][k])}
+function sched(h,d){return (h.days||ALL).includes(wd(d))&&dk(d)>=h.created}
+function streak(h){
+  let d=today(),n=0;
+  if(!done(h,dk(d)))d=add(d,-1);
+  for(let i=0;i<2000;i++){const k=dk(d);if(k<h.created)break;if(done(h,k))n++;else if(sched(h,d))break;d=add(d,-1)}
+  return n;
+}
+function best(h){let cur=0,b=0,d=pd(h.created);const t=dk(today());for(let i=0;i<4000&&dk(d)<=t;i++){const k=dk(d);if(done(h,k)){cur++;b=Math.max(b,cur)}else if(sched(h,d)&&k!==t)cur=0;d=add(d,1)}return b}
+function votes(h){return Object.keys(S.log[h.id]||{}).length}
+function missState(h){
+  if(done(h,dk(today())))return null;
+  const miss=[];let d=add(today(),-1);
+  for(let i=0;i<21&&miss.length<2;i++){if(dk(d)<h.created)break;if(sched(h,d))miss.push(!done(h,dk(d)));d=add(d,-1)}
+  if(miss[0]&&miss[1])return 'twice';
+  if(miss[0])return 'once';
+  return null;
+}
+function daysText(days){days=(days||ALL).slice().sort();if(days.length===7)return 'каждый день';if(days.join()==='0,1,2,3,4')return 'по будням';if(days.join()==='5,6')return 'по выходным';return days.map(i=>DAYS[i]).join(', ')}
+function cueText(h){
+  if(h.type==='brk')return h.replace?'Вместо этого: '+h.replace:(h.trigger?'Триггер: '+h.trigger:'');
+  if(h.cueMode==='time')return [h.time?(h.alarm!==false?'⏰ ':'')+h.time:'',h.where].filter(Boolean).join(' · ');
+  return h.after?'После того как я '+h.after:'';
+}
+function planRows(h){
+  const r=[];
+  if(h.identity)r.push(['Кто я',(h.type==='brk'?'Я — ':'Я — ')+h.identity]);
+  if(h.type==='brk'){
+    if(h.trigger)r.push(['Триггер',h.trigger]);
+    if(h.invisible)r.push(['Невидимо',h.invisible]);
+    if(h.hard)r.push(['Трудно',h.hard]);
+    if(h.stake)r.push(['Неприятно',h.stake]);
+    if(h.replace)r.push(['Замена',h.replace]);
+  }else{
+    const act=h.tiny||h.name;
+    if(h.cueMode==='time'){if(h.time||h.where)r.push(['Когда',[h.time?'в '+h.time:'',h.where].filter(Boolean).join(', ')]);if(h.time&&h.alarm!==false)r.push(['Будильник','в '+h.time+', со звуком, пока приложение открыто'])}
+    else if(h.after)r.push(['Когда','После того как я '+h.after+', я '+act.charAt(0).toLowerCase()+act.slice(1)]);
+    if(h.tiny)r.push(['Минимум',h.tiny]);
+    if(h.prep)r.push(['Подготовка',h.prep]);
+    if(h.bundle)r.push(['Связка',h.bundle]);
+    if(h.reward)r.push(['Награда',h.reward]);
+  }
+  r.push(['Дни',daysText(h.days)]);
+  return r;
+}
+
+/* ---------- persistence ---------- */
+function loadLocal(){try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.habits))return o}}catch(e){}return null}
+function persist(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast('Не получилось сохранить. Освободи место на телефоне.')}}
+function syncLabel(){return 'Данные хранятся только на этом телефоне. Раз в пару недель делай бэкап.'}
+
+/* ---------- backup ---------- */
+let pendingImport=null;
+function backupCard(){
+  return `<div class="card backup">
+    <h3>Бэкап</h3>
+    <p class="muted" style="font-size:.88rem">Сохрани файл с привычками в «Файлы» или iCloud. Пригодится при смене телефона или если очистишь данные Safari.</p>
+    <div class="row2"><button class="btn ghost" type="button" data-export>Сохранить бэкап</button><label class="btn ghost filebtn" for="importFile">Загрузить бэкап</label></div>
+    <input type="file" id="importFile" accept=".json,application/json" hidden>
+    ${pendingImport?`<div class="confirm"><b>Заменить текущие данные?</b><span style="font-size:.88rem">В файле ${pendingImport.habits.length} ${plural(pendingImport.habits.length,'привычка','привычки','привычек')}. Сейчас у тебя ${S.habits.length}. Текущие данные будут заменены.</span><div class="row"><button class="btn danger" type="button" data-import-yes>Заменить</button><button class="btn ghost" type="button" data-import-no>Отмена</button></div></div>`:''}
+  </div>`;
+}
+async function doExport(){
+  const json=JSON.stringify({app:'one-percent',v:1,exported:new Date().toISOString(),habits:S.habits,log:S.log},null,1);
+  const name='один-процент-'+dk(today())+'.json';
+  try{
+    const file=new File([json],name,{type:'application/json'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Бэкап привычек'});return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);toast('Файл сохранён в загрузки')}
+  catch(e){try{await navigator.clipboard.writeText(json);toast('Бэкап скопирован как текст')}catch(_){toast('Не получилось сохранить бэкап')}}
+}
+document.addEventListener('change',e=>{
+  if(e.target.id!=='importFile')return;
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.habits))throw 0;pendingImport={habits:o.habits,log:o.log||{}};renderProgress()}catch(_){toast('Это не файл бэкапа «Одного процента»')}};
+  r.readAsText(f);e.target.value='';
+});
+
+/* ---------- render: today ---------- */
+function ring(doneN,total){
+  const C=2*Math.PI*24,p=total?doneN/total:0;
+  return `<div class="ring" aria-label="Выполнено ${doneN} из ${total}"><svg viewBox="0 0 60 60" width="60" height="60"><circle class="bg" cx="30" cy="30" r="24"/><circle class="fg" cx="30" cy="30" r="24" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C*(1-p)).toFixed(2)}" transform="rotate(-90 30 30)"/></svg><span class="num">${doneN}/${total}</span></div>`;
+}
+const CHECK='<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function card(h,k){
+  const isD=done(h,k),ms=missState(h),st=streak(h),line=cueText(h);
+  let tags='';
+  if(h.type==='brk')tags+='<span class="tag">Бросаю</span>';
+  if(ms==='twice')tags+='<span class="tag bad">2 пропуска</span>';
+  else if(ms==='once')tags+='<span class="tag warn">вчера пропуск</span>';
+  const lbl=h.type==='brk'?'Сегодня держусь: ':'Отметить: ';
+  return `<li class="hcard${isD?' done':''}" data-id="${h.id}">
+    <button class="check" type="button" data-check="${h.id}" aria-pressed="${isD}" aria-label="${esc(lbl+h.name)}">${CHECK}</button>
+    <button class="hbody" type="button" data-open="${h.id}">
+      <span class="hname">${esc(h.name)}${tags}</span>
+      ${line?`<span class="hline">${esc(line)}</span>`:''}
+      ${h.type!=='brk'&&h.tiny?`<span class="hline">Минимум: ${esc(h.tiny)}</span>`:''}
+    </button>
+    <div class="hstreak" aria-label="Серия ${st}"><b class="num">${st}</b><small>${plural(st,'день','дня','дней')}</small></div>
+  </li>`;
+}
+function renderToday(){
+  const t=today(),k=dk(t);
+  const act=S.habits.filter(h=>!h.archived);
+  const on=act.filter(h=>sched(h,t)||done(h,k)), off=act.filter(h=>!on.includes(h));
+  const dn=on.filter(h=>done(h,k)).length;
+  let html=`<header class="top"><div class="top-l"><span class="eyebrow">${WDF[wd(t)]}, ${t.getDate()} ${MONTHS[t.getMonth()]}</span><h1>Сегодня</h1></div>${act.length?ring(dn,on.length):''}</header>`;
+  if(!act.length){
+    html+=`<div class="empty">
+      <span class="eyebrow">С чего начать</span>
+      <h2>Одна привычка. Очень маленькая.</h2>
+      <p class="muted">Выбери шаблон или создай свою. Мастер проведёт по четырём законам из книги: сделать привычку очевидной, привлекательной, лёгкой и приятной.</p>
+      <div class="tpls">${TPL.build.map((x,i)=>`<button class="chip" type="button" data-tpl="build:${i}">${esc(x.label)}</button>`).join('')}</div>
+      <p class="muted" style="font-size:.85rem">Хочешь от чего-то избавиться?</p>
+      <div class="tpls">${TPL.brk.map((x,i)=>`<button class="chip" type="button" data-tpl="brk:${i}">${esc(x.label)}</button>`).join('')}</div>
+      <button class="btn" type="button" data-new>Создать свою привычку</button>
+      <button class="btn link" type="button" data-goto="guide">Сначала прочитать, как это работает</button>
+    </div>`;
+  }else{
+    const twice=on.filter(h=>missState(h)==='twice'),once=on.filter(h=>missState(h)==='once');
+    if(twice.length){const h=twice[0];html+=`<div class="banner danger"><b>Два пропуска подряд: ${esc(h.name)}${twice.length>1?' и ещё '+(twice.length-1):''}</b><span>Сегодня главное вернуться. Сделай хотя бы минимум${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Это не провал. Важно не дать пропускам стать новой привычкой.</span></div>`}
+    else if(once.length){const h=once[0];html+=`<div class="banner"><b>Не пропускай дважды: ${esc(h.name)}${once.length>1?' и ещё '+(once.length-1):''}</b><span>Вчера не получилось. Сегодня хватит минимума${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Один пропуск ничего не ломает. Два подряд уже начинают новую привычку.</span></div>`}
+    else if(on.length&&dn===on.length){html+=`<div class="banner" style="background:var(--accent-soft)"><b style="color:var(--accent)">Всё на сегодня сделано</b><span>Каждая отметка — голос за того, кем ты становишься.</span></div>`}
+    html+=on.length?`<ul class="list">${on.map(h=>card(h,k)).join('')}</ul>`:`<p class="muted">На сегодня ничего не запланировано. Отдыхай.</p>`;
+    if(off.length)html+=`<details class="later"><summary>Не по плану сегодня (${off.length})</summary><ul class="list">${off.map(h=>card(h,k)).join('')}</ul></details>`;
+  }
+  $('#v-today').innerHTML=html;
+}
+
+/* ---------- heatmap ---------- */
+function heat(h,weeks,interactive){
+  const t=today(),tk=dk(t);
+  const end=add(t,6-wd(t)),start=add(end,-(weeks*7-1));
+  let cells='';
+  ['Пн','','Ср','','Пт','','Вс'].forEach(l=>cells+=`<span class="lbl">${l}</span>`);
+  for(let i=0;i<weeks*7;i++){
+    const d=add(start,i),k=dk(d);
+    let cls='c';
+    if(k>tk)cls+=' fut';
+    else if(done(h,k))cls+=' on';
+    else if(sched(h,d)&&k<tk)cls+=' miss';
+    else if(!sched(h,d))cls+=' off';
+    if(k===tk)cls+=' today';
+    const lab=`${d.getDate()} ${MONTHS[d.getMonth()]}${done(h,k)?', выполнено':''}`;
+    cells+=(interactive&&k<=tk)?`<button type="button" class="${cls}" data-day="${k}" aria-label="${lab}"></button>`:`<span class="${cls}" title="${lab}"></span>`;
+  }
+  return `<div class="heat" style="grid-template-columns:auto repeat(${weeks},1fr)">${cells}</div>`;
+}
+
+/* ---------- render: progress ---------- */
+function renderProgress(){
+  const act=S.habits.filter(h=>!h.archived),t=today();
+  let html=`<header class="top"><div class="top-l"><span class="eyebrow">Голоса за новую идентичность</span><h1>Прогресс</h1></div></header>`;
+  if(!act.length){html+=`<div class="empty"><h2>Здесь появится твой календарь</h2><p class="muted">Каждая отметка закрашивает клетку. Цель — не идеальная цепочка, а чтобы пустых клеток подряд было не больше одной.</p><button class="btn" type="button" data-new>Создать первую привычку</button></div>`}
+  else{
+    const tv=act.reduce((a,h)=>a+votes(h),0);
+    let sch=0,dn=0;for(let i=0;i<7;i++){const d=add(t,-i);act.forEach(h=>{if(sched(h,d)){sch++;if(done(h,dk(d)))dn++}})}
+    const bs=Math.max(...act.map(best));
+    html+=`<div class="stats"><div class="stat"><b class="num">${tv}</b><span>${plural(tv,'голос','голоса','голосов')} всего</span></div><div class="stat"><b class="num">${sch?Math.round(dn/sch*100):0}%</b><span>за 7 дней</span></div><div class="stat"><b class="num">${bs}</b><span>лучшая серия</span></div></div>`;
+    html+=act.map(h=>{const st=streak(h),v=votes(h);return `<button class="pcard" type="button" data-open="${h.id}"><div class="pcard-h"><h3>${esc(h.name)}</h3><span class="meta num">${st} ${plural(st,'день','дня','дней')} · ${v} ${plural(v,'голос','голоса','голосов')}</span></div>${h.identity?`<span class="muted" style="font-size:.85rem">Я — ${esc(h.identity)}</span>`:''}${heat(h,14,false)}</button>`}).join('');
+    html+=`<div class="legend"><span><i class="on"></i>сделано</span><span><i></i>пропуск</span><span><i class="off"></i>не по плану</span></div>`;
+  }
+  if(S.habits.length||pendingImport)html+=backupCard();else html+=`<div class="card backup"><h3>Уже вёл трекер?</h3><div class="row2"><label class="btn ghost filebtn" for="importFile">Загрузить бэкап</label></div><input type="file" id="importFile" accept=".json,application/json" hidden>${pendingImport?'':''}</div>`;
+  html+=`<p class="sync" id="sync">${syncLabel()}</p>`;
+  $('#v-progress').innerHTML=html;
+}
+
+/* ---------- render: guide ---------- */
+function chart(){
+  const W=320,H=160,L=30,R=40,T=12,B=24,X=x=>L+x/365*(W-L-R),Y=y=>H-B-y/40*(H-T-B);
+  let up='',dn='';for(let x=0;x<=365;x+=5){up+=`${X(x).toFixed(1)},${Y(Math.pow(1.01,x)).toFixed(1)} `;dn+=`${X(x).toFixed(1)},${Y(Math.pow(.99,x)).toFixed(1)} `}
+  up+=`${X(365).toFixed(1)},${Y(Math.pow(1.01,365)).toFixed(1)}`;dn+=`${X(365).toFixed(1)},${Y(Math.pow(.99,365)).toFixed(1)}`;
+  let g='';[0,10,20,30,40].forEach(v=>{g+=`<line class="grid" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="t" x="${L-6}" y="${Y(v)+3}" text-anchor="end">${v}</text>`});
+  [[0,'старт'],[91,'3 мес'],[182,'6 мес'],[273,'9 мес'],[365,'год']].forEach(a=>g+=`<text class="t" x="${X(a[0])}" y="${H-6}" text-anchor="middle">${a[1]}</text>`);
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="График: 1% лучше каждый день даёт рост в 37,8 раза за год, 1% хуже — падение до 0,03">${g}<polyline class="up" points="${up}"/><polyline class="down" points="${dn}"/><text class="lu" x="${X(365)+4}" y="${Y(37.8)+4}">×37,8</text><text class="ld" x="${X(365)+4}" y="${Y(0)-4}">×0,03</text></svg>`;
+}
+function renderGuide(){
+  $('#v-guide').innerHTML=`
+  <header class="top"><div class="top-l"><span class="eyebrow">По книге Джеймса Клира</span><h1>Как это работает</h1></div></header>
+  <div class="card">
+    <div class="hero-num"><div><b class="up num">1,01³⁶⁵ ≈ 37,8</b><span>на 1% лучше каждый день</span></div><div><b class="down num">0,99³⁶⁵ ≈ 0,03</b><span>на 1% хуже</span></div></div>
+    ${chart()}
+    <p class="muted" style="font-size:.92rem">Первые месяцы линии почти не расходятся. Результат копится незаметно, а потом резко проявляется. Клир называет этот отрезок плато скрытого потенциала: большинство бросает именно на нём.</p>
+  </div>
+  <div class="card">
+    <h2>С чего начать</h2>
+    <ol class="steps">
+      <li><div><b>Возьми одну привычку</b><p>Не пять сразу. Вторую добавишь, когда первая пойдёт на автомате, обычно через 3–4 недели.</p></div></li>
+      <li><div><b>Реши, кем хочешь стать</b><p>Не «прочитать 20 книг», а «я читатель». Каждое выполнение — голос за эту версию себя.</p></div></li>
+      <li><div><b>Привяжи к тому, что уже делаешь</b><p>«После того как налью кофе, я прочитаю страницу». Существующая привычка становится сигналом для новой.</p></div></li>
+      <li><div><b>Урежь до двух минут</b><p>Первые две недели делай только минимальную версию. Задача — начать появляться каждый день, а не выкладываться.</p></div></li>
+      <li><div><b>Подготовь окружение</b><p>Книга на подушке, форма у двери, телефон в другой комнате. Окружение срабатывает надёжнее силы воли.</p></div></li>
+      <li><div><b>Отмечай сразу после</b><p>Закрашенная клетка — мгновенная награда. Мозг закрепляет то, что приносит удовольствие сразу.</p></div></li>
+      <li><div><b>Не пропускай дважды</b><p>Пропуск случается у всех. Правило одно: на следующий день сделай хотя бы минимум.</p></div></li>
+    </ol>
+  </div>
+  <div class="card">
+    <h2>Четыре закона</h2>
+    <p class="muted" style="font-size:.92rem">Любая привычка проходит цикл: сигнал, желание, действие, награда. Чтобы внедрить привычку, усиливаешь каждое звено. Чтобы бросить, ослабляешь.</p>
+    <div class="law"><div class="law-h"><span class="eyebrow">Сигнал</span></div><div class="law-cols"><div class="g"><strong>Сделай очевидным</strong>План «когда и где», привязка к другой привычке, нужные вещи на виду.</div><div class="b"><strong>Сделай невидимым</strong>Убери триггеры из поля зрения: приложения с экрана, сладкое из дома.</div></div></div>
+    <div class="law"><div class="law-h"><span class="eyebrow">Желание</span></div><div class="law-cols"><div class="g"><strong>Сделай привлекательным</strong>Свяжи с тем, что любишь: подкаст только на тренировке. Окружи себя людьми, для которых это норма.</div><div class="b"><strong>Сделай непривлекательным</strong>Выпиши, что эта привычка у тебя забирает. Смотри на неё как на цену, а не на удовольствие.</div></div></div>
+    <div class="law"><div class="law-h"><span class="eyebrow">Действие</span></div><div class="law-cols"><div class="g"><strong>Сделай лёгким</strong>Правило двух минут, меньше шагов до старта, всё готово заранее.</div><div class="b"><strong>Сделай трудным</strong>Добавь шаги и барьеры: выйди из аккаунта, не покупай впрок, поставь блокировку.</div></div></div>
+    <div class="law"><div class="law-h"><span class="eyebrow">Награда</span></div><div class="law-cols"><div class="g"><strong>Сделай приятным</strong>Небольшая награда сразу после и отметка в трекере.</div><div class="b"><strong>Сделай неприятным</strong>Партнёр, перед которым отчитываешься, или договор с последствием за срыв.</div></div></div>
+  </div>
+  <div class="card">
+    <h2>Главные идеи</h2>
+    <ul class="ideas">
+      <li><b>Системы важнее целей</b><span>Цель задаёт направление, а результат дают ежедневные действия. У победителей и проигравших часто одинаковые цели.</span></li>
+      <li><b>Идентичность важнее результата</b><span>Привычка держится, когда становится частью того, кем ты себя считаешь.</span></li>
+      <li><b>Повторения важнее времени</b><span>Автоматизм появляется от количества выполнений, а не от числа дней. Поэтому важно делать часто, пусть и мало.</span></li>
+      <li><b>Окружение важнее мотивации</b><span>Мотивация скачет, а окружение работает каждый день. Проектируй пространство так, чтобы нужное было проще всего сделать.</span></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Как пользоваться трекером</h2>
+    <ul class="ideas">
+      <li><b>Отмечай кружком слева</b><span>Сразу после выполнения. Для привычки, которую бросаешь, отметка значит «сегодня держусь».</span></li>
+      <li><b>Нажми на привычку</b><span>Откроется план, календарь и статистика. В календаре можно исправить забытую отметку за прошлые дни.</span></li>
+      <li><b>Будильник</b><span>Для привычек по времени. Звучит, пока приложение открыто, а выключить его можно, только увидев цитату. Пропустить день можно, только напечатав фразу. Если приложение закрыто, будильник покажется, когда откроешь. Для звука на заблокированном экране используй «Напоминания» iPhone.</span></li>
+      <li><b>Следи за предупреждением</b><span>Жёлтое — вчера был пропуск. Красное — два подряд. В обоих случаях сделай хотя бы минимум.</span></li>
+    </ul>
+  </div>`;
+}
+
+/* ---------- detail sheet ---------- */
+function openDetail(id){sheet={kind:'detail',id};confirmDel=false;renderSheet()}
+function renderDetail(){
+  const h=S.habits.find(x=>x.id===sheet.id);if(!h){closeSheet();return ''}
+  const st=streak(h),b=best(h),v=votes(h);
+  return `<div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(h.name)}">
+   <div class="sheet-h"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span class="eyebrow">${h.type==='brk'?'Бросаю':'Внедряю'} · ${daysText(h.days)}</span><h2>${esc(h.name)}</h2></div><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+   <div class="sheet-b">
+    ${h.identity?`<p class="ident">Я — ${esc(h.identity)}</p>`:''}
+    <div class="stats"><div class="stat"><b class="num">${st}</b><span>серия сейчас</span></div><div class="stat"><b class="num">${b}</b><span>лучшая серия</span></div><div class="stat"><b class="num">${v}</b><span>${plural(v,'голос','голоса','голосов')}</span></div></div>
+    <div style="display:flex;flex-direction:column;gap:8px">${heat(h,16,true)}<div class="legend"><span><i class="on"></i>сделано</span><span><i></i>пропуск</span><span><i class="off"></i>не по плану</span></div><span class="muted" style="font-size:.8rem">Нажми на день, чтобы поставить или снять отметку.</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3>План</h3><ul class="plan">${planRows(h).map(r=>`<li><span>${esc(r[0])}</span><span>${esc(r[1])}</span></li>`).join('')}</ul></div>
+    ${confirmDel?`<div class="confirm"><b>Удалить «${esc(h.name)}» вместе со всей историей?</b><div class="row"><button class="btn danger" type="button" data-del-yes>Удалить</button><button class="btn ghost" type="button" data-del-no>Отмена</button></div></div>`:''}
+   </div>
+   <div class="sheet-f"><button class="btn ghost" type="button" data-del>Удалить</button><button class="btn" type="button" data-edit="${h.id}">Изменить план</button></div>
+  </div>`;
+}
+
+/* ---------- wizard ---------- */
+function blank(type){return {id:null,type:type||'build',name:'',identity:'',cueMode:'stack',after:'',time:'',where:'',alarm:true,days:ALL.slice(),tiny:'',prep:'',bundle:'',reward:'',trigger:'',invisible:'',hard:'',stake:'',replace:''}}
+function stepsFor(t){return t==='brk'?['start','what','invisible','hard','replace','review']:['start','what','obvious','easy','attractive','review']}
+function openWizard(opts){
+  opts=opts||{};
+  if(opts.edit){const h=S.habits.find(x=>x.id===opts.edit);draft=Object.assign(blank(h.type),JSON.parse(JSON.stringify(h)));step=1}
+  else{draft=blank(opts.type);step=0;if(opts.tpl){applyTpl(opts.tpl);step=1}}
+  sheet={kind:'wizard'};renderSheet();
+}
+function applyTpl(code){const p=code.split(':'),t=TPL[p[0]][+p[1]];const keep=draft.id;draft=Object.assign(blank(p[0]),JSON.parse(JSON.stringify(t.f)));draft.id=keep;if(!t.f.days)draft.days=ALL.slice()}
+function fld(f,label,ph,help){return `<div class="field"><label for="w-${f}">${label}</label><input class="input" id="w-${f}" data-f="${f}" value="${esc(draft[f])}" placeholder="${esc(ph)}" autocomplete="off">${help?`<span class="help">${help}</span>`:''}</div>`}
+function daysPicker(){return `<div class="field"><label>В какие дни</label><div class="days">${DAYS.map((d,i)=>`<button type="button" class="chip" data-day-t="${i}" aria-pressed="${draft.days.includes(i)}">${d}</button>`).join('')}</div></div>`}
+function stepHTML(s){
+  const brk=draft.type==='brk';
+  switch(s){
+  case 'start':return `<h2>Что хочешь изменить?</h2>
+    <div class="seg"><button type="button" class="opt" data-type="build" aria-pressed="${!brk}"><b>Внедрить</b><span>новую полезную привычку</span></button><button type="button" class="opt" data-type="brk" aria-pressed="${brk}"><b>Избавиться</b><span>от вредной привычки</span></button></div>
+    <div class="field"><label>Взять шаблон</label><div class="tpls">${TPL[brk?'brk':'build'].map((x,i)=>`<button class="chip" type="button" data-wtpl="${brk?'brk':'build'}:${i}">${esc(x.label)}</button>`).join('')}</div><span class="help">Шаблон заполнит все шаги. Потом поправишь под себя.</span></div>
+    <div class="hint"><b>Совет из книги:</b> начинай с одной привычки. Если хочется сразу много, выбери ту, что сделает остальные проще.</div>`;
+  case 'what':return `<h2>${brk?'От чего избавляешься?':'Что за привычка?'}</h2>
+    ${fld('name','Название',brk?'Например: меньше соцсетей':'Например: читать')}
+    <div class="field"><label for="w-identity">Кем ты становишься</label><div class="prefix"><span>Я —</span><input class="input" id="w-identity" data-f="identity" value="${esc(draft.identity)}" placeholder="${brk?'человек, который не курит':'человек, который читает каждый день'}" autocomplete="off"></div></div>
+    <div class="hint"><b>Идентичность.</b> ${brk?'Сравни: «я пытаюсь бросить» и «я не курю». Во втором случае ты уже другой человек, а не борешься с собой.':'Цель не прочитать книгу, а стать читателем. Каждое выполнение — голос за эту версию тебя. Голоса копятся в трекере.'}</div>`;
+  case 'obvious':return `<h2>Сделай очевидной</h2>
+    <div class="seg"><button type="button" class="opt" data-mode="stack" aria-pressed="${draft.cueMode==='stack'}"><b>После другой привычки</b><span>лучше всего работает</span></button><button type="button" class="opt" data-mode="time" aria-pressed="${draft.cueMode==='time'}"><b>Время и место</b><span>чёткий план</span></button></div>
+    ${draft.cueMode==='stack'?fld('after','После того как я…','налью утренний кофе','Выбери то, что ты и так делаешь каждый день в одно время.'):`<div class="field"><label for="w-time">Во сколько</label><input class="input" type="time" id="w-time" data-f="time" value="${esc(draft.time)}"></div>${fld('where','Где','дома в кресле')}<label class="toggle" for="w-alarm"><input type="checkbox" id="w-alarm" data-fc="alarm" ${draft.alarm!==false?'checked':''}><span><b>Будильник в это время</b><small>Звук и экран с мотивацией. Отключить его можно, только прочитав цитату.</small></span></label>`}
+    ${daysPicker()}
+    <div class="hint"><b>Сигнал.</b> Без конкретного «когда и где» привычка остаётся намерением. Формула: «После [то, что уже делаю] я буду [новая привычка]».</div>`;
+  case 'easy':return `<h2>Сделай лёгкой</h2>
+    ${fld('tiny','Версия на 2 минуты','прочитать 1 страницу','Настолько маленькая, что отказаться неловко.')}
+    ${fld('prep','Что подготовить заранее','положить книгу на подушку','Убери лишние шаги между тобой и началом.')}
+    <div class="hint"><b>Правило двух минут.</b> Сначала стань человеком, который появляется каждый день. Объём добавишь, когда это войдёт в автомат.</div>`;
+  case 'attractive':return `<h2>Привлекательной и приятной</h2>
+    ${fld('bundle','Связка с удовольствием','слушаю любимый подкаст только во время неё','Необязательно. Что-то, что любишь, но разрешаешь себе только вместе с привычкой.')}
+    ${fld('reward','Награда сразу после','чашка хорошего чая','Необязательно. Отметка в трекере — тоже награда.')}
+    <div class="hint"><b>Желание и награда.</b> Мозг повторяет то, что приятно прямо сейчас. Польза через год слабо мотивирует, а приятное сразу работает.</div>`;
+  case 'invisible':return `<h2>Сделай невидимой</h2>
+    ${fld('trigger','Что обычно запускает привычку','скука, телефон в руке','Место, время, эмоция, люди или предмет.')}
+    ${fld('invisible','Как убрать триггер из поля зрения','телефон в другой комнате, приложения с главного экрана')}
+    <div class="hint"><b>Сигнал.</b> Сопротивляться соблазну трудно. Проще сделать так, чтобы он не попадался на глаза.</div>`;
+  case 'hard':return `<h2>Сделай трудной и неприятной</h2>
+    ${fld('hard','Как добавить трения','выйти из аккаунтов, лимит экранного времени','Чем больше шагов до срыва, тем реже он случается.')}
+    ${fld('stake','Кому расскажешь или что на кону','скажу другу, за срыв перевожу ему 500 ₽','Необязательно. Публичное обещание делает срыв неприятным.')}
+    <div class="hint"><b>Действие и награда.</b> Хорошую привычку упрощаешь, плохую усложняешь. Работает тот же механизм, только в обратную сторону.</div>`;
+  case 'replace':return `<h2>Чем заменишь?</h2>
+    ${fld('replace','Вместо этого я…','открываю книгу или иду пройтись','Привычка закрывает какую-то потребность. Найди способ закрыть её иначе.')}
+    ${daysPicker()}
+    <div class="hint"><b>Отметка.</b> Каждый день без срыва отмечай кружком. Это твоя мгновенная награда.</div>`;
+  case 'review':{const h=draft;return `<h2>Твой план</h2>
+    ${h.identity?`<p class="ident">Я — ${esc(h.identity)}</p>`:''}
+    <ul class="plan">${planRows(h).filter(r=>r[0]!=='Кто я').map(r=>`<li><span>${esc(r[0])}</span><span>${esc(r[1])}</span></li>`).join('')}</ul>
+    <div class="hint"><b>Дальше.</b> Отмечай каждый раз, когда сделал хотя бы минимум. Пропустил — на следующий день обязательно вернись.</div>`}
+  }
+}
+function renderWizard(){
+  const st=stepsFor(draft.type),s=st[step],last=step===st.length-1;
+  const canNext=!(s==='what'&&!draft.name.trim());
+  return `<div class="sheet" role="dialog" aria-modal="true" aria-label="${draft.id?'Изменить привычку':'Новая привычка'}">
+    <div class="sheet-h"><div class="dots" aria-label="Шаг ${step+1} из ${st.length}">${st.map((x,i)=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="sheet-b" id="wbody">${stepHTML(s)}</div>
+    <div class="sheet-f">${step>0?'<button class="btn ghost" type="button" data-back>Назад</button>':''}<button class="btn" type="button" id="wnext" data-next ${canNext?'':'disabled'}>${last?(draft.id?'Сохранить':'Создать привычку'):'Далее'}</button></div>
+  </div>`;
+}
+function saveDraft(){
+  const h=JSON.parse(JSON.stringify(draft));
+  h.name=h.name.trim()||'Привычка';
+  if(!h.days.length)h.days=ALL.slice();
+  if(h.id){const i=S.habits.findIndex(x=>x.id===h.id);if(i>=0)S.habits[i]=Object.assign(S.habits[i],h)}
+  else{h.id=uid();h.created=dk(today());h.archived=false;S.habits.push(h)}
+  const wasEdit=!!draft.id;persist();closeSheet();render();toast(wasEdit?'План обновлён':'Готово. Начни сегодня с минимума.');setTimeout(()=>checkAlarms(false),900);
+}
+
+/* ---------- sheet plumbing ---------- */
+function renderSheet(){
+  const layer=$('#layer');
+  if(!sheet){layer.innerHTML='';document.body.style.overflow='';return}
+  const html=sheet.kind==='detail'?renderDetail():renderWizard();
+  if(!sheet)return;
+  layer.innerHTML=`<div class="overlay" data-overlay>${html}</div>`;
+  document.body.style.overflow='hidden';
+  const f=layer.querySelector('.sheet input');if(f&&sheet.kind==='wizard'&&!f.value&&window.matchMedia('(pointer:fine)').matches)f.focus();
+}
+function closeSheet(){sheet=null;draft=null;renderSheet()}
+
+/* ---------- toast ---------- */
+let tt=null;
+function toast(msg){let el=$('.toast');if(el)el.remove();el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=msg;document.body.appendChild(el);clearTimeout(tt);tt=setTimeout(()=>el.remove(),2600)}
+
+/* ---------- actions ---------- */
+function toggle(id,k,btn){
+  const h=S.habits.find(x=>x.id===id);if(!h)return;
+  S.log[id]=S.log[id]||{};
+  if(S.log[id][k])delete S.log[id][k];
+  else{S.log[id][k]=1;if(k<h.created)h.created=k;
+    if(k===dk(today())){const v=votes(h);toast(h.type==='brk'?`Ещё один день. ${h.identity?'Я — '+h.identity:'Держишься.'}`:`+1 голос${h.identity?': я — '+h.identity:''} (${v})`)}}
+  persist();render();
+  if(btn&&S.log[id][k]){const nb=document.querySelector(`[data-check="${id}"]`);if(nb){nb.classList.add('pop')}}
+}
+function updateFab(){$('#fab').hidden=tab==='guide'||(!S.habits.length&&tab==='today')}
+function render(){renderToday();renderProgress();updateFab();if(sheet&&sheet.kind==='detail')renderSheet()}
+function setTab(t){
+  tab=t;['today','progress','guide'].forEach(x=>{$('#v-'+x).hidden=x!==t});
+  document.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-current',b.dataset.tab===t?'page':'false'));
+  updateFab();
+  window.scrollTo(0,0);
+  try{history.replaceState(null,'','#'+t)}catch(e){}
+}
+
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button,[data-overlay]');if(!el)return;
+  const d=el.dataset;
+  if(d.overlay!==undefined){if(e.target===el)closeSheet();return}
+  if(d.tab){setTab(d.tab);return}
+  if(d.goto){setTab(d.goto);return}
+  if(d.check){toggle(d.check,dk(today()),el);return}
+  if(d.open){openDetail(d.open);return}
+  if(d.close!==undefined){closeSheet();return}
+  if(d.new!==undefined||el.id==='fab'){openWizard();return}
+  if(d.tpl){openWizard({tpl:d.tpl});return}
+  if(d.day&&sheet&&sheet.kind==='detail'){toggle(sheet.id,d.day);return}
+  if(d.del!==undefined){confirmDel=true;renderSheet();return}
+  if(d.delNo!==undefined){confirmDel=false;renderSheet();return}
+  if(d.delYes!==undefined){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
+  if(d.edit){openWizard({edit:d.edit});return}
+  if(d.export!==undefined){doExport();return}
+  if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log};pendingImport=null;persist();render();toast('Данные восстановлены');return}
+  if(d.importNo!==undefined){pendingImport=null;renderProgress();return}
+  if(!draft)return;
+  if(d.type){if(draft.type!==d.type){draft=blank(d.type)}renderSheet();return}
+  if(d.wtpl){applyTpl(d.wtpl);step=1;renderSheet();return}
+  if(d.mode){draft.cueMode=d.mode;renderSheet();return}
+  if(d.dayT!==undefined){const i=+d.dayT,a=draft.days;const p=a.indexOf(i);if(p>=0)a.splice(p,1);else a.push(i);el.setAttribute('aria-pressed',p<0);return}
+  if(d.back!==undefined){step=Math.max(0,step-1);renderSheet();return}
+  if(d.next!==undefined){const st=stepsFor(draft.type);if(step>=st.length-1)saveDraft();else{step++;renderSheet();const b=$('#wbody');if(b)b.scrollTop=0}return}
+});
+document.addEventListener('input',e=>{
+  if(e.target.dataset&&e.target.dataset.fc&&draft){draft[e.target.dataset.fc]=e.target.checked;return}
+  if(e.target.id==='al-phrase'){const b=$('#al-skip-ok');if(b)b.disabled=norm(e.target.value)!==norm(skipPhrase());return}
+  const f=e.target.dataset&&e.target.dataset.f;if(!f||!draft)return;
+  draft[f]=e.target.value;
+  if(f==='name'){const n=$('#wnext');if(n)n.disabled=!draft.name.trim()}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&sheet)closeSheet();
+  if(e.key==='Enter'&&draft&&e.target.matches('input')){const n=$('#wnext');if(n&&!n.disabled){e.preventDefault();n.click()}}
+});
+
+
+/* ---------- alarm ---------- */
+const QUOTES=[
+ {t:'Вот так ты хочешь стать лучше? Реально? 🤦🏾‍♂️',s:''},
+ {t:'Не сделаешь — и всё, что было до этого, будет зря.',s:''},
+ {t:'Две минуты. В телефоне ты сидишь дольше.',s:''},
+ {t:'Через год ты скажешь себе спасибо за сегодня. Или не скажешь.',s:''},
+ {t:'Ты не обязан делать много. Ты обязан не сдаваться.',s:''},
+ {t:'Настроение придёт в процессе. Не жди его до.',s:''},
+ {t:'Каждое действие — голос за того, кем ты становишься.',s:'по книге «Атомные привычки»'},
+ {t:'Один пропуск — случайность. Два — начало новой привычки.',s:'по книге «Атомные привычки»'},
+ {t:'Ты не поднимаешься до уровня целей. Ты опускаешься до уровня своих систем.',s:'Джеймс Клир'},
+ {t:'Самые любимые Аллахом дела — постоянные, даже если они малы.',s:'хадис, аль-Бухари и Муслим'},
+ {t:'Привяжи верблюда и уповай на Аллаха.',s:'хадис, ат-Тирмизи'},
+ {t:'Аллах не меняет положения людей, пока они не изменят самих себя.',s:'Коран, 13:11'},
+ {t:'Воспользуйся здоровьем до болезни и свободным временем до занятости.',s:'хадис, аль-Хаким'}
+];
+const ALS='one-percent-alarms';
+let actx=null,beepTimer=null,alarmFor=null,alarmQuote=null,skipMode=false,lastQ=-1;
+function norm(x){return String(x||'').toLowerCase().replace(/ё/g,'е').replace(/[^a-zа-я0-9 ]/g,'').replace(/\s+/g,' ').trim()}
+function alarmState(){const k=dk(today());try{const o=JSON.parse(localStorage.getItem(ALS)||'{}');if(o.day===k&&o.m)return o}catch(e){}return {day:k,m:{}}}
+function setAlarmState(id,v){const o=alarmState();o.m[id]=v;try{localStorage.setItem(ALS,JSON.stringify(o))}catch(e){}}
+function unlockAudio(){try{if(!actx){const C=window.AudioContext||window.webkitAudioContext;if(C)actx=new C()}if(actx&&actx.state==='suspended')actx.resume()}catch(e){}}
+document.addEventListener('pointerdown',unlockAudio,{capture:true});
+function beep(){
+  try{navigator.vibrate&&navigator.vibrate([250,120,250])}catch(e){}
+  if(!actx||actx.state!=='running')return;
+  const t=actx.currentTime;
+  [[0,880],[.2,880],[.4,1175]].forEach(p=>{const o=actx.createOscillator(),g=actx.createGain();o.type='triangle';o.frequency.value=p[1];g.gain.setValueAtTime(.0001,t+p[0]);g.gain.exponentialRampToValueAtTime(.4,t+p[0]+.02);g.gain.exponentialRampToValueAtTime(.0001,t+p[0]+.17);o.connect(g);g.connect(actx.destination);o.start(t+p[0]);o.stop(t+p[0]+.18)});
+}
+function startSound(){stopSound();beep();beepTimer=setInterval(beep,1500)}
+function stopSound(){clearInterval(beepTimer);beepTimer=null}
+function minsSince(time){const p=time.split(':').map(Number),t=today();return t.getHours()*60+t.getMinutes()-(p[0]*60+p[1])}
+function dueAlarms(){
+  const t=today(),k=dk(t),st=alarmState();
+  return S.habits.filter(h=>!h.archived&&h.type!=='brk'&&h.cueMode==='time'&&h.alarm!==false&&h.time&&sched(h,t)&&!done(h,k))
+    .filter(h=>{const m=minsSince(h.time);if(m<0||m>180)return false;const v=st.m[h.id];if(v==='off')return false;if(typeof v==='number'&&Date.now()<v)return false;return true})
+    .sort((a,b)=>a.time<b.time?-1:1);
+}
+function checkAlarms(withSound){
+  if(alarmFor||(sheet&&sheet.kind==='wizard'))return;
+  const d=dueAlarms();if(!d.length)return;
+  alarmFor=d[0].id;skipMode=false;
+  let i;do{i=Math.floor(Math.random()*QUOTES.length)}while(i===lastQ&&QUOTES.length>1);lastQ=i;alarmQuote=QUOTES[i];
+  renderAlarm();if(withSound)startSound();
+}
+function skipPhrase(){const h=S.habits.find(x=>x.id===alarmFor);return h&&missState(h)==='once'?'я пропускаю второй день подряд':'завтра я вернусь'}
+function renderAlarm(){
+  const box=$('#alarm');const h=S.habits.find(x=>x.id===alarmFor);
+  if(!h){box.innerHTML='';alarmFor=null;stopSound();return}
+  const second=missState(h)==='once';
+  box.innerHTML=`<div class="alarm-wrap"><div class="alarm" role="alertdialog" aria-modal="true" aria-labelledby="al-name">
+    <div class="al-top"><span class="al-time num${beepTimer?' ringing':''}">${esc(h.time)}</span><span class="eyebrow">Пора</span></div>
+    <h1 id="al-name">${esc(h.name)}</h1>
+    ${h.tiny?`<p class="al-min">Минимум: ${esc(h.tiny)}</p>`:''}
+    <figure class="quote"><blockquote>${esc(alarmQuote.t)}</blockquote>${alarmQuote.s?`<figcaption>${esc(alarmQuote.s)}</figcaption>`:''}</figure>
+    ${second?'<p class="al-warn">Вчера эта привычка уже была пропущена.</p>':''}
+    ${skipMode?`<div class="al-skip"><label for="al-phrase">Чтобы пропустить, напиши: <b>${esc(skipPhrase())}</b></label><input class="input" id="al-phrase" autocomplete="off" autocapitalize="off"><div class="row2"><button class="btn danger" type="button" id="al-skip-ok" data-al="skip-ok" disabled>Пропустить</button><button class="btn ghost" type="button" data-al="skip-no">Нет, сделаю</button></div></div>`:
+    `<div class="al-actions"><button class="btn big" type="button" data-al="start">Начинаю</button><div class="row2"><button class="btn ghost" type="button" data-al="done">Уже сделал</button><button class="btn ghost" type="button" data-al="snooze">Через 10 минут</button></div><button class="btn link al-skiplink" type="button" data-al="skip">Пропустить сегодня</button></div>`}
+  </div></div>`;
+  document.body.style.overflow='hidden';
+  if(skipMode){const i=$('#al-phrase');if(i)i.focus()}
+}
+function closeAlarm(){stopSound();alarmFor=null;skipMode=false;$('#alarm').innerHTML='';if(!sheet)document.body.style.overflow='';setTimeout(()=>checkAlarms(false),400)}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-al]');if(!b||!alarmFor)return;
+  const a=b.dataset.al,id=alarmFor;stopSound();
+  if(a==='start'){setAlarmState(id,'off');closeAlarm();toast('Две минуты. Поехали. Отметь, когда закончишь.')}
+  else if(a==='done'){setAlarmState(id,'off');closeAlarm();if(!done(S.habits.find(x=>x.id===id),dk(today())))toggle(id,dk(today()))}
+  else if(a==='snooze'){setAlarmState(id,Date.now()+10*60000);closeAlarm();toast('Напомню через 10 минут, если приложение будет открыто')}
+  else if(a==='skip'){skipMode=true;renderAlarm()}
+  else if(a==='skip-no'){skipMode=false;renderAlarm()}
+  else if(a==='skip-ok'){setAlarmState(id,'off');closeAlarm();toast('Ок. Завтра без вариантов.')}
+});
+setInterval(()=>checkAlarms(true),15000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(()=>checkAlarms(false),500)});
+setTimeout(()=>checkAlarms(false),800);
+
+/* ---------- boot ---------- */
+const local=loadLocal();if(local)S={v:1,habits:local.habits,log:local.log||{}};
+renderGuide();render();
+const h0=(location.hash||'').slice(1);setTab(['today','progress','guide'].includes(h0)?h0:'today');
+let lastDay=dk(today());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&dk(today())!==lastDay){lastDay=dk(today());render()}});
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+})();
+</script>
+</body>
+</html>
