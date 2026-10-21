@@ -377,8 +377,41 @@ button.cwd,button.cmd{cursor:pointer}
 .delf b{font-size:.95rem}
 .delf .row{display:flex;gap:10px}
 .delf .row .btn{flex:1}
+
+/* palettes */
+:root[data-pal="mint"]{--bg:#EDF1EF;--surface:#FFFFFF;--surface-2:#E2E8E5;--fg:#13201B;--muted:#56665F;--line:#D0D9D5;--accent:#0B7A62;--accent-ink:#FFFFFF;--accent-soft:#D2ECE4;--cell0:#DAE2DE;--c1:#2F6FD6;--c1s:#DDE8FB;--c2:#7A4FD0;--c2s:#ECE3FB;--c3:#B97806;--c3s:#FBEED2;--c4:#0B7A62;--c4s:#D2ECE4;}
+@media (prefers-color-scheme: dark){:root[data-pal="mint"]{--bg:#0E1412;--surface:#17201D;--surface-2:#202B27;--fg:#E3EBE7;--muted:#91A29B;--line:#2A3632;--accent:#3CC4A0;--accent-ink:#04211A;--accent-soft:#143A30;--cell0:#24302C;--c1:#86AEF2;--c1s:#1B2A44;--c2:#B79DF3;--c2s:#2A2142;--c3:#F0B443;--c3s:#382C10;--c4:#3CC4A0;--c4s:#143A30;color-scheme:dark}}
+:root[data-pal="sunset"]{--bg:#FFF4EE;--surface:#FFFFFF;--surface-2:#FCE6DC;--fg:#2A1510;--muted:#7C5A4F;--line:#F2D5C8;--accent:#EE4F27;--accent-ink:#FFFFFF;--accent-soft:#FFDFD2;--cell0:#F7E0D6;--c1:#D62F6A;--c1s:#FCDCE8;--c2:#7C4DF0;--c2s:#ECE3FF;--c3:#C27C00;--c3s:#FFEEC6;--c4:#EE4F27;--c4s:#FFDFD2;}
+@media (prefers-color-scheme: dark){:root[data-pal="sunset"]{--bg:#170F0C;--surface:#221714;--surface-2:#2E201C;--fg:#F9EAE3;--muted:#B69B91;--line:#3C2A25;--accent:#FF7A52;--accent-ink:#2A0B02;--accent-soft:#4A2016;--cell0:#34241F;--c1:#FF7DA8;--c1s:#43182A;--c2:#B39BFF;--c2s:#2B2150;--c3:#FFC44D;--c3s:#3D2E0E;--c4:#FF7A52;--c4s:#4A2016;color-scheme:dark}}
+:root[data-pal="ocean"]{--bg:#EFF4FF;--surface:#FFFFFF;--surface-2:#E1EAFB;--fg:#0E1830;--muted:#56637F;--line:#CFDAF0;--accent:#2563EB;--accent-ink:#FFFFFF;--accent-soft:#DBE6FF;--cell0:#DCE5F6;--c1:#0891B2;--c1s:#D2F1F8;--c2:#7C3AED;--c2s:#EAE0FF;--c3:#C27C00;--c3s:#FFEEC6;--c4:#2563EB;--c4s:#DBE6FF;}
+@media (prefers-color-scheme: dark){:root[data-pal="ocean"]{--bg:#0A0F1D;--surface:#111A2D;--surface-2:#19233D;--fg:#E5ECFF;--muted:#8E9AB8;--line:#24304E;--accent:#5B8CFF;--accent-ink:#06102A;--accent-soft:#1A2B58;--cell0:#1C2641;--c1:#4CC9E6;--c1s:#0F3340;--c2:#B49BFF;--c2s:#2A2152;--c3:#FFC44D;--c3s:#3D2E0E;--c4:#5B8CFF;--c4s:#1A2B58;color-scheme:dark}}
+:root[data-pal="berry"]{--bg:#FFF3F7;--surface:#FFFFFF;--surface-2:#F9E3EC;--fg:#2A0F1E;--muted:#7C5868;--line:#F0D0DD;--accent:#D1236A;--accent-ink:#FFFFFF;--accent-soft:#FCD9E7;--cell0:#F4DEE7;--c1:#7C3AED;--c1s:#EAE0FF;--c2:#EA6A12;--c2s:#FFE4D0;--c3:#B88300;--c3s:#FFF0C4;--c4:#D1236A;--c4s:#FCD9E7;}
+@media (prefers-color-scheme: dark){:root[data-pal="berry"]{--bg:#150B11;--surface:#21121B;--surface-2:#2D1925;--fg:#F9E5EE;--muted:#B795A6;--line:#3B2231;--accent:#FF5C97;--accent-ink:#2A0516;--accent-soft:#4B1830;--cell0:#331F2A;--c1:#B49BFF;--c1s:#2A2152;--c2:#FF9A55;--c2s:#3F2312;--c3:#FFC44D;--c3s:#3D2E0E;--c4:#FF5C97;--c4s:#4B1830;color-scheme:dark}}
+:root[data-pal="aurora"]{--bg:#F4F2FF;--surface:#FFFFFF;--surface-2:#E9E5FB;--fg:#191433;--muted:#605A80;--line:#DAD4F2;--accent:#6A43F5;--accent-ink:#FFFFFF;--accent-soft:#E4DDFF;--cell0:#E2DDF5;--c1:#00A396;--c1s:#CFF4EF;--c2:#E8457A;--c2s:#FFDDE8;--c3:#C27C00;--c3s:#FFEEC6;--c4:#6A43F5;--c4s:#E4DDFF;}
+@media (prefers-color-scheme: dark){:root[data-pal="aurora"]{--bg:#0D0A1B;--surface:#16122A;--surface-2:#201A3A;--fg:#ECE8FF;--muted:#9B94BC;--line:#2B2448;--accent:#9A82FF;--accent-ink:#120A33;--accent-soft:#2C2358;--cell0:#231D3F;--c1:#3DDCC9;--c1s:#0E3833;--c2:#FF7AA5;--c2s:#45182A;--c3:#FFC44D;--c3s:#3D2E0E;--c4:#9A82FF;--c4s:#2C2358;color-scheme:dark}}
+:root[data-pal="sun"]{--bg:#FFFAEB;--surface:#FFFFFF;--surface-2:#FBF0CC;--fg:#1E1906;--muted:#6B623E;--line:#EFE2AE;--accent:#FFC21A;--accent-ink:#1E1906;--accent-soft:#FFEFB8;--cell0:#F4E9C2;--c1:#2563EB;--c1s:#DBE6FF;--c2:#EE4F27;--c2s:#FFDFD2;--c3:#008F6B;--c3s:#CCF1E5;--c4:#8F6A00;--c4s:#FFEFB8;}
+@media (prefers-color-scheme: dark){:root[data-pal="sun"]{--bg:#111008;--surface:#1C1A10;--surface-2:#272414;--fg:#FFF6D6;--muted:#B2A87E;--line:#353019;--accent:#FFD13F;--accent-ink:#1E1906;--accent-soft:#3D3410;--cell0:#2C2815;--c1:#5B8CFF;--c1s:#1A2B58;--c2:#FF7A52;--c2s:#4A2016;--c3:#3CD6A6;--c3s:#0F3A2E;--c4:#FFD13F;--c4s:#3D3410;color-scheme:dark}}
+.fab{box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 38%,transparent)}
+.cta{box-shadow:0 8px 24px color-mix(in srgb,var(--accent) 30%,transparent)}
+.ins{background:var(--surface-2);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:5px;animation:fade .25s ease}
+.sheet .ins{background:var(--c3s)}
+.ins.swap{animation:insswap .3s ease}
+@keyframes insswap{from{opacity:0;transform:translateY(6px)}}
+.ins-h{display:flex;align-items:center;gap:8px}
+.ins-ic{font-size:1rem;line-height:1}
+.ins-h .eyebrow{color:var(--c3)}
+.ins-more{margin-left:auto;border:none;background:var(--surface);color:var(--fg);font-weight:600;font-size:.78rem;padding:5px 10px;border-radius:999px}
+.ins b{font-size:1rem;line-height:1.3}
+.ins p{font-size:.88rem;line-height:1.45;color:var(--fg);opacity:.82}
+.pals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pal{border:2px solid var(--line);background:var(--surface);border-radius:16px;padding:10px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:600;font-size:.82rem;color:var(--fg)}
+.pal[aria-pressed="true"]{border-color:var(--accent)}
+.pal .sw{display:flex}
+.pal .sw i{width:20px;height:20px;border-radius:50%;margin-left:-5px;border:2px solid var(--surface)}
+.pal .sw i:first-child{margin-left:0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<script>try{document.documentElement.dataset.pal=localStorage.getItem('one-percent-pal')||'mint'}catch(e){document.documentElement.dataset.pal='mint'}</script>
 </head>
 <body>
 <main class="app">
@@ -626,6 +659,17 @@ function cal(h,inter,off){off=off||0;return range==='week'?calWeek(h,inter,off):
 function calTitle(off){const t=today();if(range==='week'){if(!off)return 'Эта неделя';const a=add(t,-wd(t)+7*off),b=add(a,6);return `${a.getDate()} ${MONTHS[a.getMonth()]} — ${b.getDate()} ${MONTHS[b.getMonth()]}`}if(range==='month'){const f=new Date(t.getFullYear(),t.getMonth()+off,1);return MONTHS_N[f.getMonth()]+(f.getFullYear()!==t.getFullYear()?' '+f.getFullYear():'')}return 'Последние 12 месяцев'}
 const LEGEND='<div class="legend"><span><i class="on"></i>сделано</span><span><i class="miss"></i>пропуск</span><span><i class="off"></i>не по плану</span></div>';
 
+
+/* ---------- palettes ---------- */
+const PALS={"mint": {"n": "Мята", "l": ["#0B7A62", "#2F6FD6", "#7A4FD0", "#EDF1EF"], "bg": ["#EDF1EF", "#0E1412"]}, "sunset": {"n": "Закат", "l": ["#EE4F27", "#D62F6A", "#7C4DF0", "#FFF4EE"], "bg": ["#FFF4EE", "#170F0C"]}, "ocean": {"n": "Океан", "l": ["#2563EB", "#0891B2", "#7C3AED", "#EFF4FF"], "bg": ["#EFF4FF", "#0A0F1D"]}, "berry": {"n": "Ягода", "l": ["#D1236A", "#7C3AED", "#EA6A12", "#FFF3F7"], "bg": ["#FFF3F7", "#150B11"]}, "aurora": {"n": "Аврора", "l": ["#6A43F5", "#00A396", "#E8457A", "#F4F2FF"], "bg": ["#F4F2FF", "#0D0A1B"]}, "sun": {"n": "Солнце", "l": ["#FFC21A", "#2563EB", "#EE4F27", "#FFFAEB"], "bg": ["#FFFAEB", "#111008"]}};
+function curPal(){try{return localStorage.getItem('one-percent-pal')||'mint'}catch(e){return 'mint'}}
+function applyPal(k){
+  if(!PALS[k])k='mint';document.documentElement.dataset.pal=k;
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m,i)=>m.setAttribute('content',PALS[k].bg[(m.media||'').includes('dark')?1:0]));
+}
+function setPal(k){try{localStorage.setItem('one-percent-pal',k)}catch(e){}applyPal(k);if(fxCv)fxParts=[]}
+function palCard(){const c=curPal();return `<div class="card"><h3>Оформление</h3><div class="pals">${Object.entries(PALS).map(([k,v])=>`<button type="button" class="pal" data-pal="${k}" aria-pressed="${k===c}"><span class="sw">${v.l.slice(0,3).map(x=>`<i style="background:${x}"></i>`).join('')}</span>${v.n}</button>`).join('')}</div></div>`}
+
 /* ---------- render: progress ---------- */
 function renderProgress(){
   const act=S.habits.filter(h=>!h.archived),t=today();
@@ -641,6 +685,7 @@ function renderProgress(){
     html+=LEGEND;
   }
   if(S.habits.length||pendingImport)html+=backupCard();else html+=`<div class="card backup"><h3>Уже вёл трекер?</h3><div class="row2"><label class="btn ghost filebtn" for="importFile">Загрузить бэкап</label></div><input type="file" id="importFile" accept=".json,application/json" hidden>${pendingImport?'':''}</div>`;
+  html+=palCard();
   html+=`<p class="sync" id="sync">${syncLabel()}</p>`;
   $('#v-progress').innerHTML=html;
 }
@@ -726,6 +771,7 @@ function renderDetail(){
    <div class="sheet-h"><div style="display:flex;flex-direction:column;gap:4px;min-width:0"><span class="eyebrow">${h.type==='brk'?'Бросаю':'Внедряю'} · ${daysText(h.days)}</span><h2>${esc(h.name)}</h2></div><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
    <div class="sheet-b">
     ${h.identity?`<p class="ident">Я — ${esc(h.identity)}</p>`:''}
+    <div id="d-ins">${insHTML(h.name,Math.floor(Date.now()/864e5),true)}</div>
     <div class="stats"><div class="stat"><b class="num">${st}</b><span>серия сейчас</span></div><div class="stat"><b class="num">${b}</b><span>лучшая серия</span></div><div class="stat"><b class="num">${v}</b><span>${plural(v,'голос','голоса','голосов')}</span></div></div>
     <div style="display:flex;flex-direction:column;gap:8px">${rangeSeg()}${range!=='year'?`<div class="calnav"><button type="button" class="x" data-cal="-1" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><b>${calTitle(calOff)}</b><button type="button" class="x" data-cal="1" aria-label="Вперёд" ${calOff>=0?'disabled':''}><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>`:`<div class="calnav"><b>${calTitle(0)}</b></div>`}${cal(h,true,calOff)}${LEGEND}<span class="muted" style="font-size:.8rem">${range==='year'?'Чтобы исправить отметку, переключись на неделю или месяц.':'Нажми на день, чтобы поставить или снять отметку.'}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px"><h3>План</h3><ul class="plan">${planRows(h).map(r=>`<li><span>${esc(r[0])}</span><span>${esc(r[1])}</span></li>`).join('')}</ul></div>
@@ -794,6 +840,56 @@ function saveDraftLocal(open){if(!draft||draft.id)return;try{if(!hasContent(draf
 function loadDraftLocal(){try{const o=JSON.parse(localStorage.getItem(DLS)||'null');if(o&&o.d&&hasContent(o.d)&&Date.now()-o.ts<14*864e5)return o}catch(e){}return null}
 function clearDraftLocal(){try{localStorage.removeItem(DLS)}catch(e){}}
 
+
+/* ---------- insights ---------- */
+const INS={
+ 'сон':[['Сон — это не пауза, а работа','Во время глубокого сна мозг сортирует и закрепляет то, что ты узнал за день. Недосып бьёт по памяти, настроению и силе воли — а значит, и по всем остальным привычкам.'],['Подъём важнее отбоя','Вставай в одно и то же время, даже в выходные. Стабильный подъём настраивает внутренние часы, и засыпать вовремя становится легче само собой.'],['Свет решает','Яркий экран вечером сигналит мозгу, что ещё день. За час до сна приглуши свет и убери телефон — это самый сильный лайфхак для засыпания.'],['Прохладно и темно','В прохладной (около 18–20°) и тёмной комнате засыпается быстрее. Проветри спальню перед сном.']],
+ 'подъ':[['Свет сразу после будильника','Открой шторы или выйди на балкон в первые минуты: дневной свет быстрее всего выключает сонливость.'],['Будильник вне досягаемости','Положи телефон на другой конец комнаты. Чтобы его выключить, придётся встать — и «ещё 5 минут» исчезает.'],['Ранний подъём начинается вечером','Встать в 6 без раннего отбоя — это просто недосып. Сдвигай подъём на 15 минут в неделю, вместе с отбоем.']],
+ 'коран':[['Малое, но постоянное','Пророк ﷺ сказал: самые любимые Аллахом дела — постоянные, даже если они малы. Один аят каждый день весомее главы раз в месяц.'],['Готовый якорь','Привяжи чтение к намазу: пять сигналов в день уже встроены в твой распорядок.'],['Понимание = желание','Читай хотя бы один аят с переводом или тафсиром. Когда понимаешь смысл, привычка становится не обязанностью, а встречей.']],
+ 'намаз':[['Встроенная система','Намаз — готовый план «время и место» пять раз в день. Твоя задача — убрать трение: коврик на одном месте, вода для омовения рядом.'],['Привязывай другие привычки','После намаза — отличный момент для зикра, чтения или стакана воды. Это самые надёжные якоря в дне.'],['Не дважды','Пропустил — восполни как можно скорее и не давай пропуску стать нормой.']],
+ 'зикр':[['Мёртвое время становится живым','Светофор, очередь, загрузка — привязывай зикр к ожиданию. Минуты, которые раньше пропадали, начинают работать на тебя.'],['Физический сигнал','Тасбих в кармане работает как напоминание: рука нащупала — вспомнил.']],
+ 'чита':[['20 страниц = 25 книг в год','Двадцать страниц в день — это примерно 25–30 книг за год. Не нужно читать много, нужно читать каждый день.'],['Книга там, где телефон','Положи книгу туда, где ты обычно берёшь телефон: на тумбочку, на диван, в рюкзак. Побеждает то, что ближе к руке.'],['Бросай скучное','Не дочитываешь книгу неделю — бросай без сожалений. Цель — привычка читать, а не закрыть каждую начатую книгу.']],
+ 'бег':[['Медленно — значит правильно','Первые недели бегай в темпе, при котором можно говорить. Скорость придёт сама, а травмы от спешки — нет.'],['Кроссовки у двери','Надеть форму и выйти — самая трудная часть. Подготовь всё с вечера, и половина пробежки уже сделана.'],['Бег + шаг — нормальный старт','1 минута бега, 2 минуты ходьбы, повторить. Так начинают почти все программы для новичков.']],
+ 'отжим':[['Перекусы движением','10 приседаний каждый раз, когда ставишь чайник. Без зала и формы — за день набегает солидно.'],['Регулярность важнее объёма','Мышцы отвечают на частую нагрузку. 5 минут каждый день дают больше, чем час раз в неделю.'],['Записывай цифры','Количество повторов в трекере — видимый прогресс. Он мотивирует сильнее, чем ощущения.']],
+ 'йог':[['5 минут тоже считаются','Короткая растяжка утром снимает скованность после сна. Не жди свободного часа.'],['Коврик расстелен','Если коврик уже лежит на полу, начать проще. Убранный в шкаф коврик — это лишний шаг.']],
+ 'спорт':[['Старт на 60%','Главная причина бросить зал — слишком резкое начало. Первые две недели занимайся вполсилы: задача — прийти, а не выложиться.'],['Напарник = договор','Тренировку с другом сложнее отменить. Это готовый способ сделать пропуск неприятным.'],['Сумка с вечера','Собранная сумка у двери — решение уже принято. Утром остаётся просто взять её.']],
+ 'прогул':[['Шаги после еды','Короткая прогулка после еды помогает телу спокойнее справиться с сахаром в крови.'],['Звонки на ходу','Разговоры, где не нужен экран, — делай на ходу. Шаги набираются без отдельного времени.'],['Без наушников','Попробуй иногда гулять в тишине. Многие хорошие мысли приходят именно тогда, когда голове не во что отвлечься.']],
+ 'вод':[['Голод или жажда?','Часто то, что кажется голодом, — жажда. Стакан воды перед перекусом.'],['Бутылка на столе','Бутылка на виду работает лучше, чем решение «пить больше». Окружение сильнее памяти.'],['Идеальный якорь','Стакан воды сразу после пробуждения — простая привычка, к которой удобно цеплять следующие.']],
+ 'медит':[['Отвлёкся — это и есть тренировка','Медитация — это не пустая голова. Каждый раз, когда замечаешь, что отвлёкся, и возвращаешься к дыханию, ты делаешь упражнение.'],['Одна минута','Начни с одной минуты. Важна регулярность, длительность нарастёт сама.']],
+ 'дневник':[['Разгрузка головы','Запись дня снимает фоновый шум мыслей — после неё легче заснуть.'],['365 воспоминаний','Одна строчка в день — это 365 моментов за год, которые иначе бы стёрлись.'],['Правильный вопрос','Спрашивай себя «что сегодня получилось?», а не «что пошло не так». Это меняет настрой лучше любого совета.']],
+ 'благодар':[['Конкретика','Не «семья», а «брат помог с машиной». Конкретные вещи запоминаются и греют сильнее.'],['Мозг начинает искать','Через пару недель ты начнёшь замечать хорошее в течение дня — чтобы было что записать вечером.']],
+ 'английск':[['Часто и понемногу','Мозг лучше запоминает с повторениями через промежутки. 10 минут каждый день сильнее двух часов в выходные.'],['Бесплатное погружение','Переведи телефон на изучаемый язык. Ты и так знаешь, где какие кнопки, — а слова запомнятся сами.'],['Фразы, а не слова','Учи слова в связках: «make a decision», а не просто «decision». Так их легче использовать в речи.']],
+ 'учеб':[['Объясни вслух','Расскажи выученное, будто объясняешь ученику. Сразу видно, где пробелы.'],['25 минут каждый день','Лучше полчаса ежедневно, чем пять часов в субботу. Знания закрепляются повторением.'],['Руками, а не глазами','Видео создаёт иллюзию понимания. Пиши код и решай задачи сам — понимание приходит через пальцы.']],
+ 'фокус':[['Главное — первым','Делай самую важную задачу утром, пока голова свежая, а почта и мессенджеры ещё не разобрали твоё внимание.'],['Телефон в другой комнате','Даже лежащий экраном вниз телефон рядом отъедает часть внимания. Убери его из поля зрения.'],['Задача с вечера','Выпиши одну главную задачу накануне. Утром не нужно решать, с чего начать.']],
+ 'убор':[['Правило двух минут','Если дело занимает меньше двух минут — сделай сразу. Так не копятся завалы.'],['У всего своё место','Когда у каждой вещи есть дом, уборка — это просто «вернуть на место».'],['По одной зоне','Стол сегодня, полка завтра. Маленькая зона не пугает и делается за минуты.']],
+ 'деньг':[['Сначала себе','Отложи процент в день зарплаты автоматически — и тратишь уже остаток.'],['Запись меняет поведение','Простая запись трат уже снижает их: начинаешь замечать мелочи, которые утекают.'],['Правило 24 часов','Хочешь купить не первую необходимость — подожди сутки. Половина желаний проходит сама.']],
+ 'родител':[['Коротко, но каждый день','Короткое сообщение каждый день значит больше, чем редкий длинный звонок.'],['Готовый момент','Привяжи к повторяющемуся моменту: дорога домой, обед. Тогда не придётся вспоминать.']],
+ 'овощ':[['Добавляй, а не запрещай','«Овощ к каждому приёму пищи» проще и приятнее, чем «никакого фастфуда».'],['Что на виду — то и съешь','Фрукты на стол, сладкое в дальний шкаф. Окружение выбирает за тебя.'],['Готовь на 2–3 дня','Когда еда уже есть, голодный вечер не заканчивается доставкой.']],
+ 'телефон':[['Скучный экран','Чёрно-белый режим экрана делает ленты заметно менее затягивающими. Попробуй на неделю.'],['Только люди','Выключи уведомления у всего, кроме сообщений от живых людей.'],['Сначала «зачем»','Прежде чем взять телефон, назови себе причину. Нет причины — не бери.']],
+ 'сладк':[['Тяга проходит','Желание сладкого обычно отступает за 15–20 минут. Переключись на что-то и подожди.'],['Решение в магазине','Не купил — не съешь. Главный выбор делается у полки, а не на кухне.'],['Сытный завтрак','Белковый завтрак снижает тягу к сладкому в течение дня.']],
+ 'курен':[['Волна, а не стена','Тяга к сигарете длится несколько минут. Продержись — и она отступит. Каждая пережитая волна делает следующую слабее.'],['Знай свои триггеры','Кофе, стресс, перерыв с коллегами — заранее придумай замену на каждый.'],['Посчитай деньги','Сколько уходит на сигареты в месяц? Откладывай эту сумму на конкретную цель — и смотри, как она растёт.']],
+ 'алког':[['В руке уже что-то есть','В компании проще отказаться, если у тебя уже есть свой напиток. Реши заранее, что будешь пить.'],['Скажи заранее','Предупреди друзей до встречи. Решение, принятое заранее, держится лучше, чем принятое на месте.']],
+ 'фастфуд':[['Удали приложение','Доставка в один клик — самый короткий путь к срыву. Удали приложение, и между тобой и бургером появится трение.'],['Запас на вечер','Голодный вечер без еды дома почти всегда заканчивается фастфудом. Держи готовый контейнер в холодильнике.']],
+ 'кофе':[['Кофе и сон','Кофеин держится в организме часами. Последняя чашка — не позже чем за 8 часов до сна.'],['Вода перед кофе','Утром сначала стакан воды, потом кофе. Часто усталость — это просто обезвоживание.']],
+ 'игр':[['Таймер до, а не во время','Ставь таймер до начала игры. В процессе остановиться почти невозможно.'],['Это не слабость','Игры созданы, чтобы удерживать. Дело не в силе воли — меняй окружение: консоль из розетки, пароль у близкого.']],
+ 'сериал':[['Выключи автозапуск','Автовоспроизведение — главный враг. Каждую серию запускай сознательно.'],['Конец серии — точка','Решай заранее, сколько серий. Остановиться на титрах проще, чем посреди сюжета.']],
+ 'прокраст':[['Начать — самое трудное','Скажи себе: «только 2 минуты». Чаще всего после старта продолжаешь сам.'],['Первое физическое действие','Не «сделать отчёт», а «открыть файл». Чем мельче первый шаг, тем легче начать.']],
+ 'материт':[['Пауза перед словом','Раздражение — триггер. Вдох перед ответом даёт секунду, чтобы выбрать другие слова.'],['Договор с другом','Каждое слово — 50 ₽ в копилку. Срыв становится неприятным, а копилка — общей шуткой.']],
+ 'опазд':[['Время прибытия, а не выхода','Планируй «быть в 13:20», а не «выйти в 13:00». Сразу закладываешь дорогу и запас.'],['Будильник на выход','Ставь отдельный сигнал «выходить через 10 минут». Это убирает «ещё чуть-чуть».']]
+};
+const INS_GEN=[['Системы, а не цели','Цель задаёт направление, но результат дают ежедневные действия. Думай не «что я хочу получить», а «что я буду делать каждый день».'],['Маленько, но каждый день','Привычка закрепляется от количества повторений, а не от их размера. Лучше чуть-чуть каждый день, чем много иногда.'],['Окружение сильнее воли','Сделай нужное действие самым простым в комнате: вещи на виду, лишние шаги убраны.'],['Голос за себя','Каждое выполнение — голос за того, кем ты хочешь быть. Не нужно единогласно, нужно большинство.']];
+function topicMatch(name){
+  const words=String(name||'').toLowerCase().replace(/ё/g,'е').split(/[^a-zа-я0-9]+/).filter(Boolean);
+  if(!words.length)return null;
+  for(const tp of TOPICS){if(tp.k.some(k=>words.some(w=>w.startsWith(k))))return tp}
+  return null;
+}
+function insightsFor(name){const tp=topicMatch(name);return (tp&&INS[tp.k[0]])||null}
+function insHTML(name,idx,withMore){
+  const list=insightsFor(name);const own=!!list;const L=list||INS_GEN;const i=((idx||0)%L.length+L.length)%L.length;const x=L[i];
+  return `<div class="ins"><div class="ins-h"><span class="ins-ic">💡</span><span class="eyebrow">${own?'Полезно знать':'Совет из книги'}</span>${withMore&&L.length>1?`<button type="button" class="ins-more" data-ins="${i+1}">Ещё совет</button>`:''}</div><b>${esc(x[0])}</b><p>${esc(x[1])}</p></div>`;
+}
+
 /* ---------- wizard ---------- */
 function blank(type){return {id:null,type:type||'build',name:'',identity:'',cueMode:'stack',after:'',time:'',where:'',alarm:true,days:ALL.slice(),tiny:'',prep:'',bundle:'',reward:'',trigger:'',invisible:'',hard:'',stake:'',replace:''}}
 function stepsFor(t){return t==='brk'?['start','what','invisible','hard','replace','review']:['start','what','obvious','easy','attractive','review']}
@@ -817,6 +913,7 @@ function stepHTML(s){
   case 'what':return `<h2>${brk?'От чего избавляешься?':'Что за привычка?'}</h2>
     ${fld('name','Название',brk?'Например: меньше соцсетей':'Например: читать')}
     <div class="field"><label for="w-identity">Кем ты становишься</label><div class="prefix"><span>Я —</span><input class="input" id="w-identity" data-f="identity" value="${esc(draft.identity)}" placeholder="${esc(sg('identity'))}" autocomplete="off" autocapitalize="none"></div>${fillBtn('identity')}</div>
+    <div id="w-ins" ${insightsFor(draft.name)?'':'hidden'}>${insightsFor(draft.name)?insHTML(draft.name,0,true):''}</div>
     <div class="hint"><b>Идентичность.</b> ${brk?'Сравни: «я пытаюсь бросить» и «я не курю». Во втором случае ты уже другой человек, а не борешься с собой.':'Цель не прочитать книгу, а стать читателем. Каждое выполнение — голос за эту версию тебя. Голоса копятся в трекере.'}</div>`;
   case 'obvious':return `<h2>Сделай очевидной</h2>
     <div class="seg"><button type="button" class="opt" data-mode="stack" aria-pressed="${draft.cueMode==='stack'}"><b>После другой привычки</b><span>лучше всего работает</span></button><button type="button" class="opt" data-mode="time" aria-pressed="${draft.cueMode==='time'}"><b>Время и место</b><span>чёткий план</span></button></div>
@@ -992,6 +1089,8 @@ document.addEventListener('click',e=>{
   const el=e.target.closest('button,[data-overlay]');if(!el)return;
   const d=el.dataset;
   if(d.overlay!==undefined){if(e.target===el)closeSheet();return}
+  if(d.ins){const box=el.closest('#w-ins,#d-ins');const nm=box&&box.id==='w-ins'?(draft&&draft.name):(sheet&&S.habits.find(x=>x.id===sheet.id)||{}).name;if(box){box.innerHTML=insHTML(nm,+d.ins,true);const c=box.querySelector('.ins');if(c)c.classList.add('swap')}return}
+  if(d.pal){setPal(d.pal);renderProgress();return}
   if(d.tab){setTab(d.tab);return}
   if(d.range){setRange(d.range);render();return}
   if(d.cal){calOff=Math.min(0,calOff+(+d.cal));renderSheet();return}
@@ -1026,7 +1125,8 @@ document.addEventListener('input',e=>{
   if(e.target.id==='al-phrase'){const b=$('#al-skip-ok');if(b)b.disabled=norm(e.target.value)!==norm(skipPhrase());return}
   const f=e.target.dataset&&e.target.dataset.f;if(!f||!draft)return;
   draft[f]=e.target.value;saveDraftLocal(true);
-  if(f==='name'){const n=$('#wnext');if(n)n.disabled=!draft.name.trim();const i=$('#w-identity');if(i)i.placeholder=sg('identity')}
+  if(f==='name'){const n=$('#wnext');if(n)n.disabled=!draft.name.trim();const i=$('#w-identity');if(i)i.placeholder=sg('identity');
+    const w=$('#w-ins');if(w){const tp=topicMatch(draft.name),key=tp?tp.k[0]:'';if(w.dataset.key!==key){w.dataset.key=key;if(tp){w.innerHTML=insHTML(draft.name,0,true);w.hidden=false}else{w.hidden=true;w.innerHTML=''}}}}
   const fb=document.querySelector(`[data-fill="${f}"]`);if(fb)fb.hidden=!!e.target.value;
 });
 document.addEventListener('keydown',e=>{
@@ -1114,6 +1214,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout
 setTimeout(()=>checkAlarms(false),800);
 
 /* ---------- boot ---------- */
+applyPal(curPal());
 const local=loadLocal();if(local)S={v:1,habits:local.habits,log:local.log||{}};
 renderGuide();render();
 const h0=(location.hash||'').slice(1);setTab(['today','progress','guide'].includes(h0)?h0:'today');
