@@ -23,6 +23,7 @@
   --accent:#0B7A62; --accent-ink:#FFFFFF; --accent-soft:#D2ECE4;
   --amber:#B97806; --amber-soft:#FBEED2; --danger:#BF3B27; --danger-soft:#F8DDD7;
   --cell0:#DAE2DE; --shadow:0 1px 2px rgba(19,32,27,.06),0 6px 20px rgba(19,32,27,.06);
+  --c1:#2F6FD6;--c1s:#DDE8FB;--c2:#7A4FD0;--c2s:#ECE3FB;--c3:#B97806;--c3s:#FBEED2;--c4:#0B7A62;--c4s:#D2ECE4;
   --display:"Unbounded","Arial Black",system-ui,sans-serif;
   --body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
@@ -30,12 +31,12 @@
   --bg:#0E1412; --surface:#17201D; --surface-2:#202B27; --fg:#E3EBE7; --muted:#91A29B; --line:#2A3632;
   --accent:#3CC4A0; --accent-ink:#04211A; --accent-soft:#143A30;
   --amber:#F0B443; --amber-soft:#382C10; --danger:#F07C68; --danger-soft:#3C1E19;
-  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}}
+  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); --c1:#86AEF2;--c1s:#1B2A44;--c2:#B79DF3;--c2s:#2A2142;--c3:#F0B443;--c3s:#382C10;--c4:#3CC4A0;--c4s:#143A30; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0E1412; --surface:#17201D; --surface-2:#202B27; --fg:#E3EBE7; --muted:#91A29B; --line:#2A3632;
   --accent:#3CC4A0; --accent-ink:#04211A; --accent-soft:#143A30;
   --amber:#F0B443; --amber-soft:#382C10; --danger:#F07C68; --danger-soft:#3C1E19;
-  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); color-scheme:dark}
+  --cell0:#24302C; --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25); --c1:#86AEF2;--c1s:#1B2A44;--c2:#B79DF3;--c2s:#2A2142;--c3:#F0B443;--c3s:#382C10;--c4:#3CC4A0;--c4s:#143A30; color-scheme:dark}
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -188,8 +189,6 @@ details.later .list{margin-top:10px;opacity:.75}
 .steps li::before{content:counter(s);font-family:var(--display);font-weight:500;font-size:.85rem;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
 .steps b{display:block}
 .steps p{font-size:.92rem;color:var(--muted)}
-.law{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)}
-.law:first-of-type{border-top:none;padding-top:0}
 .law-h{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
 .law-h .eyebrow{font-size:.68rem}
 .law-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -213,14 +212,14 @@ details.later .list{margin-top:10px;opacity:.75}
 
 /* sheet */
 .overlay{position:fixed;inset:0;z-index:40;background:rgba(8,14,12,.45);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s ease}
-.sheet{background:var(--surface);width:100%;max-width:560px;max-height:92%;border-radius:24px 24px 0 0;display:flex;flex-direction:column;animation:up .25s ease}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:92%;border-radius:24px 24px 0 0;display:flex;flex-direction:column;animation:up .3s cubic-bezier(.2,.8,.2,1)}
 .sheet-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px max(18px,env(safe-area-inset-right,0px)) 8px max(18px,env(safe-area-inset-left,0px))}
 .sheet-b{overflow-y:auto;padding:6px max(18px,env(safe-area-inset-right,0px)) 18px max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
 .sheet-f{display:flex;gap:10px;padding:12px max(18px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));border-top:1px solid var(--line)}
 .sheet-f .btn{flex:1}
 .x{width:36px;height:36px;border-radius:50%;border:none;background:var(--surface-2);display:grid;place-items:center;flex:none}
 .x svg{width:18px;height:18px;stroke:var(--fg);stroke-width:2.2;fill:none;stroke-linecap:round}
-@keyframes up{from{transform:translateY(40px);opacity:0}}
+@keyframes up{from{transform:translateY(60px);opacity:.4}}
 @keyframes fade{from{opacity:0}}
 .dots{display:flex;gap:5px}
 .dots i{width:22px;height:5px;border-radius:3px;background:var(--cell0)}
@@ -252,6 +251,110 @@ details.later .list{margin-top:10px;opacity:.75}
 .confirm .row .btn{flex:1}
 
 .toast{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(144px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:14px;font-size:.9rem;font-weight:500;max-width:calc(100% - 32px);box-shadow:var(--shadow);animation:up .25s ease}
+
+button,label,a,summary{-webkit-tap-highlight-color:transparent}
+button,label{touch-action:manipulation}
+.sheet{will-change:transform}
+.sheet.wiz{height:88%;max-height:820px}
+.overlay.closing{animation:fadeout .22s ease forwards;pointer-events:none}
+.overlay.closing .sheet{animation:down .22s ease forwards}
+@keyframes fadeout{to{opacity:0}}
+@keyframes down{to{transform:translateY(70px);opacity:0}}
+.sheet-b.in-fwd{animation:infwd .24s cubic-bezier(.2,.8,.2,1)}
+.sheet-b.in-back{animation:inback .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes infwd{from{opacity:0;transform:translateX(22px)}}
+@keyframes inback{from{opacity:0;transform:translateX(-22px)}}
+.view{animation:fade .2s ease}
+.dots i{transition:background-color .3s ease}
+.hcard{transition:background-color .2s}
+.hname,.hstreak b{transition:color .2s}
+.resetd{margin-left:auto;margin-right:8px;font-size:.85rem;padding:6px 0}
+.fill{align-self:flex-start;border:none;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.8rem;padding:6px 11px;border-radius:999px}
+.toast.out{animation:fadeout .26s ease forwards}
+
+/* onboarding */
+.hello{background:var(--surface);border-radius:22px;padding:22px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.hello h2{font-size:1.4rem}
+.mini{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.mini li{display:flex;gap:12px;align-items:center}
+.mini i{font-style:normal;font-family:var(--display);font-weight:500;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+.mini .n1{background:var(--c1s);color:var(--c1)}.mini .n2{background:var(--c2s);color:var(--c2)}.mini .n3{background:var(--c4s);color:var(--c4)}
+.mini b,.stepcards b,.howto b{display:block;font-size:.98rem}
+.mini span,.howto li>span:last-child{font-size:.88rem;color:var(--muted)}
+.mini b,.howto b{color:var(--fg)}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.8rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.chip.bad{border-color:var(--danger-soft)}
+.tip{background:var(--c1s);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.tip b{color:var(--c1)}
+.btn.small{padding:8px 14px;font-size:.88rem;background:var(--c1);color:#fff;margin-top:4px}
+/* range switch + calendars */
+.rseg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface-2);border-radius:12px;padding:3px;gap:3px}
+.rseg.two{grid-template-columns:1fr 1fr}
+.rseg button{border:none;background:transparent;border-radius:9px;padding:8px 6px;font-weight:600;font-size:.88rem;color:var(--muted);transition:background-color .2s,color .2s}
+.rseg button[aria-selected="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.sheet .rseg{background:var(--bg)}
+.cw{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cwd,.cmd{border:none;font:inherit;color:var(--fg);background:var(--cell0);transition:background-color .2s,color .2s}
+.cwd{display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0;border-radius:12px;min-height:50px;justify-content:center}
+.cwd small{font-size:.64rem;color:var(--muted);font-weight:600}
+.cwd b{font-size:.95rem;font-variant-numeric:tabular-nums}
+.cm{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cmh{font-size:.64rem;color:var(--muted);text-align:center;font-weight:600}
+.cmd{aspect-ratio:1;display:grid;place-items:center;border-radius:9px;font-size:.82rem;padding:0;font-variant-numeric:tabular-nums}
+.pcard .cm{max-width:320px}
+.pcard .cmd{font-size:.72rem;border-radius:7px}
+.cwd.on,.cmd.on{background:var(--accent);color:var(--accent-ink)}
+.cwd.on small{color:inherit;opacity:.8}
+.cwd.miss,.cmd.miss{background:var(--danger-soft)}
+.cwd.off,.cmd.off{background:transparent;box-shadow:inset 0 0 0 1px var(--line);color:var(--muted)}
+.cwd.fut,.cmd.fut{background:transparent;color:var(--muted);opacity:.55}
+.cwd.today,.cmd.today{box-shadow:inset 0 0 0 2px var(--fg)}
+button.cwd,button.cmd{cursor:pointer}
+.cy{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);grid-template-columns:repeat(53,1fr);gap:2px}
+.cy i{aspect-ratio:1;border-radius:1.5px;background:var(--cell0)}
+.cy i.on{background:var(--accent)}.cy i.miss{background:var(--danger-soft)}.cy i.off{background:transparent}.cy i.fut{visibility:hidden}
+.legend i.miss{background:var(--danger-soft)}
+.calnav{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.calnav b{font-size:.95rem}
+.calnav .x:disabled{opacity:.3}
+.calnav .x svg{stroke:var(--fg);stroke-width:2.2;fill:none}
+/* guide */
+.cta{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--accent);color:var(--accent-ink);border-radius:20px;padding:18px 20px;box-shadow:0 8px 24px rgba(11,122,98,.25)}
+.cta:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.cta span{display:flex;flex-direction:column;gap:2px}
+.cta b{font-family:var(--display);font-weight:500;font-size:1.05rem}
+.cta small{opacity:.85;font-size:.85rem}
+.cta svg{width:26px;height:26px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.gsec{display:flex;flex-direction:column;gap:12px}
+.stepcards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stepcards li{background:var(--surface);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);min-width:0}
+.stepcards li:last-child{grid-column:1/-1;flex-direction:row;align-items:center}
+.stepcards i{font-style:normal;font-family:var(--display);font-weight:500;font-size:.8rem;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none}
+.stepcards span{font-size:.84rem;color:var(--muted);line-height:1.35}
+.stepcards b{color:var(--fg);margin-bottom:2px}
+.c1 i,.c1 .li,.hi.c1{background:var(--c1s);color:var(--c1)}
+.c2 i,.c2 .li,.hi.c2{background:var(--c2s);color:var(--c2)}
+.c3 i,.c3 .li,.hi.c3{background:var(--c3s);color:var(--c3)}
+.c4 i,.c4 .li,.hi.c4{background:var(--c4s);color:var(--c4)}
+.laws{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.law{border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:5px;min-width:0;border-top:none;animation:fade .25s ease}
+.law.c1{background:var(--c1s)}.law.c2{background:var(--c2s)}.law.c3{background:var(--c3s)}.law.c4{background:var(--c4s)}
+.law .li{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--surface)!important;margin-bottom:4px}
+.law .li svg,.hi svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.law b{font-size:.95rem;line-height:1.25}
+.law p{font-size:.82rem;color:var(--fg);opacity:.75;line-height:1.35}
+.law .eyebrow{font-size:.64rem}
+.ideas2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ideas2 div{border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:4px}
+.ideas2 .c1{background:var(--c1s)}.ideas2 .c2{background:var(--c2s)}.ideas2 .c3{background:var(--c3s)}.ideas2 .c4{background:var(--c4s)}
+.ideas2 b{font-family:var(--display);font-weight:700;font-size:1.35rem}
+.ideas2 .c1 b{color:var(--c1)}.ideas2 .c2 b{color:var(--c2)}.ideas2 .c3 b{color:var(--c3)}.ideas2 .c4 b{color:var(--c4)}
+.ideas2 span{font-size:.82rem;line-height:1.35}
+.howto{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.howto li{display:flex;gap:12px;align-items:flex-start}
+.hi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
+@media (max-width:360px){.stepcards,.laws,.ideas2{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -423,21 +526,25 @@ function renderToday(){
   const dn=on.filter(h=>done(h,k)).length;
   let html=`<header class="top"><div class="top-l"><span class="eyebrow">${WDF[wd(t)]}, ${t.getDate()} ${MONTHS[t.getMonth()]}</span><h1>Сегодня</h1></div>${act.length?ring(dn,on.length):''}</header>`;
   if(!act.length){
-    html+=`<div class="empty">
-      <span class="eyebrow">С чего начать</span>
-      <h2>Одна привычка. Очень маленькая.</h2>
-      <p class="muted">Выбери шаблон или создай свою. Мастер проведёт по четырём законам из книги: сделать привычку очевидной, привлекательной, лёгкой и приятной.</p>
+    html+=`<div class="hello">
+      <span class="eyebrow">Добро пожаловать</span>
+      <h2>Сделаем первую привычку вместе</h2>
+      <ol class="mini">
+        <li><i class="n1">1</i><span><b>Выбери одну</b>самую важную, не пять сразу</span></li>
+        <li><i class="n2">2</i><span><b>Урежь до двух минут</b>чтобы не было повода отложить</span></li>
+        <li><i class="n3">3</i><span><b>Отметь сегодня</b>это первый голос за нового себя</span></li>
+      </ol>
+      <button class="btn big" type="button" data-new>Начать, это пара минут</button>
+      <div class="or"><span>или возьми готовую</span></div>
       <div class="tpls">${TPL.build.map((x,i)=>`<button class="chip" type="button" data-tpl="build:${i}">${esc(x.label)}</button>`).join('')}</div>
-      <p class="muted" style="font-size:.85rem">Хочешь от чего-то избавиться?</p>
-      <div class="tpls">${TPL.brk.map((x,i)=>`<button class="chip" type="button" data-tpl="brk:${i}">${esc(x.label)}</button>`).join('')}</div>
-      <button class="btn" type="button" data-new>Создать свою привычку</button>
-      <button class="btn link" type="button" data-goto="guide">Сначала прочитать, как это работает</button>
+      <div class="tpls">${TPL.brk.map((x,i)=>`<button class="chip bad" type="button" data-tpl="brk:${i}">Бросить: ${esc(x.label.toLowerCase())}</button>`).join('')}</div>
     </div>`;
   }else{
     const twice=on.filter(h=>missState(h)==='twice'),once=on.filter(h=>missState(h)==='once');
     if(twice.length){const h=twice[0];html+=`<div class="banner danger"><b>Два пропуска подряд: ${esc(h.name)}${twice.length>1?' и ещё '+(twice.length-1):''}</b><span>Сегодня главное вернуться. Сделай хотя бы минимум${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Это не провал. Важно не дать пропускам стать новой привычкой.</span></div>`}
     else if(once.length){const h=once[0];html+=`<div class="banner"><b>Не пропускай дважды: ${esc(h.name)}${once.length>1?' и ещё '+(once.length-1):''}</b><span>Вчера не получилось. Сегодня хватит минимума${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Один пропуск ничего не ломает. Два подряд уже начинают новую привычку.</span></div>`}
     else if(on.length&&dn===on.length){html+=`<div class="banner" style="background:var(--accent-soft)"><b style="color:var(--accent)">Всё на сегодня сделано</b><span>Каждая отметка — голос за того, кем ты становишься.</span></div>`}
+    if(!tipSeen()&&act.length===1&&!dn)html+=`<div class="tip"><b>Отлично, привычка есть 👏</b><span>Теперь главное: когда сделаешь хотя бы минимум, нажми на кружок слева. Это твой первый голос.</span><button class="btn small" type="button" data-tip-ok>Понятно</button></div>`;
     html+=on.length?`<ul class="list">${on.map(h=>card(h,k)).join('')}</ul>`:`<p class="muted">На сегодня ничего не запланировано. Отдыхай.</p>`;
     if(off.length)html+=`<details class="later"><summary>Не по плану сегодня (${off.length})</summary><ul class="list">${off.map(h=>card(h,k)).join('')}</ul></details>`;
   }
@@ -464,6 +571,39 @@ function heat(h,weeks,interactive){
   return `<div class="heat" style="grid-template-columns:auto repeat(${weeks},1fr)">${cells}</div>`;
 }
 
+
+/* ---------- calendar views ---------- */
+const MONTHS_N=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+let range=(()=>{try{return localStorage.getItem('one-percent-range')||'week'}catch(e){return 'week'}})();
+let calOff=0;
+function tipSeen(){try{return localStorage.getItem('one-percent-tip')==='1'}catch(e){return true}}
+function setRange(r){range=r;calOff=0;try{localStorage.setItem('one-percent-range',r)}catch(e){}}
+function rangeSeg(){return `<div class="rseg" role="tablist" aria-label="Вид календаря">${[['week','Неделя'],['month','Месяц'],['year','Год']].map(a=>`<button type="button" role="tab" data-range="${a[0]}" aria-selected="${range===a[0]}">${a[1]}</button>`).join('')}</div>`}
+function cellCls(h,d,tk){const k=dk(d);let c;if(k>tk)c='fut';else if(done(h,k))c='on';else if(!sched(h,d))c='off';else if(k<tk)c='miss';else c='todo';if(k===tk)c+=' today';return c}
+function dayLab(d,h){return `${d.getDate()} ${MONTHS[d.getMonth()]}${done(h,dk(d))?', выполнено':''}`}
+function calWeek(h,inter,off){
+  const t=today(),tk=dk(t),st=add(t,-wd(t)+7*off);let o='<div class="cw">';
+  for(let i=0;i<7;i++){const d=add(st,i),k=dk(d),c=cellCls(h,d,tk),can=inter&&k<=tk;
+    o+=can?`<button type="button" class="cwd ${c}" data-day="${k}" aria-label="${dayLab(d,h)}"><small>${DAYS[i]}</small><b>${d.getDate()}</b></button>`:`<span class="cwd ${c}" title="${dayLab(d,h)}"><small>${DAYS[i]}</small><b>${d.getDate()}</b></span>`}
+  return o+'</div>';
+}
+function calMonth(h,inter,off){
+  const t=today(),tk=dk(t),f=new Date(t.getFullYear(),t.getMonth()+off,1),dim=new Date(f.getFullYear(),f.getMonth()+1,0).getDate();
+  let o=`<div class="cm">${DAYS.map(x=>`<span class="cmh">${x}</span>`).join('')}`;
+  for(let i=0;i<wd(f);i++)o+='<span></span>';
+  for(let n=1;n<=dim;n++){const d=new Date(f.getFullYear(),f.getMonth(),n),k=dk(d),c=cellCls(h,d,tk),can=inter&&k<=tk;
+    o+=can?`<button type="button" class="cmd ${c}" data-day="${k}" aria-label="${dayLab(d,h)}">${n}</button>`:`<span class="cmd ${c}">${n}</span>`}
+  return o+'</div>';
+}
+function calYear(h){
+  const t=today(),tk=dk(t),end=add(t,6-wd(t)),st=add(end,-(53*7-1));let o='<div class="cy" aria-label="Год">';
+  for(let i=0;i<53*7;i++){o+=`<i class="${cellCls(h,add(st,i),tk)}"></i>`}
+  return o+'</div>';
+}
+function cal(h,inter,off){off=off||0;return range==='week'?calWeek(h,inter,off):range==='month'?calMonth(h,inter,off):calYear(h)}
+function calTitle(off){const t=today();if(range==='week'){if(!off)return 'Эта неделя';const a=add(t,-wd(t)+7*off),b=add(a,6);return `${a.getDate()} ${MONTHS[a.getMonth()]} — ${b.getDate()} ${MONTHS[b.getMonth()]}`}if(range==='month'){const f=new Date(t.getFullYear(),t.getMonth()+off,1);return MONTHS_N[f.getMonth()]+(f.getFullYear()!==t.getFullYear()?' '+f.getFullYear():'')}return 'Последние 12 месяцев'}
+const LEGEND='<div class="legend"><span><i class="on"></i>сделано</span><span><i class="miss"></i>пропуск</span><span><i class="off"></i>не по плану</span></div>';
+
 /* ---------- render: progress ---------- */
 function renderProgress(){
   const act=S.habits.filter(h=>!h.archived),t=today();
@@ -474,8 +614,9 @@ function renderProgress(){
     let sch=0,dn=0;for(let i=0;i<7;i++){const d=add(t,-i);act.forEach(h=>{if(sched(h,d)){sch++;if(done(h,dk(d)))dn++}})}
     const bs=Math.max(...act.map(best));
     html+=`<div class="stats"><div class="stat"><b class="num">${tv}</b><span>${plural(tv,'голос','голоса','голосов')} всего</span></div><div class="stat"><b class="num">${sch?Math.round(dn/sch*100):0}%</b><span>за 7 дней</span></div><div class="stat"><b class="num">${bs}</b><span>лучшая серия</span></div></div>`;
-    html+=act.map(h=>{const st=streak(h),v=votes(h);return `<button class="pcard" type="button" data-open="${h.id}"><div class="pcard-h"><h3>${esc(h.name)}</h3><span class="meta num">${st} ${plural(st,'день','дня','дней')} · ${v} ${plural(v,'голос','голоса','голосов')}</span></div>${h.identity?`<span class="muted" style="font-size:.85rem">Я — ${esc(h.identity)}</span>`:''}${heat(h,14,false)}</button>`}).join('');
-    html+=`<div class="legend"><span><i class="on"></i>сделано</span><span><i></i>пропуск</span><span><i class="off"></i>не по плану</span></div>`;
+    html+=rangeSeg();
+    html+=act.map(h=>{const st=streak(h),v=votes(h);return `<button class="pcard" type="button" data-open="${h.id}"><div class="pcard-h"><h3>${esc(h.name)}</h3><span class="meta num">${st} ${plural(st,'день','дня','дней')} · ${v} ${plural(v,'голос','голоса','голосов')}</span></div>${h.identity?`<span class="muted" style="font-size:.85rem">Я — ${esc(h.identity)}</span>`:''}${cal(h,false,0)}</button>`}).join('');
+    html+=LEGEND;
   }
   if(S.habits.length||pendingImport)html+=backupCard();else html+=`<div class="card backup"><h3>Уже вёл трекер?</h3><div class="row2"><label class="btn ghost filebtn" for="importFile">Загрузить бэкап</label></div><input type="file" id="importFile" accept=".json,application/json" hidden>${pendingImport?'':''}</div>`;
   html+=`<p class="sync" id="sync">${syncLabel()}</p>`;
@@ -491,56 +632,71 @@ function chart(){
   [[0,'старт'],[91,'3 мес'],[182,'6 мес'],[273,'9 мес'],[365,'год']].forEach(a=>g+=`<text class="t" x="${X(a[0])}" y="${H-6}" text-anchor="middle">${a[1]}</text>`);
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="График: 1% лучше каждый день даёт рост в 37,8 раза за год, 1% хуже — падение до 0,03">${g}<polyline class="up" points="${up}"/><polyline class="down" points="${dn}"/><text class="lu" x="${X(365)+4}" y="${Y(37.8)+4}">×37,8</text><text class="ld" x="${X(365)+4}" y="${Y(0)-4}">×0,03</text></svg>`;
 }
+let lawMode='build';
+const ICON={
+ eye:'<svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+ spark:'<svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>',
+ bolt:'<svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+ gift:'<svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1.5S9 8 12 8zm0 0c2-4 6-4 6-1.5S15 8 12 8z"/></svg>',
+ check:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9"/></svg>',
+ tap:'<svg viewBox="0 0 24 24"><path d="M9 11V5a2 2 0 0 1 4 0v6m0-2a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-.5A5.5 5.5 0 0 1 4 14.5V13a2 2 0 0 1 4 0"/></svg>',
+ bell:'<svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+ warn:'<svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.5"/></svg>',
+ save:'<svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v3h16v-3"/></svg>',
+ arrow:'<svg viewBox="0 0 24 24"><path d="M5 12h14m-6-6l6 6-6 6"/></svg>'
+};
+const LAWS=[
+ {c:'c1',i:'eye',n:'Сигнал',b:['Сделай очевидным','План «когда и где». Привяжи к тому, что уже делаешь. Нужные вещи на виду.'],x:['Сделай невидимым','Убери триггеры: приложения с экрана, сладкое из дома.']},
+ {c:'c2',i:'spark',n:'Желание',b:['Сделай привлекательным','Свяжи с удовольствием: подкаст только на тренировке.'],x:['Сделай непривлекательным','Выпиши, что эта привычка у тебя забирает.']},
+ {c:'c3',i:'bolt',n:'Действие',b:['Сделай лёгким','Правило двух минут. Всё готово заранее.'],x:['Сделай трудным','Добавь шаги: выйди из аккаунта, не покупай впрок.']},
+ {c:'c4',i:'gift',n:'Награда',b:['Сделай приятным','Маленькая награда сразу и отметка в трекере.'],x:['Сделай неприятным','Отчитывайся другу или договорись о штрафе.']}
+];
+const STEPS=[
+ ['Одна привычка','Не пять. Вторую добавишь через 3–4 недели.'],
+ ['Кем ты становишься','«Я читатель», а не «прочитать 20 книг».'],
+ ['Привязка','«После кофе я читаю страницу».'],
+ ['Две минуты','Первые две недели делай только минимум.'],
+ ['Окружение','Книга на подушке, телефон в другой комнате.'],
+ ['Отметка сразу','Закрашенный день и есть награда.'],
+ ['Не дважды','Пропустил? Завтра хотя бы минимум.']
+];
 function renderGuide(){
   $('#v-guide').innerHTML=`
   <header class="top"><div class="top-l"><span class="eyebrow">По книге Джеймса Клира</span><h1>Как это работает</h1></div></header>
   <div class="card">
-    <div class="hero-num"><div><b class="up num">1,01³⁶⁵ ≈ 37,8</b><span>на 1% лучше каждый день</span></div><div><b class="down num">0,99³⁶⁵ ≈ 0,03</b><span>на 1% хуже</span></div></div>
+    <div class="hero-num"><div><b class="up num">×37,8</b><span>если каждый день на 1% лучше</span></div><div><b class="down num">×0,03</b><span>если на 1% хуже</span></div></div>
     ${chart()}
-    <p class="muted" style="font-size:.92rem">Первые месяцы линии почти не расходятся. Результат копится незаметно, а потом резко проявляется. Клир называет этот отрезок плато скрытого потенциала: большинство бросает именно на нём.</p>
+    <p class="muted" style="font-size:.9rem">Первые месяцы разницы почти не видно. Именно тут большинство и бросает.</p>
   </div>
-  <div class="card">
-    <h2>С чего начать</h2>
-    <ol class="steps">
-      <li><div><b>Возьми одну привычку</b><p>Не пять сразу. Вторую добавишь, когда первая пойдёт на автомате, обычно через 3–4 недели.</p></div></li>
-      <li><div><b>Реши, кем хочешь стать</b><p>Не «прочитать 20 книг», а «я читатель». Каждое выполнение — голос за эту версию себя.</p></div></li>
-      <li><div><b>Привяжи к тому, что уже делаешь</b><p>«После того как налью кофе, я прочитаю страницу». Существующая привычка становится сигналом для новой.</p></div></li>
-      <li><div><b>Урежь до двух минут</b><p>Первые две недели делай только минимальную версию. Задача — начать появляться каждый день, а не выкладываться.</p></div></li>
-      <li><div><b>Подготовь окружение</b><p>Книга на подушке, форма у двери, телефон в другой комнате. Окружение срабатывает надёжнее силы воли.</p></div></li>
-      <li><div><b>Отмечай сразу после</b><p>Закрашенная клетка — мгновенная награда. Мозг закрепляет то, что приносит удовольствие сразу.</p></div></li>
-      <li><div><b>Не пропускай дважды</b><p>Пропуск случается у всех. Правило одно: на следующий день сделай хотя бы минимум.</p></div></li>
-    </ol>
-  </div>
-  <div class="card">
-    <h2>Четыре закона</h2>
-    <p class="muted" style="font-size:.92rem">Любая привычка проходит цикл: сигнал, желание, действие, награда. Чтобы внедрить привычку, усиливаешь каждое звено. Чтобы бросить, ослабляешь.</p>
-    <div class="law"><div class="law-h"><span class="eyebrow">Сигнал</span></div><div class="law-cols"><div class="g"><strong>Сделай очевидным</strong>План «когда и где», привязка к другой привычке, нужные вещи на виду.</div><div class="b"><strong>Сделай невидимым</strong>Убери триггеры из поля зрения: приложения с экрана, сладкое из дома.</div></div></div>
-    <div class="law"><div class="law-h"><span class="eyebrow">Желание</span></div><div class="law-cols"><div class="g"><strong>Сделай привлекательным</strong>Свяжи с тем, что любишь: подкаст только на тренировке. Окружи себя людьми, для которых это норма.</div><div class="b"><strong>Сделай непривлекательным</strong>Выпиши, что эта привычка у тебя забирает. Смотри на неё как на цену, а не на удовольствие.</div></div></div>
-    <div class="law"><div class="law-h"><span class="eyebrow">Действие</span></div><div class="law-cols"><div class="g"><strong>Сделай лёгким</strong>Правило двух минут, меньше шагов до старта, всё готово заранее.</div><div class="b"><strong>Сделай трудным</strong>Добавь шаги и барьеры: выйди из аккаунта, не покупай впрок, поставь блокировку.</div></div></div>
-    <div class="law"><div class="law-h"><span class="eyebrow">Награда</span></div><div class="law-cols"><div class="g"><strong>Сделай приятным</strong>Небольшая награда сразу после и отметка в трекере.</div><div class="b"><strong>Сделай неприятным</strong>Партнёр, перед которым отчитываешься, или договор с последствием за срыв.</div></div></div>
-  </div>
-  <div class="card">
-    <h2>Главные идеи</h2>
-    <ul class="ideas">
-      <li><b>Системы важнее целей</b><span>Цель задаёт направление, а результат дают ежедневные действия. У победителей и проигравших часто одинаковые цели.</span></li>
-      <li><b>Идентичность важнее результата</b><span>Привычка держится, когда становится частью того, кем ты себя считаешь.</span></li>
-      <li><b>Повторения важнее времени</b><span>Автоматизм появляется от количества выполнений, а не от числа дней. Поэтому важно делать часто, пусть и мало.</span></li>
-      <li><b>Окружение важнее мотивации</b><span>Мотивация скачет, а окружение работает каждый день. Проектируй пространство так, чтобы нужное было проще всего сделать.</span></li>
+  <button class="cta" type="button" data-new><span><b>Первая привычка вместе</b><small>Мастер проведёт по шагам, пара минут</small></span>${ICON.arrow}</button>
+  <section class="gsec"><h2>С чего начать</h2>
+    <ol class="stepcards">${STEPS.map((x,i)=>`<li class="c${i%4+1}"><i>${i+1}</i><span><b>${x[0]}</b>${x[1]}</span></li>`).join('')}</ol>
+  </section>
+  <section class="gsec"><h2>Четыре закона</h2>
+    <div class="rseg two" role="tablist"><button type="button" role="tab" data-law="build" aria-selected="${lawMode==='build'}">Внедрить</button><button type="button" role="tab" data-law="brk" aria-selected="${lawMode==='brk'}">Бросить</button></div>
+    <div class="laws">${LAWS.map(l=>{const t=lawMode==='build'?l.b:l.x;return `<div class="law ${l.c}"><span class="li">${ICON[l.i]}</span><span class="eyebrow">${l.n}</span><b>${t[0]}</b><p>${t[1]}</p></div>`}).join('')}</div>
+  </section>
+  <section class="gsec"><h2>Главные идеи</h2>
+    <div class="ideas2">
+      <div class="c1"><b>1%</b><span>маленькие шаги каждый день сильнее рывков</span></div>
+      <div class="c2"><b>1 голос</b><span>каждое выполнение голосует за нового тебя</span></div>
+      <div class="c3"><b>2 мин</b><span>достаточно, чтобы начать и не сорваться</span></div>
+      <div class="c4"><b>Не ×2</b><span>один пропуск можно, два подряд нельзя</span></div>
+    </div>
+  </section>
+  <section class="card"><h2>Как пользоваться</h2>
+    <ul class="howto">
+      <li><span class="hi c4">${ICON.check}</span><span><b>Кружок слева</b>нажми, когда сделал хотя бы минимум</span></li>
+      <li><span class="hi c1">${ICON.tap}</span><span><b>Нажми на привычку</b>план, календарь и исправление отметок</span></li>
+      <li><span class="hi c2">${ICON.bell}</span><span><b>Будильник</b>звенит, пока приложение открыто. Выключить можно, только прочитав цитату</span></li>
+      <li><span class="hi c3">${ICON.warn}</span><span><b>Жёлтый и красный</b>вчера пропуск или два подряд. Сделай минимум</span></li>
+      <li><span class="hi c1">${ICON.save}</span><span><b>Бэкап</b>во вкладке «Прогресс», раз в пару недель</span></li>
     </ul>
-  </div>
-  <div class="card">
-    <h2>Как пользоваться трекером</h2>
-    <ul class="ideas">
-      <li><b>Отмечай кружком слева</b><span>Сразу после выполнения. Для привычки, которую бросаешь, отметка значит «сегодня держусь».</span></li>
-      <li><b>Нажми на привычку</b><span>Откроется план, календарь и статистика. В календаре можно исправить забытую отметку за прошлые дни.</span></li>
-      <li><b>Будильник</b><span>Для привычек по времени. Звучит, пока приложение открыто, а выключить его можно, только увидев цитату. Пропустить день можно, только напечатав фразу. Если приложение закрыто, будильник покажется, когда откроешь. Для звука на заблокированном экране используй «Напоминания» iPhone.</span></li>
-      <li><b>Следи за предупреждением</b><span>Жёлтое — вчера был пропуск. Красное — два подряд. В обоих случаях сделай хотя бы минимум.</span></li>
-    </ul>
-  </div>`;
+  </section>`;
 }
 
 /* ---------- detail sheet ---------- */
-function openDetail(id){sheet={kind:'detail',id};confirmDel=false;renderSheet()}
+function openDetail(id){sheet={kind:'detail',id};confirmDel=false;calOff=0;renderSheet()}
 function renderDetail(){
   const h=S.habits.find(x=>x.id===sheet.id);if(!h){closeSheet();return ''}
   const st=streak(h),b=best(h),v=votes(h);
@@ -549,7 +705,7 @@ function renderDetail(){
    <div class="sheet-b">
     ${h.identity?`<p class="ident">Я — ${esc(h.identity)}</p>`:''}
     <div class="stats"><div class="stat"><b class="num">${st}</b><span>серия сейчас</span></div><div class="stat"><b class="num">${b}</b><span>лучшая серия</span></div><div class="stat"><b class="num">${v}</b><span>${plural(v,'голос','голоса','голосов')}</span></div></div>
-    <div style="display:flex;flex-direction:column;gap:8px">${heat(h,16,true)}<div class="legend"><span><i class="on"></i>сделано</span><span><i></i>пропуск</span><span><i class="off"></i>не по плану</span></div><span class="muted" style="font-size:.8rem">Нажми на день, чтобы поставить или снять отметку.</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px">${rangeSeg()}${range!=='year'?`<div class="calnav"><button type="button" class="x" data-cal="-1" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><b>${calTitle(calOff)}</b><button type="button" class="x" data-cal="1" aria-label="Вперёд" ${calOff>=0?'disabled':''}><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>`:`<div class="calnav"><b>${calTitle(0)}</b></div>`}${cal(h,true,calOff)}${LEGEND}<span class="muted" style="font-size:.8rem">${range==='year'?'Чтобы исправить отметку, переключись на неделю или месяц.':'Нажми на день, чтобы поставить или снять отметку.'}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px"><h3>План</h3><ul class="plan">${planRows(h).map(r=>`<li><span>${esc(r[0])}</span><span>${esc(r[1])}</span></li>`).join('')}</ul></div>
     ${confirmDel?`<div class="confirm"><b>Удалить «${esc(h.name)}» вместе со всей историей?</b><div class="row"><button class="btn danger" type="button" data-del-yes>Удалить</button><button class="btn ghost" type="button" data-del-no>Отмена</button></div></div>`:''}
    </div>
@@ -557,17 +713,78 @@ function renderDetail(){
   </div>`;
 }
 
+
+/* ---------- smart examples ---------- */
+const GEN={
+ build:{identity:'человек, который читает каждый день',after:'налью утренний кофе',time:'',where:'дома в кресле',tiny:'прочитать 1 страницу',prep:'положить книгу на подушку',bundle:'слушаю любимый подкаст только во время неё',reward:'чашка хорошего чая'},
+ brk:{identity:'человек, который не курит',trigger:'скука, телефон в руке',invisible:'телефон в другой комнате, приложения с главного экрана',hard:'выйти из аккаунтов, лимит экранного времени',stake:'скажу другу, за срыв перевожу ему 500 ₽',replace:'открываю книгу или иду пройтись'}
+};
+const TOPICS=[
+ {k:['сон','спать','высып','отбой','лечь','ложит','засып'],build:{mode:'time',identity:'человек, который высыпается',after:'почищу зубы вечером',time:'23:00',where:'в спальне',tiny:'лечь в кровать без телефона',prep:'поставить зарядку телефона на кухне',bundle:'перед сном слушаю спокойный подкаст',reward:'утром отметить, что выспался'},brk:{identity:'человек, который ложится вовремя',trigger:'телефон в кровати и «ещё одно видео»',invisible:'заряжать телефон вне спальни',hard:'блокировка приложений после 23:00',stake:'',replace:'10 минут бумажной книги'}},
+ {k:['подъ','встава','встать','ранн','просып','утр'],build:{mode:'time',identity:'человек, который встаёт рано',after:'прозвенит будильник',time:'06:30',where:'',tiny:'встать и умыться сразу после будильника',prep:'положить будильник на другой конец комнаты',bundle:'любимый кофе только после подъёма',reward:'спокойный завтрак без телефона'}},
+ {k:['коран','аят','сур','хифз'],build:{identity:'человек, который каждый день читает Коран',after:'совершу утренний намаз',time:'05:30',where:'на молитвенном коврике',tiny:'прочитать один аят',prep:'положить Коран рядом с ковриком',bundle:'',reward:'минута тишины после чтения'}},
+ {k:['намаз','молитв','салят','фаджр'],build:{identity:'человек, который не пропускает намаз',after:'услышу азан или напоминание',time:'',where:'дома на коврике',tiny:'совершить фард вовремя',prep:'коврик всегда лежит в одном месте',bundle:'',reward:'отметить в трекере'}},
+ {k:['зикр','дуа','азкар','тасбих'],build:{identity:'человек, который поминает Всевышнего',after:'сяду в машину',where:'в дороге',tiny:'33 раза «СубханАллах»',prep:'тасбих в кармане куртки',bundle:'',reward:''}},
+ {k:['чита','книг','чтени'],build:{identity:'человек, который читает каждый день',after:'налью утренний кофе',time:'21:30',where:'в кресле',tiny:'прочитать 1 страницу',prep:'положить книгу рядом с кофеваркой',bundle:'читаю только с любимым чаем',reward:'отметить прочитанное в трекере'}},
+ {k:['бег','пробеж'],build:{identity:'человек, который бегает',after:'проснусь и выпью воды',time:'07:00',where:'в парке у дома',tiny:'надеть кроссовки и выйти за дверь',prep:'положить форму и кроссовки у кровати',bundle:'новый выпуск подкаста только на пробежке',reward:'смузи после пробежки'}},
+ {k:['отжим','присед','зарядк','растяжк','планк','турник','подтяг','пресс'],build:{identity:'человек, который двигается каждый день',after:'почищу зубы утром',time:'07:15',where:'дома на коврике',tiny:'5 отжиманий',prep:'коврик расстелен у кровати',bundle:'включаю бодрый плейлист только на зарядку',reward:'отметить в трекере'}},
+ {k:['йог'],build:{identity:'человек, который заботится о теле',after:'проснусь',time:'07:00',where:'дома на коврике',tiny:'одна поза на минуту',prep:'коврик расстелен с вечера',bundle:'',reward:''}},
+ {k:['спорт','трениров','зал','кач','фитнес','бокс','плаван','бассейн'],build:{identity:'человек, который не пропускает тренировки',after:'вернусь домой с работы',time:'19:00',where:'в зале у дома',tiny:'переодеться в форму и сделать 5 приседаний',prep:'сложить форму у двери с вечера',bundle:'слушаю любимый подкаст только на тренировке',reward:'душ и отметка в трекере'}},
+ {k:['прогул','ходьб','шаг','гуля','ходить'],build:{identity:'человек, который много ходит',after:'пообедаю',time:'13:00',where:'вокруг квартала',tiny:'выйти и дойти до угла дома',prep:'удобная обувь у двери',bundle:'гуляю только под любимую аудиокнигу',reward:''}},
+ {k:['вод','пить'],build:{identity:'человек, который заботится о теле',after:'проснусь',time:'',where:'',tiny:'выпить стакан воды',prep:'графин и стакан у кровати',bundle:'',reward:''}},
+ {k:['медит','дыхан','осознан','тишин'],build:{identity:'спокойный человек, который управляет вниманием',after:'почищу зубы утром',time:'07:30',where:'на диване',tiny:'1 минута спокойного дыхания',prep:'таймер на 1 минуту в избранном',bundle:'',reward:'чашка чая после'}},
+ {k:['дневник','журнал','запис','рефлекс','итог'],build:{identity:'человек, который осмысляет свой день',after:'лягу в кровать',time:'22:30',where:'в кровати',tiny:'написать одну строчку о дне',prep:'блокнот и ручка на тумбочке',bundle:'',reward:''}},
+ {k:['благодар'],build:{identity:'человек, который замечает хорошее',after:'сяду ужинать',time:'',where:'',tiny:'записать одну вещь, за которую благодарен',prep:'заметка «Благодарности» на первом экране',bundle:'',reward:''}},
+ {k:['английск','язык','слов','немецк','турецк','арабск','испанск','duolingo','дуолинго'],build:{identity:'человек, который каждый день занимается языком',after:'сяду в транспорт',time:'08:30',where:'в транспорте',tiny:'выучить 3 слова',prep:'приложение на первом экране телефона',bundle:'сериал на английском только после занятия',reward:''}},
+ {k:['учеб','учить','курс','код','программ','angular','js','верст','фронт','урок'],build:{identity:'человек, который учится каждый день',after:'открою ноутбук утром',time:'09:00',where:'за рабочим столом',tiny:'открыть урок и посмотреть 2 минуты',prep:'оставить вкладку с курсом открытой с вечера',bundle:'любимый кофе только во время учёбы',reward:'отметить пройденное в трекере'}},
+ {k:['фокус','глубок','работ','помодор','задач'],build:{identity:'человек, который делает важное первым',after:'сяду за рабочий стол',time:'10:00',where:'за рабочим столом',tiny:'поставить таймер на 25 минут и закрыть мессенджеры',prep:'с вечера выписать одну главную задачу',bundle:'',reward:'короткая прогулка после'}},
+ {k:['убор','порядок','чистот','посуд','стирк'],build:{identity:'человек, у которого дома порядок',after:'поужинаю',time:'',where:'дома',tiny:'убрать одну вещь на место',prep:'корзина для вещей на видном месте',bundle:'убираюсь только под любимый плейлист',reward:''}},
+ {k:['деньг','бюджет','трат','финанс','расход','копи','накоп','эконом'],build:{identity:'человек, который управляет своими деньгами',after:'выпью вечерний чай',time:'21:00',where:'',tiny:'записать траты за день',prep:'приложение для бюджета на первом экране',bundle:'',reward:'видеть, сколько отложено'}},
+ {k:['родител','мам','пап','звон','близк','семь'],build:{identity:'человек, который на связи с близкими',after:'поеду с работы',time:'',where:'',tiny:'отправить маме короткое сообщение',prep:'контакт родителей в избранном',bundle:'',reward:''}},
+ {k:['овощ','питани','еда','салат','завтрак','белок','фрукт'],build:{identity:'человек, который ест осознанно',after:'приду на кухню утром',time:'',where:'на кухне',tiny:'добавить один овощ к завтраку',prep:'нарезанные овощи в контейнере на видном месте',bundle:'',reward:''}},
+ {k:['телефон','соцсет','инст','тикток','ютуб','рилс','шортс','телеграм','скролл','экран'],brk:{identity:'человек, который сам управляет своим вниманием',trigger:'скука и паузы, телефон в руке',invisible:'убрать приложения с главного экрана, телефон в другой комнате во время работы',hard:'выйти из аккаунтов, лимит экранного времени 30 минут',stake:'',replace:'открыть книгу или выйти на 5 минут пройтись'}},
+ {k:['сладк','сахар','шоколад','конфет','торт','печень'],brk:{identity:'человек, который ест осознанно',trigger:'стресс и сладости на виду',invisible:'не держать сладкое дома, обходить кондитерский отдел',hard:'покупать только одну порцию за раз',stake:'',replace:'фрукты или чай с орехами'}},
+ {k:['курен','курить','курю','сигарет','вейп','никотин','кальян'],brk:{identity:'человек, который не курит',trigger:'кофе, стресс, перерыв с коллегами',invisible:'выбросить сигареты и зажигалки, не заходить в курилку',hard:'не покупать пачку, не носить с собой наличные',stake:'сказать близким, что бросаю',replace:'стакан воды, жвачка и 10 глубоких вдохов'}},
+ {k:['алког','пив','вин','выпив'],brk:{identity:'человек, который не пьёт',trigger:'пятница, компания, усталость',invisible:'не держать алкоголь дома',hard:'заранее говорить друзьям, что не пью',stake:'',replace:'безалкогольный напиток или спорт вечером'}},
+ {k:['фастфуд','фаст','бургер','доставк','шаурм','чипс'],brk:{identity:'человек, который ест нормальную еду',trigger:'голод поздно вечером и приложение доставки',invisible:'удалить приложения доставки с телефона',hard:'заранее готовить еду на 2–3 дня',stake:'',replace:'заготовленный контейнер с едой'}},
+ {k:['кофе','энергетик'],brk:{identity:'человек с естественной энергией',trigger:'усталость после обеда',invisible:'не держать энергетики дома',hard:'не покупать впрок',stake:'',replace:'вода и 5 минут на улице'}},
+ {k:['игр','доту','кс','плейстейш'],brk:{identity:'человек, который тратит вечер с пользой',trigger:'скука вечером и компьютер под рукой',invisible:'отключать консоль от розетки',hard:'выйти из аккаунта, пароль у близкого человека',stake:'',replace:'прогулка или книга'}},
+ {k:['сериал','нетфликс','кино','ютуб'],brk:{identity:'человек, который выбирает, на что тратить вечер',trigger:'автозапуск следующей серии',invisible:'выключить автовоспроизведение',hard:'смотреть только с ноутбука, не с телефона',stake:'',replace:'одна серия, а потом книга'}},
+ {k:['прокраст','откладыва','лень'],brk:{identity:'человек, который начинает сразу',trigger:'большая задача без первого шага',invisible:'убрать отвлекающие вкладки и телефон',hard:'блокировщик сайтов на рабочее время',stake:'',replace:'сделать первые 2 минуты задачи'}},
+ {k:['материт','матер','ругат','руган','мат'],brk:{identity:'человек, который говорит спокойно',trigger:'раздражение и спешка',invisible:'не листать токсичные ленты',hard:'договор с другом: каждое слово — 50 ₽',stake:'',replace:'выдохнуть и сказать то же нормальными словами'}},
+ {k:['опазд'],brk:{identity:'человек, который приходит вовремя',trigger:'«ещё 5 минут» перед выходом',invisible:'',hard:'будильник на выход за 15 минут',stake:'',replace:'выходить заранее с запасом'}}
+];
+function topicFor(){
+  if(!draft)return null;
+  const words=String(draft.name||'').toLowerCase().replace(/ё/g,'е').split(/[^a-zа-я0-9]+/).filter(Boolean);
+  if(!words.length)return null;
+  const t=draft.type==='brk'?'brk':'build';
+  for(const tp of TOPICS){if(tp[t]&&tp.k.some(k=>words.some(w=>w.startsWith(k))))return tp[t]}
+  return null;
+}
+function sg(f){const m=topicFor();const t=draft&&draft.type==='brk'?'brk':'build';return (m&&m[f])||GEN[t][f]||''}
+function lc(x){x=String(x||'');return x?x.charAt(0).toLowerCase()+x.slice(1):x}
+
+
+/* ---------- draft autosave ---------- */
+const DLS='one-percent-draft';
+function hasContent(d){return !!(d&&['name','identity','after','time','where','tiny','prep','bundle','reward','trigger','invisible','hard','stake','replace'].some(f=>String(d[f]||'').trim()))}
+function saveDraftLocal(open){if(!draft||draft.id)return;try{if(!hasContent(draft)){localStorage.removeItem(DLS);return}localStorage.setItem(DLS,JSON.stringify({d:draft,step,open:open!==false,ts:Date.now()}))}catch(e){}}
+function loadDraftLocal(){try{const o=JSON.parse(localStorage.getItem(DLS)||'null');if(o&&o.d&&hasContent(o.d)&&Date.now()-o.ts<14*864e5)return o}catch(e){}return null}
+function clearDraftLocal(){try{localStorage.removeItem(DLS)}catch(e){}}
+
 /* ---------- wizard ---------- */
 function blank(type){return {id:null,type:type||'build',name:'',identity:'',cueMode:'stack',after:'',time:'',where:'',alarm:true,days:ALL.slice(),tiny:'',prep:'',bundle:'',reward:'',trigger:'',invisible:'',hard:'',stake:'',replace:''}}
 function stepsFor(t){return t==='brk'?['start','what','invisible','hard','replace','review']:['start','what','obvious','easy','attractive','review']}
 function openWizard(opts){
   opts=opts||{};
   if(opts.edit){const h=S.habits.find(x=>x.id===opts.edit);draft=Object.assign(blank(h.type),JSON.parse(JSON.stringify(h)));step=1}
-  else{draft=blank(opts.type);step=0;if(opts.tpl){applyTpl(opts.tpl);step=1}}
+  else{draft=blank(opts.type);step=0;if(opts.tpl){applyTpl(opts.tpl);step=1}else{const o=loadDraftLocal();if(o){draft=Object.assign(blank(o.d.type),o.d);draft.id=null;step=Math.min(o.step||0,stepsFor(draft.type).length-1);if(!opts.silent)setTimeout(()=>toast('Продолжаем черновик'),300)}}}
   sheet={kind:'wizard'};renderSheet();
 }
 function applyTpl(code){const p=code.split(':'),t=TPL[p[0]][+p[1]];const keep=draft.id;draft=Object.assign(blank(p[0]),JSON.parse(JSON.stringify(t.f)));draft.id=keep;if(!t.f.days)draft.days=ALL.slice()}
-function fld(f,label,ph,help){return `<div class="field"><label for="w-${f}">${label}</label><input class="input" id="w-${f}" data-f="${f}" value="${esc(draft[f])}" placeholder="${esc(ph)}" autocomplete="off">${help?`<span class="help">${help}</span>`:''}</div>`}
+function fillBtn(f){const v=sg(f);return v&&f!=='name'?`<button type="button" class="fill" data-fill="${f}" ${draft[f]?'hidden':''}>Подставить пример</button>`:''}
+function fld(f,label,ph,help){const p=f==='name'?ph:(sg(f)||ph);return `<div class="field"><label for="w-${f}">${label}</label><input class="input" id="w-${f}" data-f="${f}" value="${esc(draft[f])}" placeholder="${esc(p)}" autocomplete="off" autocorrect="on" autocapitalize="${f==='name'?'sentences':'none'}">${help?`<span class="help">${help}</span>`:''}${fillBtn(f)}</div>`}
 function daysPicker(){return `<div class="field"><label>В какие дни</label><div class="days">${DAYS.map((d,i)=>`<button type="button" class="chip" data-day-t="${i}" aria-pressed="${draft.days.includes(i)}">${d}</button>`).join('')}</div></div>`}
 function stepHTML(s){
   const brk=draft.type==='brk';
@@ -578,11 +795,11 @@ function stepHTML(s){
     <div class="hint"><b>Совет из книги:</b> начинай с одной привычки. Если хочется сразу много, выбери ту, что сделает остальные проще.</div>`;
   case 'what':return `<h2>${brk?'От чего избавляешься?':'Что за привычка?'}</h2>
     ${fld('name','Название',brk?'Например: меньше соцсетей':'Например: читать')}
-    <div class="field"><label for="w-identity">Кем ты становишься</label><div class="prefix"><span>Я —</span><input class="input" id="w-identity" data-f="identity" value="${esc(draft.identity)}" placeholder="${brk?'человек, который не курит':'человек, который читает каждый день'}" autocomplete="off"></div></div>
+    <div class="field"><label for="w-identity">Кем ты становишься</label><div class="prefix"><span>Я —</span><input class="input" id="w-identity" data-f="identity" value="${esc(draft.identity)}" placeholder="${esc(sg('identity'))}" autocomplete="off" autocapitalize="none"></div>${fillBtn('identity')}</div>
     <div class="hint"><b>Идентичность.</b> ${brk?'Сравни: «я пытаюсь бросить» и «я не курю». Во втором случае ты уже другой человек, а не борешься с собой.':'Цель не прочитать книгу, а стать читателем. Каждое выполнение — голос за эту версию тебя. Голоса копятся в трекере.'}</div>`;
   case 'obvious':return `<h2>Сделай очевидной</h2>
     <div class="seg"><button type="button" class="opt" data-mode="stack" aria-pressed="${draft.cueMode==='stack'}"><b>После другой привычки</b><span>лучше всего работает</span></button><button type="button" class="opt" data-mode="time" aria-pressed="${draft.cueMode==='time'}"><b>Время и место</b><span>чёткий план</span></button></div>
-    ${draft.cueMode==='stack'?fld('after','После того как я…','налью утренний кофе','Выбери то, что ты и так делаешь каждый день в одно время.'):`<div class="field"><label for="w-time">Во сколько</label><input class="input" type="time" id="w-time" data-f="time" value="${esc(draft.time)}"></div>${fld('where','Где','дома в кресле')}<label class="toggle" for="w-alarm"><input type="checkbox" id="w-alarm" data-fc="alarm" ${draft.alarm!==false?'checked':''}><span><b>Будильник в это время</b><small>Звук и экран с мотивацией. Отключить его можно, только прочитав цитату.</small></span></label>`}
+    ${draft.cueMode==='stack'?fld('after','После того как я…','налью утренний кофе','Выбери то, что ты и так делаешь каждый день в одно время.'):`<div class="field"><label for="w-time">Во сколько</label><input class="input" type="time" id="w-time" data-f="time" value="${esc(draft.time)}">${sg('time')?`<button type="button" class="fill" data-fill="time" ${draft.time?'hidden':''}>Подставить ${esc(sg('time'))}</button>`:''}</div>${fld('where','Где','дома в кресле')}<label class="toggle" for="w-alarm"><input type="checkbox" id="w-alarm" data-fc="alarm" ${draft.alarm!==false?'checked':''}><span><b>Будильник в это время</b><small>Звук и экран с мотивацией. Отключить его можно, только прочитав цитату.</small></span></label>`}
     ${daysPicker()}
     <div class="hint"><b>Сигнал.</b> Без конкретного «когда и где» привычка остаётся намерением. Формула: «После [то, что уже делаю] я буду [новая привычка]».</div>`;
   case 'easy':return `<h2>Сделай лёгкой</h2>
@@ -614,36 +831,52 @@ function stepHTML(s){
 function renderWizard(){
   const st=stepsFor(draft.type),s=st[step],last=step===st.length-1;
   const canNext=!(s==='what'&&!draft.name.trim());
-  return `<div class="sheet" role="dialog" aria-modal="true" aria-label="${draft.id?'Изменить привычку':'Новая привычка'}">
-    <div class="sheet-h"><div class="dots" aria-label="Шаг ${step+1} из ${st.length}">${st.map((x,i)=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  return `<div class="sheet wiz" role="dialog" aria-modal="true" aria-label="${draft.id?'Изменить привычку':'Новая привычка'}">
+    <div class="sheet-h"><div class="dots" aria-label="Шаг ${step+1} из ${st.length}">${st.map((x,i)=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>${!draft.id&&hasContent(draft)?'<button type="button" class="btn link resetd" data-reset>Начать заново</button>':''}<button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div class="sheet-b" id="wbody">${stepHTML(s)}</div>
     <div class="sheet-f">${step>0?'<button class="btn ghost" type="button" data-back>Назад</button>':''}<button class="btn" type="button" id="wnext" data-next ${canNext?'':'disabled'}>${last?(draft.id?'Сохранить':'Создать привычку'):'Далее'}</button></div>
   </div>`;
 }
 function saveDraft(){
   const h=JSON.parse(JSON.stringify(draft));
-  h.name=h.name.trim()||'Привычка';
+  h.name=h.name.trim()||'Привычка';h.identity=lc(h.identity.trim());h.after=lc(h.after.trim());delete h._modeTouched;
   if(!h.days.length)h.days=ALL.slice();
   if(h.id){const i=S.habits.findIndex(x=>x.id===h.id);if(i>=0)S.habits[i]=Object.assign(S.habits[i],h)}
   else{h.id=uid();h.created=dk(today());h.archived=false;S.habits.push(h)}
-  const wasEdit=!!draft.id;persist();closeSheet();render();toast(wasEdit?'План обновлён':'Готово. Начни сегодня с минимума.');setTimeout(()=>checkAlarms(false),900);
+  const wasEdit=!!draft.id;persist();draft.id=draft.id||'saved';closeSheet();clearDraftLocal();render();toast(wasEdit?'План обновлён':'Готово. Начни сегодня с минимума.');setTimeout(()=>checkAlarms(false),900);
 }
 
 /* ---------- sheet plumbing ---------- */
-function renderSheet(){
-  const layer=$('#layer');
-  if(!sheet){layer.innerHTML='';document.body.style.overflow='';return}
+function renderSheet(opt){
+  opt=opt||{};
+  const layer=$('#layer');let ov=layer.querySelector('.overlay');
+  if(!sheet){
+    document.body.style.overflow='';
+    if(ov&&!ov.classList.contains('closing')){ov.classList.add('closing');setTimeout(()=>{const o=layer.querySelector('.overlay.closing');if(o)o.remove()},230)}
+    return;
+  }
   const html=sheet.kind==='detail'?renderDetail():renderWizard();
   if(!sheet)return;
-  layer.innerHTML=`<div class="overlay" data-overlay>${html}</div>`;
+  let fresh=false;
+  if(ov&&ov.dataset.kind===sheet.kind&&!ov.classList.contains('closing')){
+    const cur=ov.querySelector('.sheet'),t=document.createElement('div');t.innerHTML=html;const nx=t.firstElementChild;
+    const ob=cur.querySelector('.sheet-b'),top=ob?ob.scrollTop:0;
+    cur.className=nx.className;cur.setAttribute('aria-label',nx.getAttribute('aria-label')||'');cur.innerHTML=nx.innerHTML;
+    const nb=cur.querySelector('.sheet-b');
+    if(nb){if(opt.anim){nb.classList.add(opt.anim==='back'?'in-back':'in-fwd');nb.scrollTop=0}else nb.scrollTop=top}
+  }else{
+    layer.querySelectorAll('.overlay').forEach(o=>o.remove());
+    layer.insertAdjacentHTML('beforeend',`<div class="overlay" data-overlay data-kind="${sheet.kind}">${html}</div>`);fresh=true;
+  }
   document.body.style.overflow='hidden';
-  const f=layer.querySelector('.sheet input');if(f&&sheet.kind==='wizard'&&!f.value&&window.matchMedia('(pointer:fine)').matches)f.focus();
+  if(sheet.kind==='wizard')saveDraftLocal(true);
+  if(fresh||opt.anim){const f=layer.querySelector('.overlay:not(.closing) .sheet input:not([type=checkbox])');if(f&&sheet.kind==='wizard'&&!f.value&&window.matchMedia('(pointer:fine)').matches)f.focus({preventScroll:true})}
 }
-function closeSheet(){sheet=null;draft=null;renderSheet()}
+function closeSheet(){if(draft&&!draft.id)saveDraftLocal(false);sheet=null;draft=null;renderSheet()}
 
 /* ---------- toast ---------- */
 let tt=null;
-function toast(msg){let el=$('.toast');if(el)el.remove();el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=msg;document.body.appendChild(el);clearTimeout(tt);tt=setTimeout(()=>el.remove(),2600)}
+function toast(msg){let el=$('.toast');if(el)el.remove();el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=msg;document.body.appendChild(el);clearTimeout(tt);tt=setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),260)},2600)}
 
 /* ---------- actions ---------- */
 function toggle(id,k,btn){
@@ -652,8 +885,21 @@ function toggle(id,k,btn){
   if(S.log[id][k])delete S.log[id][k];
   else{S.log[id][k]=1;if(k<h.created)h.created=k;
     if(k===dk(today())){const v=votes(h);toast(h.type==='brk'?`Ещё один день. ${h.identity?'Я — '+h.identity:'Держишься.'}`:`+1 голос${h.identity?': я — '+h.identity:''} (${v})`)}}
-  persist();render();
-  if(btn&&S.log[id][k]){const nb=document.querySelector(`[data-check="${id}"]`);if(nb){nb.classList.add('pop')}}
+  persist();
+  if(btn&&k===dk(today())){patchToday(h);clearTimeout(rTimer);rTimer=setTimeout(render,600)}else render();
+}
+let rTimer=null;
+function patchToday(h){
+  const k=dk(today()),d=done(h,k),st=streak(h);
+  document.querySelectorAll(`[data-check="${h.id}"]`).forEach(b=>{
+    b.setAttribute('aria-pressed',d);b.classList.remove('pop');void b.offsetWidth;if(d)b.classList.add('pop');
+    const c=b.closest('.hcard');if(!c)return;c.classList.toggle('done',d);
+    const n=c.querySelector('.hstreak b'),sm=c.querySelector('.hstreak small');if(n)n.textContent=st;if(sm)sm.textContent=plural(st,'день','дня','дней');
+  });
+  const t=today(),act=S.habits.filter(x=>!x.archived),on=act.filter(x=>sched(x,t)||done(x,k)),dn=on.filter(x=>done(x,k)).length;
+  const fg=document.querySelector('#v-today .ring .fg'),lab=document.querySelector('#v-today .ring span');
+  if(fg){const C=2*Math.PI*24;fg.style.strokeDashoffset=(C*(1-(on.length?dn/on.length:0))).toFixed(2)}
+  if(lab)lab.textContent=dn+'/'+on.length;
 }
 function updateFab(){$('#fab').hidden=tab==='guide'||(!S.habits.length&&tab==='today')}
 function render(){renderToday();renderProgress();updateFab();if(sheet&&sheet.kind==='detail')renderSheet()}
@@ -670,6 +916,10 @@ document.addEventListener('click',e=>{
   const d=el.dataset;
   if(d.overlay!==undefined){if(e.target===el)closeSheet();return}
   if(d.tab){setTab(d.tab);return}
+  if(d.range){setRange(d.range);render();return}
+  if(d.cal){calOff=Math.min(0,calOff+(+d.cal));renderSheet();return}
+  if(d.tipOk!==undefined){try{localStorage.setItem('one-percent-tip','1')}catch(e){}renderToday();return}
+  if(d.law){lawMode=d.law;renderGuide();return}
   if(d.goto){setTab(d.goto);return}
   if(d.check){toggle(d.check,dk(today()),el);return}
   if(d.open){openDetail(d.open);return}
@@ -685,19 +935,22 @@ document.addEventListener('click',e=>{
   if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log};pendingImport=null;persist();render();toast('Данные восстановлены');return}
   if(d.importNo!==undefined){pendingImport=null;renderProgress();return}
   if(!draft)return;
+  if(d.reset!==undefined){const t=draft.type;clearDraftLocal();draft=blank(t);step=0;renderSheet({anim:'back'});return}
   if(d.type){if(draft.type!==d.type){draft=blank(d.type)}renderSheet();return}
-  if(d.wtpl){applyTpl(d.wtpl);step=1;renderSheet();return}
-  if(d.mode){draft.cueMode=d.mode;renderSheet();return}
-  if(d.dayT!==undefined){const i=+d.dayT,a=draft.days;const p=a.indexOf(i);if(p>=0)a.splice(p,1);else a.push(i);el.setAttribute('aria-pressed',p<0);return}
-  if(d.back!==undefined){step=Math.max(0,step-1);renderSheet();return}
-  if(d.next!==undefined){const st=stepsFor(draft.type);if(step>=st.length-1)saveDraft();else{step++;renderSheet();const b=$('#wbody');if(b)b.scrollTop=0}return}
+  if(d.wtpl){applyTpl(d.wtpl);step=1;renderSheet({anim:'fwd'});return}
+  if(d.mode){draft.cueMode=d.mode;draft._modeTouched=true;renderSheet();return}
+  if(d.fill){const v=sg(d.fill),i=$('#w-'+d.fill);draft[d.fill]=v;if(i){i.value=v}el.hidden=true;saveDraftLocal(true);return}
+  if(d.dayT!==undefined){const i=+d.dayT,a=draft.days;const p=a.indexOf(i);if(p>=0)a.splice(p,1);else a.push(i);el.setAttribute('aria-pressed',p<0);saveDraftLocal(true);return}
+  if(d.back!==undefined){step=Math.max(0,step-1);renderSheet({anim:'back'});return}
+  if(d.next!==undefined){const st=stepsFor(draft.type);if(step>=st.length-1)saveDraft();else{step++;if(st[step]==='obvious'&&!draft._modeTouched&&!draft.id){const m=topicFor();if(m&&m.mode)draft.cueMode=m.mode}renderSheet({anim:'fwd'})}return}
 });
 document.addEventListener('input',e=>{
-  if(e.target.dataset&&e.target.dataset.fc&&draft){draft[e.target.dataset.fc]=e.target.checked;return}
+  if(e.target.dataset&&e.target.dataset.fc&&draft){draft[e.target.dataset.fc]=e.target.checked;saveDraftLocal(true);return}
   if(e.target.id==='al-phrase'){const b=$('#al-skip-ok');if(b)b.disabled=norm(e.target.value)!==norm(skipPhrase());return}
   const f=e.target.dataset&&e.target.dataset.f;if(!f||!draft)return;
-  draft[f]=e.target.value;
-  if(f==='name'){const n=$('#wnext');if(n)n.disabled=!draft.name.trim()}
+  draft[f]=e.target.value;saveDraftLocal(true);
+  if(f==='name'){const n=$('#wnext');if(n)n.disabled=!draft.name.trim();const i=$('#w-identity');if(i)i.placeholder=sg('identity')}
+  const fb=document.querySelector(`[data-fill="${f}"]`);if(fb)fb.hidden=!!e.target.value;
 });
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&sheet)closeSheet();
@@ -755,7 +1008,7 @@ function renderAlarm(){
   const box=$('#alarm');const h=S.habits.find(x=>x.id===alarmFor);
   if(!h){box.innerHTML='';alarmFor=null;stopSound();return}
   const second=missState(h)==='once';
-  box.innerHTML=`<div class="alarm-wrap"><div class="alarm" role="alertdialog" aria-modal="true" aria-labelledby="al-name">
+  const inner=`<div class="alarm" role="alertdialog" aria-modal="true" aria-labelledby="al-name">
     <div class="al-top"><span class="al-time num${beepTimer?' ringing':''}">${esc(h.time)}</span><span class="eyebrow">Пора</span></div>
     <h1 id="al-name">${esc(h.name)}</h1>
     ${h.tiny?`<p class="al-min">Минимум: ${esc(h.tiny)}</p>`:''}
@@ -763,7 +1016,8 @@ function renderAlarm(){
     ${second?'<p class="al-warn">Вчера эта привычка уже была пропущена.</p>':''}
     ${skipMode?`<div class="al-skip"><label for="al-phrase">Чтобы пропустить, напиши: <b>${esc(skipPhrase())}</b></label><input class="input" id="al-phrase" autocomplete="off" autocapitalize="off"><div class="row2"><button class="btn danger" type="button" id="al-skip-ok" data-al="skip-ok" disabled>Пропустить</button><button class="btn ghost" type="button" data-al="skip-no">Нет, сделаю</button></div></div>`:
     `<div class="al-actions"><button class="btn big" type="button" data-al="start">Начинаю</button><div class="row2"><button class="btn ghost" type="button" data-al="done">Уже сделал</button><button class="btn ghost" type="button" data-al="snooze">Через 10 минут</button></div><button class="btn link al-skiplink" type="button" data-al="skip">Пропустить сегодня</button></div>`}
-  </div></div>`;
+  </div>`;
+  const w=box.querySelector('.alarm-wrap');if(w)w.innerHTML=inner;else box.innerHTML=`<div class="alarm-wrap">${inner}</div>`;
   document.body.style.overflow='hidden';
   if(skipMode){const i=$('#al-phrase');if(i)i.focus()}
 }
@@ -787,7 +1041,9 @@ const local=loadLocal();if(local)S={v:1,habits:local.habits,log:local.log||{}};
 renderGuide();render();
 const h0=(location.hash||'').slice(1);setTab(['today','progress','guide'].includes(h0)?h0:'today');
 let lastDay=dk(today());
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&dk(today())!==lastDay){lastDay=dk(today());render()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(sheet&&sheet.kind==='wizard')saveDraftLocal(true)}else if(dk(today())!==lastDay){lastDay=dk(today());render()}});
+window.addEventListener('pagehide',()=>{if(sheet&&sheet.kind==='wizard')saveDraftLocal(true)});
+{const o=loadDraftLocal();if(o&&o.open){openWizard({silent:true});setTimeout(()=>toast('Черновик привычки восстановлен'),400)}}
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 })();
