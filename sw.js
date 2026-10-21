@@ -1,5 +1,5 @@
 // Офлайн-режим: кешируем саму страницу и иконки, шрифты подтягиваем по мере загрузки.
-const CACHE = 'one-percent-v5';
+const CACHE = 'one-percent-v6';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-180.png', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
