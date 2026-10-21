@@ -355,6 +355,28 @@ button.cwd,button.cmd{cursor:pointer}
 .howto li{display:flex;gap:12px;align-items:flex-start}
 .hi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none}
 @media (max-width:360px){.stepcards,.laws,.ideas2{grid-template-columns:1fr}}
+
+.fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:120}
+.check.pop{animation:pop2 .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop2{0%{transform:scale(1)}35%{transform:scale(1.25)}100%{transform:scale(1)}}
+.check.pop::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--accent);animation:ring .55s ease-out forwards;pointer-events:none}
+.check{position:relative}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.9);opacity:0}}
+.hstreak b.bump{animation:bump .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump{40%{transform:translateY(-6px) scale(1.25);color:var(--accent)}}
+.ms{position:fixed;inset:0;z-index:110;background:rgba(8,14,12,.55);display:grid;place-items:center;padding:24px max(20px,env(safe-area-inset-left,0px));animation:fade .25s ease}
+.ms.out{animation:fadeout .25s ease forwards}
+.ms-card{background:var(--surface);border-radius:28px;padding:28px 24px;max-width:360px;width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:msin .5s cubic-bezier(.3,1.5,.5,1)}
+@keyframes msin{from{transform:scale(.7) translateY(30px);opacity:0}}
+.ms-num{font-family:var(--display);font-weight:700;font-size:5.5rem;line-height:1;color:var(--accent)}
+.ms-unit{font-family:var(--display);font-weight:500;font-size:1.05rem;margin-top:-4px}
+.ms-card p{color:var(--muted);font-size:.95rem;margin-top:6px}
+.ms-card .ms-id{color:var(--fg);font-weight:600}
+.ms-card .btn{margin-top:12px;width:100%}
+.delf{flex-direction:column;align-items:stretch;gap:10px;background:var(--danger-soft);animation:fade .2s ease}
+.delf b{font-size:.95rem}
+.delf .row{display:flex;gap:10px}
+.delf .row .btn{flex:1}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -707,9 +729,8 @@ function renderDetail(){
     <div class="stats"><div class="stat"><b class="num">${st}</b><span>серия сейчас</span></div><div class="stat"><b class="num">${b}</b><span>лучшая серия</span></div><div class="stat"><b class="num">${v}</b><span>${plural(v,'голос','голоса','голосов')}</span></div></div>
     <div style="display:flex;flex-direction:column;gap:8px">${rangeSeg()}${range!=='year'?`<div class="calnav"><button type="button" class="x" data-cal="-1" aria-label="Назад"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><b>${calTitle(calOff)}</b><button type="button" class="x" data-cal="1" aria-label="Вперёд" ${calOff>=0?'disabled':''}><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button></div>`:`<div class="calnav"><b>${calTitle(0)}</b></div>`}${cal(h,true,calOff)}${LEGEND}<span class="muted" style="font-size:.8rem">${range==='year'?'Чтобы исправить отметку, переключись на неделю или месяц.':'Нажми на день, чтобы поставить или снять отметку.'}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px"><h3>План</h3><ul class="plan">${planRows(h).map(r=>`<li><span>${esc(r[0])}</span><span>${esc(r[1])}</span></li>`).join('')}</ul></div>
-    ${confirmDel?`<div class="confirm"><b>Удалить «${esc(h.name)}» вместе со всей историей?</b><div class="row"><button class="btn danger" type="button" data-del-yes>Удалить</button><button class="btn ghost" type="button" data-del-no>Отмена</button></div></div>`:''}
    </div>
-   <div class="sheet-f"><button class="btn ghost" type="button" data-del>Удалить</button><button class="btn" type="button" data-edit="${h.id}">Изменить план</button></div>
+   ${confirmDel?`<div class="sheet-f delf"><b>Удалить «${esc(h.name)}» вместе со всей историей?</b><div class="row"><button class="btn ghost" type="button" data-del-no>Отмена</button><button class="btn danger" type="button" data-del-yes>Да, удалить</button></div></div>`:`<div class="sheet-f"><button class="btn ghost" type="button" data-del>Удалить</button><button class="btn" type="button" data-edit="${h.id}">Изменить план</button></div>`}
   </div>`;
 }
 
@@ -878,14 +899,70 @@ function closeSheet(){if(draft&&!draft.id)saveDraftLocal(false);sheet=null;draft
 let tt=null;
 function toast(msg){let el=$('.toast');if(el)el.remove();el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=msg;document.body.appendChild(el);clearTimeout(tt);tt=setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),260)},2600)}
 
+
+/* ---------- celebrations ---------- */
+const MILESTONES={3:'Три дня подряд. Начало положено.',7:'Неделя без пропусков. Это уже система.',14:'Две недели. Привычка начинает жить сама.',21:'21 день. Ты уже другой человек, чем три недели назад.',30:'Месяц подряд. Мало кто доходит сюда.',50:'50 дней. Это уже часть тебя.',66:'66 дней — примерно столько нужно, чтобы привычка стала автоматической.',100:'Сто дней. Без слов.',365:'Год. Ты сделал это.'};
+const reduceMotion=()=>window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let fxCv=null,fxCtx=null,fxParts=[],fxRaf=0;
+function fxColors(){const cs=getComputedStyle(document.documentElement);return ['--accent','--c1','--c2','--c3','--amber','--c4'].map(v=>cs.getPropertyValue(v).trim()||'#0B7A62')}
+function fxEnsure(){
+  if(fxCv)return;
+  fxCv=document.createElement('canvas');fxCv.className='fx';fxCv.setAttribute('aria-hidden','true');document.body.appendChild(fxCv);
+  fxCtx=fxCv.getContext('2d');fxResize();window.addEventListener('resize',fxResize);
+}
+function fxResize(){if(!fxCv)return;const r=window.devicePixelRatio||1;fxCv.width=innerWidth*r;fxCv.height=innerHeight*r;fxCtx.setTransform(r,0,0,r,0,0)}
+function fxLoop(){
+  fxCtx.clearRect(0,0,innerWidth,innerHeight);
+  fxParts=fxParts.filter(p=>p.life>0&&p.y<innerHeight+40);
+  for(const p of fxParts){
+    p.vy+=p.g;p.vx*=p.drag;p.vy*=p.drag;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life--;
+    const a=Math.min(1,p.life/25);fxCtx.save();fxCtx.globalAlpha=a;fxCtx.translate(p.x,p.y);fxCtx.rotate(p.rot);fxCtx.fillStyle=p.c;
+    if(p.shape===0)fxCtx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);
+    else if(p.shape===1){fxCtx.beginPath();fxCtx.arc(0,0,p.s/2.6,0,Math.PI*2);fxCtx.fill()}
+    else{fxCtx.scale(1,Math.cos(p.rot*3));fxCtx.fillRect(-p.s/2,-p.s/2,p.s,p.s)}
+    fxCtx.restore();
+  }
+  if(fxParts.length)fxRaf=requestAnimationFrame(fxLoop);else{fxRaf=0;fxCtx.clearRect(0,0,innerWidth,innerHeight)}
+}
+function fxRun(){if(!fxRaf)fxRaf=requestAnimationFrame(fxLoop)}
+function burst(x,y,n){
+  if(reduceMotion())return;fxEnsure();const cols=fxColors();n=n||34;
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,sp=3+Math.random()*6.5;
+    fxParts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-3.5,g:.22,drag:.96,s:6+Math.random()*6,rot:Math.random()*6,vr:(Math.random()-.5)*.4,c:cols[i%cols.length],shape:i%3,life:60+Math.random()*30})}
+  fxRun();
+}
+function rain(n){
+  if(reduceMotion())return;fxEnsure();const cols=fxColors();n=n||140;
+  for(let i=0;i<n;i++){fxParts.push({x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight*.6,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,g:.05,drag:.995,s:7+Math.random()*7,rot:Math.random()*6,vr:(Math.random()-.5)*.25,c:cols[i%cols.length],shape:i%3,life:220+Math.random()*80})}
+  fxRun();
+}
+function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function celebrate(h,el){
+  const k=dk(today()),r=el&&el.getBoundingClientRect?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+  burst(r.left+r.width/2,r.top+r.height/2);buzz(18);
+  if(k!==dk(today()))return;
+  const st=streak(h);
+  if(MILESTONES[st]){setTimeout(()=>showMilestone(h,st),450);return}
+  const t=today(),on=S.habits.filter(x=>!x.archived&&(sched(x,t)||done(x,k)));
+  if(on.length>1&&on.every(x=>done(x,k))){setTimeout(()=>{rain(150);buzz([20,60,20]);toast('Все привычки на сегодня закрыты 🎉')},350)}
+}
+function showMilestone(h,st){
+  const box=document.createElement('div');box.className='ms';box.setAttribute('role','dialog');box.setAttribute('aria-label','Новая серия');
+  box.innerHTML=`<div class="ms-card"><span class="eyebrow">${esc(h.name)}</span><b class="ms-num num">${st}</b><span class="ms-unit">${plural(st,'день','дня','дней')} подряд</span><p>${esc(MILESTONES[st])}</p>${h.identity?`<p class="ms-id">Я — ${esc(h.identity)}</p>`:''}<button class="btn" type="button" data-ms-ok>Продолжаю</button></div>`;
+  document.body.appendChild(box);rain(170);buzz([30,80,30,80,60]);
+  const close=()=>{box.classList.add('out');setTimeout(()=>box.remove(),260)};
+  box.addEventListener('click',e=>{if(e.target===box||e.target.closest('[data-ms-ok]'))close()});
+}
+
 /* ---------- actions ---------- */
-function toggle(id,k,btn){
+function toggle(id,k,btn,src){
   const h=S.habits.find(x=>x.id===id);if(!h)return;
-  S.log[id]=S.log[id]||{};
+  S.log[id]=S.log[id]||{};const was=!!S.log[id][k];
   if(S.log[id][k])delete S.log[id][k];
   else{S.log[id][k]=1;if(k<h.created)h.created=k;
     if(k===dk(today())){const v=votes(h);toast(h.type==='brk'?`Ещё один день. ${h.identity?'Я — '+h.identity:'Держишься.'}`:`+1 голос${h.identity?': я — '+h.identity:''} (${v})`)}}
   persist();
+  if(!was)celebrate(h,src||btn);
   if(btn&&k===dk(today())){patchToday(h);clearTimeout(rTimer);rTimer=setTimeout(render,600)}else render();
 }
 let rTimer=null;
@@ -894,7 +971,7 @@ function patchToday(h){
   document.querySelectorAll(`[data-check="${h.id}"]`).forEach(b=>{
     b.setAttribute('aria-pressed',d);b.classList.remove('pop');void b.offsetWidth;if(d)b.classList.add('pop');
     const c=b.closest('.hcard');if(!c)return;c.classList.toggle('done',d);
-    const n=c.querySelector('.hstreak b'),sm=c.querySelector('.hstreak small');if(n)n.textContent=st;if(sm)sm.textContent=plural(st,'день','дня','дней');
+    const n=c.querySelector('.hstreak b'),sm=c.querySelector('.hstreak small');if(n){n.textContent=st;if(d){n.classList.remove('bump');void n.offsetWidth;n.classList.add('bump')}}if(sm)sm.textContent=plural(st,'день','дня','дней');
   });
   const t=today(),act=S.habits.filter(x=>!x.archived),on=act.filter(x=>sched(x,t)||done(x,k)),dn=on.filter(x=>done(x,k)).length;
   const fg=document.querySelector('#v-today .ring .fg'),lab=document.querySelector('#v-today .ring span');
@@ -926,10 +1003,10 @@ document.addEventListener('click',e=>{
   if(d.close!==undefined){closeSheet();return}
   if(d.new!==undefined||el.id==='fab'){openWizard();return}
   if(d.tpl){openWizard({tpl:d.tpl});return}
-  if(d.day&&sheet&&sheet.kind==='detail'){toggle(sheet.id,d.day);return}
+  if(d.day&&sheet&&sheet.kind==='detail'){toggle(sheet.id,d.day,null,el);return}
   if(d.del!==undefined){confirmDel=true;renderSheet();return}
   if(d.delNo!==undefined){confirmDel=false;renderSheet();return}
-  if(d.delYes!==undefined){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
+  if(d.delYes!==undefined&&sheet){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
   if(d.edit){openWizard({edit:d.edit});return}
   if(d.export!==undefined){doExport();return}
   if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log};pendingImport=null;persist();render();toast('Данные восстановлены');return}
