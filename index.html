@@ -480,6 +480,32 @@ button.cwd,button.cmd{cursor:pointer}
 .stages li.cur{background:var(--accent-soft)}
 .stages li span{font-size:.8rem}
 .stages em{font-style:normal;font-size:.75rem;font-weight:700;color:var(--accent-text,var(--accent))}
+
+.lvl{background:var(--accent);color:var(--accent-ink);font-size:.7rem!important;font-weight:700;padding:2px 7px;border-radius:999px}
+.pbar.big{height:10px;border-radius:5px}
+.lvlhead{display:flex;flex-direction:column;align-items:center;gap:2px}
+.lvlhead b{font-family:var(--display);font-size:1.4rem}
+.lvlhead span{color:var(--muted);font-size:.9rem}
+.stem.thin{stroke-width:2.4}
+.frk circle{fill:#a8641e;opacity:.55}
+.glasses circle{fill:rgba(255,255,255,.18);stroke:#1d1a12;stroke-width:2.2}
+.glasses path{stroke:#1d1a12;stroke-width:2.2;fill:none;stroke-linecap:round}
+.scarf{fill:var(--c1)}
+.badge{fill:var(--c2)}.badge.gold{fill:#E0A100;stroke:#fff;stroke-width:1.2}
+.badget{font:700 6px/1 var(--body);fill:#fff;text-anchor:middle}
+.cape{fill:var(--c2);opacity:.9}
+.cape.rainbow{fill:url(#rb)}
+.aura{fill:var(--accent);opacity:.14;animation:aura 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.aura.strong{opacity:.24}.aura.gold{fill:#FFD13F;opacity:.3}
+@keyframes aura{50%{transform:scale(1.06)}}
+.sparks path{fill:#FFD13F;animation:twinkle 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.sparks path:nth-child(2){animation-delay:.6s}.sparks path:nth-child(3){animation-delay:1.2s}
+@keyframes twinkle{50%{transform:scale(.4);opacity:.5}}
+.oring{fill:none;stroke:var(--fg);stroke-width:1.2;opacity:.25}
+.orbit{transform-box:view-box;transform-origin:60px 72px;animation:orb 6s linear infinite}
+.electron{fill:var(--c1)}
+@keyframes orb{to{transform:rotate(360deg)}}
+.crown{fill:#FFC21A;stroke:#C98A00;stroke-width:1.5;stroke-linejoin:round}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <script>try{document.documentElement.dataset.pal=localStorage.getItem('one-percent-pal')||'sun'}catch(e){document.documentElement.dataset.pal='sun'}</script>
@@ -500,6 +526,7 @@ button.cwd,button.cmd{cursor:pointer}
     <button class="tab" data-tab="guide" type="button"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16"/></svg>Методика</button>
   </div>
 </nav>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="rb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EE4F27"/><stop offset=".25" stop-color="#FFC21A"/><stop offset=".5" stop-color="#3CBF6B"/><stop offset=".75" stop-color="#2563EB"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs></svg>
 <div id="layer"></div>
 <div id="alarm"></div>
 
@@ -647,9 +674,13 @@ function groupedList(list,k){
 
 
 /* ---------- pet ---------- */
-const STAGES=[[0,'Яйцо'],[3,'Малыш'],[10,'Росточек'],[30,'Подросток'],[75,'В цвету'],[150,'Легенда']];
+const MAXL=100;
+function needL(L){return L<=1?0:Math.round(1.6*(L-1)+0.12*(L-1)*(L-1))}
+function levelOf(v){let L=1;while(L<MAXL&&v>=needL(L+1))L++;return L}
+function titleOf(L){return L<3?'Яйцо':L<10?'Малыш':L<25?'Росточек':L<50?'Подросток':L<80?'В цвету':L<100?'Легенда':'Мастер привычек'}
+const UNLOCKS=[[3,'Вылупился!'],[5,'Второй листик'],[6,'Ножки'],[8,'Веснушки'],[10,'Росточек подрос'],[12,'Ручки'],[15,'Шарф'],[18,'Третий листик'],[20,'Бутон'],[25,'Брови и уверенный взгляд'],[30,'Очки умника'],[35,'Значок «1%»'],[40,'Первый цветок'],[45,'Пышный цветок'],[50,'Сияние'],[55,'Плащ'],[60,'Второй цветок'],[65,'Искры'],[70,'Больше искр'],[75,'Золотой значок'],[80,'Венок'],[85,'Яркое сияние'],[90,'Электрон на орбите'],[95,'Радужный плащ'],[100,'Корона']];
+function unlockAt(L){const u=UNLOCKS.find(x=>x[0]===L);return u?u[1]:''}
 function totalVotes(){return Object.values(S.log).reduce((a,o)=>a+Object.keys(o||{}).length,0)}
-function stageOf(v){let i=0;STAGES.forEach((x,n)=>{if(v>=x[0])i=n});return i}
 function petName(){return (S.pet&&S.pet.name)||'Атомчик'}
 function petMood(){
   const t=today(),k=dk(t),on=S.habits.filter(h=>!h.archived&&(sched(h,t)||done(h,k)));
@@ -661,10 +692,10 @@ function petMood(){
   return {m:'ok',left,all:on.length};
 }
 const TAPS=['Я расту от каждого твоего голоса 🌱','Две минуты — и я счастлив.','Не идеально, а регулярно.','Всевышний любит постоянство. Я тоже.','Ты молодец уже потому, что открыл приложение.','Хи-хи, щекотно!','Маленько, но каждый день — вот наш секрет.','Мы с тобой команда.','1% каждый день. Через год ×37.'];
-function petLine(st,pm,v){
+function petLine(L,pm,v){
   const n=Math.floor(Date.now()/36e5);const pick=a=>a[n%a.length];
   if(!S.habits.length)return 'Привет! Я вылуплюсь, когда ты отметишь первую привычку.';
-  if(st===0){const need=STAGES[1][0]-v;return need===1?'Тук-тук… Ещё одна отметка — и я вылуплюсь!':`Тук-тук… Ещё ${need} ${plural(need,'отметка','отметки','отметок')} — и я вылуплюсь.`}
+  if(L<3){const need=needL(3)-v;return need===1?'Тук-тук… Ещё одна отметка — и я вылуплюсь!':`Тук-тук… Ещё ${need} ${plural(need,'отметка','отметки','отметок')} — и я вылуплюсь.`}
   if(pm.m==='happy')return pick(['Всё сделано! Я расту 🌱','Сегодня ты проголосовал за себя. Горжусь!','Идеальный день. Можно и отдохнуть.']);
   if(pm.m==='sad2')return pick(['Мне грустно… Два дня без тебя. Вернёмся сегодня?','Я скучаю. Давай хотя бы минимум, а?']);
   if(pm.m==='sad')return pick(['Вчера было пусто… Сегодня хватит минимума.','Один пропуск — не страшно. Главное — не два.']);
@@ -673,32 +704,54 @@ function petLine(st,pm,v){
   if(pm.left===pm.all)return pick(['Начни с самой маленькой — и поехали!','Новый день — новый голос.']);
   return `Осталось ${pm.left}. Ты уже на полпути!`;
 }
-function petSVG(st,mood,big){
-  const sc=[1,.72,.82,.9,.98,1.04][st];
-  const happy=mood==='happy',sad=mood==='sad'||mood==='sad2';
-  if(st===0){
-    return `<svg class="pet-svg" viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="26" ry="5" class="pshadow"/><g class="egg"><path d="M60 22c-20 0-32 30-32 52 0 20 14 34 32 34s32-14 32-34c0-22-12-52-32-52z" class="eggb"/><circle cx="48" cy="58" r="5" class="eggs"/><circle cx="72" cy="76" r="7" class="eggs"/><circle cx="56" cy="90" r="4" class="eggs"/><path d="M38 66l8 6 6-7 7 8 6-6 7 7 9-5" class="crack"/></g></svg>`;
+function flowerAt(cx,cy,r,n,col){let o='';for(let i=0;i<n;i++){const a=i/n*Math.PI*2-Math.PI/2;o+=`<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r).toFixed(1)}" r="${(r*.95).toFixed(1)}" fill="${col}"/>`}return o+`<circle cx="${cx}" cy="${cy}" r="${(r*.8).toFixed(1)}" class="pcenter"/>`}
+function petSVG(L,mood){
+  const has=n=>L>=n,happy=mood==='happy',sad=mood==='sad'||mood==='sad2';
+  if(L<3){
+    const crack=L>=2?'<path d="M38 66l8 6 6-7 7 8 6-6 7 7 9-5" class="crack"/><path d="M60 40l-4 8 5 4" class="crack"/>':'<path d="M44 66l8 6 6-7 7 8" class="crack"/>';
+    return `<svg class="pet-svg" viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="26" ry="5" class="pshadow"/><g class="egg"><path d="M60 22c-20 0-32 30-32 52 0 20 14 34 32 34s32-14 32-34c0-22-12-52-32-52z" class="eggb"/><circle cx="48" cy="58" r="5" class="eggs"/><circle cx="72" cy="76" r="7" class="eggs"/><circle cx="56" cy="90" r="4" class="eggs"/>${crack}</g></svg>`;
   }
+  const sc=+(0.7+0.38*(L-3)/97).toFixed(3);
+  const stemTop=44-Math.min(26,8+L*0.25);
+  // eyes
   const eyes=happy?`<path d="M44 66q5-7 10 0M66 66q5-7 10 0" class="pline"/>`
    :sad?`<g class="blink"><circle cx="49" cy="67" r="5" class="peye"/><circle cx="71" cy="67" r="5" class="peye"/><circle cx="50.5" cy="65.5" r="1.6" class="pwhite"/><circle cx="72.5" cy="65.5" r="1.6" class="pwhite"/></g><path d="M41 60l11-4M79 60l-11-4" class="pline thin"/>${mood==='sad2'?'<path d="M46 74q-3 6 0 8q3-2 0-8z" class="tear"/>':''}`
-   :`<g class="blink"><circle cx="49" cy="66" r="5.5" class="peye"/><circle cx="71" cy="66" r="5.5" class="peye"/><circle cx="51" cy="64" r="1.8" class="pwhite"/><circle cx="73" cy="64" r="1.8" class="pwhite"/></g>`;
+   :`<g class="blink"><circle cx="49" cy="66" r="5.5" class="peye"/><circle cx="71" cy="66" r="5.5" class="peye"/><circle cx="51" cy="64" r="1.8" class="pwhite"/><circle cx="73" cy="64" r="1.8" class="pwhite"/></g>${has(25)?'<path d="M43 57q6-3 11 0M66 57q5-3 11 0" class="pline thin"/>':''}`;
   const mouth=happy?`<path d="M51 76q9 11 18 0z" class="pmouth"/><path d="M56 80q4 3 8 0" class="ptongue"/>`:sad?`<path d="M53 81q7-6 14 0" class="pline"/>`:`<path d="M54 77q6 5 12 0" class="pline"/>`;
-  const sprout=st>=1?`<g class="sprout"><path d="M60 44V${st>=3?24:32}" class="stem"/>${st>=1?`<path d="M60 ${st>=3?32:38}c-10-2-14-8-14-12 6 0 12 4 14 12z" class="leaf"/>`:''}${st>=2?`<path d="M60 ${st>=3?30:36}c10-2 14-8 14-12-6 0-12 4-14 12z" class="leaf"/>`:''}${st===3?`<ellipse cx="60" cy="22" rx="4" ry="6" class="bud"/>`:''}${st>=4?`<g class="flower"><circle cx="60" cy="14" r="5" class="pet1"/><circle cx="68" cy="20" r="5" class="pet1"/><circle cx="52" cy="20" r="5" class="pet1"/><circle cx="64" cy="28" r="5" class="pet1"/><circle cx="56" cy="28" r="5" class="pet1"/><circle cx="60" cy="22" r="4" class="pcenter"/></g>`:''}${st>=5?`<path d="M28 30l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM94 40l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" class="spark"/>`:''}</g>`:'';
-  const feet=st>=2?`<ellipse cx="47" cy="106" rx="9" ry="5" class="pdark"/><ellipse cx="73" cy="106" rx="9" ry="5" class="pdark"/>`:'';
-  const arms=st>=3?`<ellipse cx="28" cy="80" rx="7" ry="10" class="pbody parm l"/><ellipse cx="92" cy="80" rx="7" ry="10" class="pbody parm r"/>`:'';
-  return `<svg class="pet-svg m-${mood}" viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="${30*sc}" ry="5" class="pshadow"/><g class="bob" style="--sc:${sc}">${feet}${arms}${sprout}<path d="M60 40c22 0 36 18 36 40 0 18-14 28-36 28S24 98 24 80c0-22 14-40 36-40z" class="pbody"/><ellipse cx="60" cy="88" rx="20" ry="13" class="pbelly"/><ellipse cx="38" cy="78" rx="6" ry="3.5" class="pcheek"/><ellipse cx="82" cy="78" rx="6" ry="3.5" class="pcheek"/>${eyes}${mouth}</g></svg>`;
+  const glasses=has(30)?'<g class="glasses"><circle cx="49" cy="66" r="9"/><circle cx="71" cy="66" r="9"/><path d="M58 66h4M40 64l-8-3M80 64l8-3"/></g>':'';
+  const freckles=has(8)?'<g class="frk"><circle cx="35" cy="74" r="1.2"/><circle cx="39" cy="76" r="1.2"/><circle cx="36" cy="79" r="1.2"/><circle cx="85" cy="74" r="1.2"/><circle cx="81" cy="76" r="1.2"/><circle cx="84" cy="79" r="1.2"/></g>':'';
+  // head plant
+  let plant=`<path d="M60 44V${stemTop.toFixed(1)}" class="stem"/>`;
+  const ly=stemTop+10;
+  plant+=`<path d="M60 ${ly+4}c-10-2-14-8-14-12 6 0 12 4 14 12z" class="leaf"/>`;
+  if(has(5))plant+=`<path d="M60 ${ly+2}c10-2 14-8 14-12-6 0-12 4-14 12z" class="leaf"/>`;
+  if(has(18))plant+=`<path d="M60 ${ly-6}c-8-1-11-6-11-9 5 0 9 3 11 9z" class="leaf"/>`;
+  if(has(20)&&!has(40))plant+=`<ellipse cx="60" cy="${stemTop-3}" rx="${has(30)?5:4}" ry="${has(30)?7:6}" class="bud"/>`;
+  if(has(40))plant+=`<g class="flower">${flowerAt(60,stemTop-4,has(45)?6:5,has(45)?6:5,'var(--c2)')}</g>`;
+  if(has(60))plant+=`<path d="M58 ${ly}q-14-4-18-14" class="stem thin"/><g>${flowerAt(40,ly-15,3.6,5,'var(--c1)')}</g>`;
+  const wreath=has(80)?`<g class="wreath">${[-50,-30,-10,10,30,50].map(d=>{const a=(d-90)*Math.PI/180;const x=60+Math.cos(a)*30,y=70+Math.sin(a)*33;return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="6" ry="3.4" transform="rotate(${d} ${x.toFixed(1)} ${y.toFixed(1)})" class="leaf"/>`}).join('')}</g>`:'';
+  const crown=has(100)?'<g transform="rotate(-18 40 40)"><path d="M28 46l3-12 6 7 4-10 4 10 6-7 3 12z" class="crown"/><circle cx="41" cy="29" r="2" fill="#fff"/></g>':'';
+  const feet=has(6)?`<ellipse cx="47" cy="106" rx="9" ry="5" class="pdark"/><ellipse cx="73" cy="106" rx="9" ry="5" class="pdark"/>`:'';
+  const arms=has(12)?`<ellipse cx="28" cy="80" rx="7" ry="10" class="pbody parm l"/><ellipse cx="92" cy="80" rx="7" ry="10" class="pbody parm r"/>`:'';
+  const scarf=has(15)?'<path d="M30 84q30 12 60 0l-1 7q-29 11-58 0z" class="scarf"/><path d="M74 90l5 16 6-2-4-15z" class="scarf"/>':'';
+  const badge=has(35)?`<circle cx="60" cy="96" r="7" class="${has(75)?'badge gold':'badge'}"/><text x="60" y="98.6" class="badget">1%</text>`:'';
+  const cape=has(55)?`<path d="M34 62q-14 30-6 46h64q8-16-6-46z" class="${has(95)?'cape rainbow':'cape'}"/>`:'';
+  const aura=has(50)?`<circle cx="60" cy="72" r="${has(85)?52:46}" class="aura${has(85)?' strong':''}${has(100)?' gold':''}"/>`:'';
+  const sparks=has(65)?`<g class="sparks"><path d="M20 34l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>${has(70)?'<path d="M98 42l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z"/><path d="M14 80l1.2 3 3 1.2-3 1.2-1.2 3-1.2-3-3-1.2 3-1.2z"/>':''}</g>`:'';
+  const orbit=has(90)?'<g class="orbit"><ellipse cx="60" cy="72" rx="56" ry="18" class="oring"/><circle cx="116" cy="72" r="4" class="electron"/></g>':'';
+  return `<svg class="pet-svg m-${mood}" viewBox="0 0 120 120" aria-hidden="true">${aura}<ellipse cx="60" cy="110" rx="${(30*sc).toFixed(1)}" ry="5" class="pshadow"/><g class="bob" style="--sc:${sc}">${cape}${feet}${arms}${plant}${wreath}<path d="M60 40c22 0 36 18 36 40 0 18-14 28-36 28S24 98 24 80c0-22 14-40 36-40z" class="pbody"/><ellipse cx="60" cy="88" rx="20" ry="13" class="pbelly"/><ellipse cx="38" cy="78" rx="6" ry="3.5" class="pcheek"/><ellipse cx="82" cy="78" rx="6" ry="3.5" class="pcheek"/>${freckles}${eyes}${glasses}${mouth}${scarf}${badge}${crown}</g>${sparks}${orbit}</svg>`;
 }
 function petCard(){
-  const v=totalVotes(),st=stageOf(v),pm=petMood(),nx=STAGES[st+1];
-  const prog=nx?Math.round((v-STAGES[st][0])/(nx[0]-STAGES[st][0])*100):100;
-  return `<div class="petcard"><button type="button" class="petbtn" data-pet aria-label="${esc(petName())}">${petSVG(st,pm.m)}</button>
-    <div class="petinfo"><div class="bubble" id="pbubble">${esc(petLine(st,pm,v))}</div>
-    <button type="button" class="petname" data-pet-open><b>${esc(petName())}</b><span>${STAGES[st][1]}${nx?` · ${v}/${nx[0]}`:` · ${v}`}</span></button>
+  const v=totalVotes(),L=levelOf(v),pm=petMood();
+  const cur=needL(L),nx=L<MAXL?needL(L+1):cur;const prog=L<MAXL?Math.round((v-cur)/(nx-cur)*100):100;
+  return `<div class="petcard"><button type="button" class="petbtn" data-pet aria-label="${esc(petName())}">${petSVG(L,pm.m)}</button>
+    <div class="petinfo"><div class="bubble" id="pbubble">${esc(petLine(L,pm,v))}</div>
+    <button type="button" class="petname" data-pet-open><b>${esc(petName())}</b><span class="lvl num">ур. ${L}</span><span>${titleOf(L)}${L<MAXL?` · ещё ${nx-v}`:''}</span></button>
     <div class="pbar"><i style="width:${Math.max(4,prog)}%"></i></div></div></div>`;
 }
 function petTap(btn){
-  const g=btn.querySelector('.bob,.egg');if(g){g.classList.remove('jump');void g.getBBox;void btn.offsetWidth;g.classList.add('jump')}
-  const b=$('#pbubble');if(b){const st=stageOf(totalVotes());b.textContent=st===0?'Тук-тук! Я тут, внутри 🥚':TAPS[Math.floor(Math.random()*TAPS.length)];b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
+  const g=btn.querySelector('.bob,.egg');if(g){g.classList.remove('jump');void btn.offsetWidth;g.classList.add('jump')}
+  const b=$('#pbubble');if(b){const L=levelOf(totalVotes());b.textContent=L<3?'Тук-тук! Я тут, внутри 🥚':TAPS[Math.floor(Math.random()*TAPS.length)];b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
   const r=btn.getBoundingClientRect();hearts(r.left+r.width/2,r.top+r.height*.3);
 }
 function hearts(x,y){
@@ -706,21 +759,24 @@ function hearts(x,y){
   for(let i=0;i<4;i++){const h=document.createElement('span');h.className='heart';h.textContent='❤';h.style.left=(x+(Math.random()*40-20))+'px';h.style.top=y+'px';h.style.animationDelay=(i*80)+'ms';document.body.appendChild(h);setTimeout(()=>h.remove(),1300)}
 }
 function renderPetSheet(){
-  const v=totalVotes(),st=stageOf(v),pm=petMood();
+  const v=totalVotes(),L=levelOf(v),pm=petMood(),nxt=UNLOCKS.find(u=>u[0]>L);
+  const cur=needL(L),nx=L<MAXL?needL(L+1):cur;
   return `<div class="sheet" role="dialog" aria-modal="true" aria-label="Питомец">
    <div class="sheet-h"><span class="eyebrow">Твой питомец</span><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
    <div class="sheet-b">
-    <div class="petbig"><button type="button" class="petbtn big" data-pet>${petSVG(st,pm.m)}</button></div>
+    <div class="petbig"><button type="button" class="petbtn big" data-pet>${petSVG(L,pm.m)}</button></div>
+    <div class="lvlhead"><b class="num">Уровень ${L}</b><span>${titleOf(L)}</span></div>
+    ${L<MAXL?`<div class="pbar big"><i style="width:${Math.max(4,Math.round((v-cur)/(nx-cur)*100))}%"></i></div><p class="muted" style="font-size:.85rem;text-align:center">До ${L+1} уровня ещё ${nx-v} ${plural(nx-v,'голос','голоса','голосов')}${nxt?` · дальше: <b>${esc(nxt[1])}</b> на ${nxt[0]}`:''}</p>`:'<p style="text-align:center"><b>Максимальный уровень. Ты легенда.</b></p>'}
     <div class="field"><label for="pet-name">Имя</label><input class="input" id="pet-name" data-pet-name value="${esc(petName())}" maxlength="20" autocomplete="off"></div>
-    <div class="hint"><b>Как он растёт.</b> Каждая отметка — голос, а голоса кормят ${esc(petName())}. Когда всё сделано, он радуется, после пропусков грустит. Но он никогда не исчезает: вернулся — и он снова рядом.</div>
-    <ol class="stages">${STAGES.map((x,i)=>`<li class="${i<=st?'got':''}${i===st?' cur':''}"><span class="num">${x[0]}</span><b>${x[1]}</b>${i===st?'<em>сейчас</em>':i<st?'<em>✓</em>':''}</li>`).join('')}</ol>
-    <p class="muted" style="font-size:.85rem">Всего голосов: <b class="num">${v}</b></p>
+    <div class="hint"><b>Как он растёт.</b> Каждая отметка — голос. С каждым уровнем ${esc(petName())} чуть подрастает, а на особых уровнях получает новую деталь. Когда всё сделано — радуется, после пропусков грустит. Но никогда не исчезает.</div>
+    <h3>Награды</h3>
+    <ol class="stages">${UNLOCKS.map(u=>`<li class="${u[0]<=L?'got':''}${nxt&&u[0]===nxt[0]?' cur':''}"><span class="num">ур. ${u[0]}</span><b>${esc(u[1])}</b>${u[0]<=L?'<em>✓</em>':nxt&&u[0]===nxt[0]?'<em>следующая</em>':''}</li>`).join('')}</ol>
    </div></div>`;
 }
-function showEvolve(st){
-  const box=document.createElement('div');box.className='ms';box.setAttribute('role','dialog');box.setAttribute('aria-label','Питомец вырос');
-  const first=st===1;
-  box.innerHTML=`<div class="ms-card"><span class="eyebrow">${first?'Кто-то вылупился!':'Новый уровень'}</span><div class="petbig">${petSVG(st,'happy')}</div><b class="ms-unit">${esc(petName())}: ${STAGES[st][1]}</b><p>${first?'Привет! Я буду расти от каждой твоей отметки. Не бросай меня 🙂':'Смотри, как я вырос! Это всё твои голоса.'}</p><button class="btn" type="button" data-ms-ok>${first?'Привет!':'Ура!'}</button></div>`;
+function showEvolve(L){
+  const box=document.createElement('div');box.className='ms';box.setAttribute('role','dialog');box.setAttribute('aria-label','Новый уровень');
+  const first=L===3,u=unlockAt(L);
+  box.innerHTML=`<div class="ms-card"><span class="eyebrow">${first?'Кто-то вылупился!':'Уровень '+L}</span><div class="petbig">${petSVG(L,'happy')}</div><b class="ms-unit">${first?esc(petName())+' родился':'Новое: '+esc(u)}</b><p>${first?'Привет! Я буду расти от каждой твоей отметки. Не бросай меня 🙂':'Смотри, что у меня появилось! Это всё твои голоса.'}</p><button class="btn" type="button" data-ms-ok>${first?'Привет!':'Ура!'}</button></div>`;
   document.body.appendChild(box);rain(170);
   const close=()=>{box.classList.add('out');setTimeout(()=>box.remove(),260)};
   box.addEventListener('click',e=>{if(e.target===box||e.target.closest('[data-ms-ok]'))close()});
@@ -1215,7 +1271,7 @@ function celebrate(h,el){
   const k=dk(today()),r=el&&el.getBoundingClientRect?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
   burst(r.left+r.width/2,r.top+r.height/2);buzz(18);
   if(k!==dk(today()))return;
-  const v=totalVotes();if(stageOf(v)>stageOf(v-1)){setTimeout(()=>showEvolve(stageOf(v)),450);return}
+  const v=totalVotes(),L=levelOf(v);if(L>levelOf(v-1)){if(unlockAt(L)){setTimeout(()=>showEvolve(L),450);return}setTimeout(()=>{const pc=document.querySelector('.petcard .petbtn');if(pc){const r=pc.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,46)}toast('Уровень '+L+'! '+petName()+' подрос')},650)}
   const pb=document.querySelector('.petcard .bob,.petcard .egg');if(pb){pb.classList.remove('jump');void pb.getBBox;pb.classList.add('jump')}
   const st=streak(h);
   if(MILESTONES[st]){setTimeout(()=>showMilestone(h,st),450);return}
