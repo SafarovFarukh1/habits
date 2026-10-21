@@ -409,6 +409,77 @@ button.cwd,button.cmd{cursor:pointer}
 .pal .sw{display:flex}
 .pal .sw i{width:20px;height:20px;border-radius:50%;margin-left:-5px;border:2px solid var(--surface)}
 .pal .sw i:first-child{margin-left:0}
+
+/* groups */
+.grp{display:flex;flex-direction:column;gap:8px}
+.grp+.grp{margin-top:6px}
+.gh{display:flex;align-items:center;gap:8px;font-family:var(--body);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.gi svg,.pchip svg{width:17px;height:17px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.gi{display:grid;place-items:center;color:var(--accent-text,var(--accent))}
+.gh .now{background:var(--accent);color:var(--accent-ink);font-size:.62rem;padding:2px 7px;border-radius:999px;letter-spacing:.05em}
+.gh .gc{margin-left:auto;font-size:.78rem}
+.gdone .gh .gc{color:var(--accent-text,var(--accent))}
+.parts{display:flex;flex-wrap:wrap;gap:6px}
+.pchip{display:inline-flex;align-items:center;gap:6px}
+/* pet */
+.petcard{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:22px;padding:10px 14px 12px 8px;box-shadow:var(--shadow)}
+.petbtn{all:unset;cursor:pointer;flex:none;width:96px;height:96px;-webkit-tap-highlight-color:transparent}
+.petbtn:focus-visible{outline:2px solid var(--accent);border-radius:16px}
+.petbtn.big{width:160px;height:160px}
+.petbig{display:grid;place-items:center}
+.ms-card .petbig svg{width:150px;height:150px}
+.pet-svg{width:100%;height:100%;overflow:visible}
+.petinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.bubble{position:relative;background:var(--surface-2);border-radius:14px;padding:8px 11px;font-size:.86rem;line-height:1.35}
+.bubble::before{content:"";position:absolute;left:-6px;top:14px;border:6px solid transparent;border-right-color:var(--surface-2);border-left:0}
+.bubble.pop{animation:bpop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bpop{from{transform:scale(.92);opacity:.4}}
+.petname{all:unset;cursor:pointer;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.petname b{font-family:var(--display);font-weight:500;font-size:.95rem}
+.petname span{font-size:.76rem;color:var(--muted)}
+.pbar{height:6px;border-radius:3px;background:var(--cell0);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.pbody{fill:var(--accent)}
+.pbelly{fill:#fff;opacity:.32}
+.pdark{fill:var(--accent);filter:brightness(.8)}
+.pshadow{fill:var(--fg);opacity:.1}
+.peye{fill:#1d1a12}.pwhite{fill:#fff}
+.pline{fill:none;stroke:#1d1a12;stroke-width:3;stroke-linecap:round}
+.pline.thin{stroke-width:2.2}
+.pmouth{fill:#1d1a12}.ptongue{fill:none;stroke:#ff7a8a;stroke-width:3;stroke-linecap:round}
+.pcheek{fill:#ff7a8a;opacity:.45}
+.tear{fill:#5BB6FF}
+.stem{stroke:#2FA25C;stroke-width:3.5;stroke-linecap:round;fill:none}
+.leaf{fill:#3CBF6B}
+.bud{fill:var(--c2)}
+.pet1{fill:var(--c2)}.pcenter{fill:#FFD13F}
+.spark{fill:#FFD13F}
+.eggb{fill:#FFF2D4;stroke:var(--accent);stroke-width:2}
+.eggs{fill:var(--accent);opacity:.55}
+.crack{fill:none;stroke:#8a6a2a;stroke-width:2;stroke-linejoin:round;opacity:.6}
+.bob,.egg{transform-box:view-box;transform-origin:60px 108px}
+.bob{animation:bob 2.8s ease-in-out infinite}
+.m-happy .bob{animation:hop 1.1s ease-in-out infinite}
+.m-sad .bob,.m-sad2 .bob{animation:bob 4.2s ease-in-out infinite;filter:saturate(.75)}
+.egg{animation:wob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:scale(var(--sc),var(--sc))}50%{transform:scale(calc(var(--sc)*1.03),calc(var(--sc)*.96))}}
+@keyframes hop{0%,100%{transform:scale(var(--sc)) translateY(0)}40%{transform:scale(var(--sc)) translateY(-7px)}60%{transform:scale(calc(var(--sc)*1.04),calc(var(--sc)*.94)) translateY(0)}}
+@keyframes wob{0%,70%,100%{transform:rotate(0)}76%{transform:rotate(-7deg)}84%{transform:rotate(6deg)}92%{transform:rotate(-3deg)}}
+.blink{transform-box:fill-box;transform-origin:center;animation:blink 4.5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.bob.jump,.egg.jump{animation:jump .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes jump{0%{transform:scale(var(--sc,1))}25%{transform:scale(calc(var(--sc,1)*1.08),calc(var(--sc,1)*.86))}55%{transform:scale(calc(var(--sc,1)*.94),calc(var(--sc,1)*1.08)) translateY(-16px)}100%{transform:scale(var(--sc,1))}}
+.parm.l{transform-box:fill-box;transform-origin:right center;animation:wave 2.8s ease-in-out infinite}
+.m-happy .parm{animation:wave .6s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+.heart{position:fixed;z-index:130;color:#ff5c7a;font-size:18px;pointer-events:none;animation:heart 1.2s ease-out forwards}
+@keyframes heart{from{transform:translateY(0) scale(.6);opacity:1}to{transform:translateY(-70px) scale(1.2);opacity:0}}
+.stages{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.stages li{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:var(--surface-2);color:var(--muted)}
+.stages li.got{color:var(--fg)}
+.stages li.cur{background:var(--accent-soft)}
+.stages li span{font-size:.8rem}
+.stages em{font-style:normal;font-size:.75rem;font-weight:700;color:var(--accent-text,var(--accent))}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 <script>try{document.documentElement.dataset.pal=localStorage.getItem('one-percent-pal')||'sun'}catch(e){document.documentElement.dataset.pal='sun'}</script>
@@ -456,7 +527,7 @@ const TPL={
  ]
 };
 
-let S={v:1,habits:[],log:{}};
+let S={v:1,habits:[],log:{},pet:{name:'Атомчик'}};
 let tab='today', sheet=null, draft=null, step=0, confirmDel=false;
 
 /* ---------- utils ---------- */
@@ -513,7 +584,7 @@ function planRows(h){
     if(h.bundle)r.push(['Связка',h.bundle]);
     if(h.reward)r.push(['Награда',h.reward]);
   }
-  r.push(['Дни',daysText(h.days)]);
+  r.push(['Дни',daysText(h.days)]);r.push(['Время дня',partName(partOf(h))]);
   return r;
 }
 
@@ -534,7 +605,7 @@ function backupCard(){
   </div>`;
 }
 async function doExport(){
-  const json=JSON.stringify({app:'one-percent',v:1,exported:new Date().toISOString(),habits:S.habits,log:S.log},null,1);
+  const json=JSON.stringify({app:'one-percent',v:1,exported:new Date().toISOString(),habits:S.habits,log:S.log,pet:S.pet},null,1);
   const name='один-процент-'+dk(today())+'.json';
   try{
     const file=new File([json],name,{type:'application/json'});
@@ -547,9 +618,113 @@ document.addEventListener('change',e=>{
   if(e.target.id!=='importFile')return;
   const f=e.target.files&&e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.habits))throw 0;pendingImport={habits:o.habits,log:o.log||{}};renderProgress()}catch(_){toast('Это не файл бэкапа «Одного процента»')}};
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o||!Array.isArray(o.habits))throw 0;pendingImport={habits:o.habits,log:o.log||{},pet:o.pet};renderProgress()}catch(_){toast('Это не файл бэкапа «Одного процента»')}};
   r.readAsText(f);e.target.value='';
 });
+
+
+/* ---------- parts of day ---------- */
+const PARTS=[['morning','Утро','<svg viewBox="0 0 24 24"><path d="M3 18h18M7 18a5 5 0 0 1 10 0M12 4v3M4.9 9.9l1.4 1.4M19.1 9.9l-1.4 1.4"/></svg>'],['day','День','<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'],['evening','Вечер','<svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>'],['any','В любое время','<svg viewBox="0 0 24 24"><path d="M7 9a3 3 0 1 0 0 6c3 0 7-6 10-6a3 3 0 1 1 0 6c-3 0-7-6-10-6z"/></svg>']];
+function partOf(h){
+  if(h.part)return h.part;
+  if(h.type!=='brk'&&h.cueMode==='time'&&h.time){const hr=+h.time.split(':')[0];return hr<12?'morning':hr<17?'day':'evening'}
+  const t=(String(h.after||'')+' '+String(h.name||'')).toLowerCase();
+  if(/просну|утр|завтрак|подъ|фаджр|умою|почищу зубы утром/.test(t))return 'morning';
+  if(/лягу|сон|спать|вечер|ужин|отбой|перед сном|кроват/.test(t))return 'evening';
+  if(/обед|работ|учеб/.test(t))return 'day';
+  return 'any';
+}
+function nowPart(){const h=today().getHours();return h<12?'morning':h<17?'day':'evening'}
+function partName(k){const x=PARTS.find(p=>p[0]===k);return x?x[1]:''}
+function partPicker(){const cur=partOf(draft);return `<div class="field"><label>Время дня</label><div class="parts">${PARTS.map(p=>`<button type="button" class="chip pchip" data-part="${p[0]}" aria-pressed="${cur===p[0]}">${p[2]}${p[1]}</button>`).join('')}</div><span class="help">По нему привычки группируются на главном экране.</span></div>`}
+function groupedList(list,k){
+  const groups=PARTS.map(p=>({p,items:list.filter(h=>partOf(h)===p[0])})).filter(g=>g.items.length);
+  if(groups.length<2&&(!groups.length||groups[0].p[0]==='any'))return `<ul class="list">${list.map(h=>card(h,k)).join('')}</ul>`;
+  const np=nowPart();
+  return groups.map(g=>{const dn=g.items.filter(h=>done(h,k)).length,all=dn===g.items.length;
+    return `<section class="grp${all?' gdone':''}"><h3 class="gh"><span class="gi">${g.p[2]}</span>${g.p[1]}${g.p[0]===np?'<span class="now">сейчас</span>':''}<span class="gc num">${dn}/${g.items.length}</span></h3><ul class="list">${g.items.map(h=>card(h,k)).join('')}</ul></section>`}).join('');
+}
+
+
+/* ---------- pet ---------- */
+const STAGES=[[0,'Яйцо'],[3,'Малыш'],[10,'Росточек'],[30,'Подросток'],[75,'В цвету'],[150,'Легенда']];
+function totalVotes(){return Object.values(S.log).reduce((a,o)=>a+Object.keys(o||{}).length,0)}
+function stageOf(v){let i=0;STAGES.forEach((x,n)=>{if(v>=x[0])i=n});return i}
+function petName(){return (S.pet&&S.pet.name)||'Атомчик'}
+function petMood(){
+  const t=today(),k=dk(t),on=S.habits.filter(h=>!h.archived&&(sched(h,t)||done(h,k)));
+  if(!on.length)return {m:'ok',left:0,all:0};
+  const left=on.filter(h=>!done(h,k)).length;
+  if(!left)return {m:'happy',left,all:on.length};
+  if(on.some(h=>missState(h)==='twice'))return {m:'sad2',left,all:on.length};
+  if(on.some(h=>missState(h)==='once'))return {m:'sad',left,all:on.length};
+  return {m:'ok',left,all:on.length};
+}
+const TAPS=['Я расту от каждого твоего голоса 🌱','Две минуты — и я счастлив.','Не идеально, а регулярно.','Всевышний любит постоянство. Я тоже.','Ты молодец уже потому, что открыл приложение.','Хи-хи, щекотно!','Маленько, но каждый день — вот наш секрет.','Мы с тобой команда.','1% каждый день. Через год ×37.'];
+function petLine(st,pm,v){
+  const n=Math.floor(Date.now()/36e5);const pick=a=>a[n%a.length];
+  if(!S.habits.length)return 'Привет! Я вылуплюсь, когда ты отметишь первую привычку.';
+  if(st===0){const need=STAGES[1][0]-v;return need===1?'Тук-тук… Ещё одна отметка — и я вылуплюсь!':`Тук-тук… Ещё ${need} ${plural(need,'отметка','отметки','отметок')} — и я вылуплюсь.`}
+  if(pm.m==='happy')return pick(['Всё сделано! Я расту 🌱','Сегодня ты проголосовал за себя. Горжусь!','Идеальный день. Можно и отдохнуть.']);
+  if(pm.m==='sad2')return pick(['Мне грустно… Два дня без тебя. Вернёмся сегодня?','Я скучаю. Давай хотя бы минимум, а?']);
+  if(pm.m==='sad')return pick(['Вчера было пусто… Сегодня хватит минимума.','Один пропуск — не страшно. Главное — не два.']);
+  const h=today().getHours();
+  if(h>=21&&pm.left)return `Вечер уже, а у нас ещё ${pm.left}. Успеем?`;
+  if(pm.left===pm.all)return pick(['Начни с самой маленькой — и поехали!','Новый день — новый голос.']);
+  return `Осталось ${pm.left}. Ты уже на полпути!`;
+}
+function petSVG(st,mood,big){
+  const sc=[1,.72,.82,.9,.98,1.04][st];
+  const happy=mood==='happy',sad=mood==='sad'||mood==='sad2';
+  if(st===0){
+    return `<svg class="pet-svg" viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="26" ry="5" class="pshadow"/><g class="egg"><path d="M60 22c-20 0-32 30-32 52 0 20 14 34 32 34s32-14 32-34c0-22-12-52-32-52z" class="eggb"/><circle cx="48" cy="58" r="5" class="eggs"/><circle cx="72" cy="76" r="7" class="eggs"/><circle cx="56" cy="90" r="4" class="eggs"/><path d="M38 66l8 6 6-7 7 8 6-6 7 7 9-5" class="crack"/></g></svg>`;
+  }
+  const eyes=happy?`<path d="M44 66q5-7 10 0M66 66q5-7 10 0" class="pline"/>`
+   :sad?`<g class="blink"><circle cx="49" cy="67" r="5" class="peye"/><circle cx="71" cy="67" r="5" class="peye"/><circle cx="50.5" cy="65.5" r="1.6" class="pwhite"/><circle cx="72.5" cy="65.5" r="1.6" class="pwhite"/></g><path d="M41 60l11-4M79 60l-11-4" class="pline thin"/>${mood==='sad2'?'<path d="M46 74q-3 6 0 8q3-2 0-8z" class="tear"/>':''}`
+   :`<g class="blink"><circle cx="49" cy="66" r="5.5" class="peye"/><circle cx="71" cy="66" r="5.5" class="peye"/><circle cx="51" cy="64" r="1.8" class="pwhite"/><circle cx="73" cy="64" r="1.8" class="pwhite"/></g>`;
+  const mouth=happy?`<path d="M51 76q9 11 18 0z" class="pmouth"/><path d="M56 80q4 3 8 0" class="ptongue"/>`:sad?`<path d="M53 81q7-6 14 0" class="pline"/>`:`<path d="M54 77q6 5 12 0" class="pline"/>`;
+  const sprout=st>=1?`<g class="sprout"><path d="M60 44V${st>=3?24:32}" class="stem"/>${st>=1?`<path d="M60 ${st>=3?32:38}c-10-2-14-8-14-12 6 0 12 4 14 12z" class="leaf"/>`:''}${st>=2?`<path d="M60 ${st>=3?30:36}c10-2 14-8 14-12-6 0-12 4-14 12z" class="leaf"/>`:''}${st===3?`<ellipse cx="60" cy="22" rx="4" ry="6" class="bud"/>`:''}${st>=4?`<g class="flower"><circle cx="60" cy="14" r="5" class="pet1"/><circle cx="68" cy="20" r="5" class="pet1"/><circle cx="52" cy="20" r="5" class="pet1"/><circle cx="64" cy="28" r="5" class="pet1"/><circle cx="56" cy="28" r="5" class="pet1"/><circle cx="60" cy="22" r="4" class="pcenter"/></g>`:''}${st>=5?`<path d="M28 30l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM94 40l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" class="spark"/>`:''}</g>`:'';
+  const feet=st>=2?`<ellipse cx="47" cy="106" rx="9" ry="5" class="pdark"/><ellipse cx="73" cy="106" rx="9" ry="5" class="pdark"/>`:'';
+  const arms=st>=3?`<ellipse cx="28" cy="80" rx="7" ry="10" class="pbody parm l"/><ellipse cx="92" cy="80" rx="7" ry="10" class="pbody parm r"/>`:'';
+  return `<svg class="pet-svg m-${mood}" viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="60" cy="110" rx="${30*sc}" ry="5" class="pshadow"/><g class="bob" style="--sc:${sc}">${feet}${arms}${sprout}<path d="M60 40c22 0 36 18 36 40 0 18-14 28-36 28S24 98 24 80c0-22 14-40 36-40z" class="pbody"/><ellipse cx="60" cy="88" rx="20" ry="13" class="pbelly"/><ellipse cx="38" cy="78" rx="6" ry="3.5" class="pcheek"/><ellipse cx="82" cy="78" rx="6" ry="3.5" class="pcheek"/>${eyes}${mouth}</g></svg>`;
+}
+function petCard(){
+  const v=totalVotes(),st=stageOf(v),pm=petMood(),nx=STAGES[st+1];
+  const prog=nx?Math.round((v-STAGES[st][0])/(nx[0]-STAGES[st][0])*100):100;
+  return `<div class="petcard"><button type="button" class="petbtn" data-pet aria-label="${esc(petName())}">${petSVG(st,pm.m)}</button>
+    <div class="petinfo"><div class="bubble" id="pbubble">${esc(petLine(st,pm,v))}</div>
+    <button type="button" class="petname" data-pet-open><b>${esc(petName())}</b><span>${STAGES[st][1]}${nx?` · ${v}/${nx[0]}`:` · ${v}`}</span></button>
+    <div class="pbar"><i style="width:${Math.max(4,prog)}%"></i></div></div></div>`;
+}
+function petTap(btn){
+  const g=btn.querySelector('.bob,.egg');if(g){g.classList.remove('jump');void g.getBBox;void btn.offsetWidth;g.classList.add('jump')}
+  const b=$('#pbubble');if(b){const st=stageOf(totalVotes());b.textContent=st===0?'Тук-тук! Я тут, внутри 🥚':TAPS[Math.floor(Math.random()*TAPS.length)];b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}
+  const r=btn.getBoundingClientRect();hearts(r.left+r.width/2,r.top+r.height*.3);
+}
+function hearts(x,y){
+  if(reduceMotion())return;
+  for(let i=0;i<4;i++){const h=document.createElement('span');h.className='heart';h.textContent='❤';h.style.left=(x+(Math.random()*40-20))+'px';h.style.top=y+'px';h.style.animationDelay=(i*80)+'ms';document.body.appendChild(h);setTimeout(()=>h.remove(),1300)}
+}
+function renderPetSheet(){
+  const v=totalVotes(),st=stageOf(v),pm=petMood();
+  return `<div class="sheet" role="dialog" aria-modal="true" aria-label="Питомец">
+   <div class="sheet-h"><span class="eyebrow">Твой питомец</span><button class="x" type="button" data-close aria-label="Закрыть"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+   <div class="sheet-b">
+    <div class="petbig"><button type="button" class="petbtn big" data-pet>${petSVG(st,pm.m)}</button></div>
+    <div class="field"><label for="pet-name">Имя</label><input class="input" id="pet-name" data-pet-name value="${esc(petName())}" maxlength="20" autocomplete="off"></div>
+    <div class="hint"><b>Как он растёт.</b> Каждая отметка — голос, а голоса кормят ${esc(petName())}. Когда всё сделано, он радуется, после пропусков грустит. Но он никогда не исчезает: вернулся — и он снова рядом.</div>
+    <ol class="stages">${STAGES.map((x,i)=>`<li class="${i<=st?'got':''}${i===st?' cur':''}"><span class="num">${x[0]}</span><b>${x[1]}</b>${i===st?'<em>сейчас</em>':i<st?'<em>✓</em>':''}</li>`).join('')}</ol>
+    <p class="muted" style="font-size:.85rem">Всего голосов: <b class="num">${v}</b></p>
+   </div></div>`;
+}
+function showEvolve(st){
+  const box=document.createElement('div');box.className='ms';box.setAttribute('role','dialog');box.setAttribute('aria-label','Питомец вырос');
+  const first=st===1;
+  box.innerHTML=`<div class="ms-card"><span class="eyebrow">${first?'Кто-то вылупился!':'Новый уровень'}</span><div class="petbig">${petSVG(st,'happy')}</div><b class="ms-unit">${esc(petName())}: ${STAGES[st][1]}</b><p>${first?'Привет! Я буду расти от каждой твоей отметки. Не бросай меня 🙂':'Смотри, как я вырос! Это всё твои голоса.'}</p><button class="btn" type="button" data-ms-ok>${first?'Привет!':'Ура!'}</button></div>`;
+  document.body.appendChild(box);rain(170);
+  const close=()=>{box.classList.add('out');setTimeout(()=>box.remove(),260)};
+  box.addEventListener('click',e=>{if(e.target===box||e.target.closest('[data-ms-ok]'))close()});
+}
 
 /* ---------- render: today ---------- */
 function ring(doneN,total){
@@ -580,6 +755,7 @@ function renderToday(){
   const on=act.filter(h=>sched(h,t)||done(h,k)), off=act.filter(h=>!on.includes(h));
   const dn=on.filter(h=>done(h,k)).length;
   let html=`<header class="top"><div class="top-l"><span class="eyebrow">${WDF[wd(t)]}, ${t.getDate()} ${MONTHS[t.getMonth()]}</span><h1>Сегодня</h1></div>${act.length?ring(dn,on.length):''}</header>`;
+  if(act.length)html+=petCard();
   if(!act.length){
     html+=`<div class="hello">
       <span class="eyebrow">Добро пожаловать</span>
@@ -598,9 +774,8 @@ function renderToday(){
     const twice=on.filter(h=>missState(h)==='twice'),once=on.filter(h=>missState(h)==='once');
     if(twice.length){const h=twice[0];html+=`<div class="banner danger"><b>Два пропуска подряд: ${esc(h.name)}${twice.length>1?' и ещё '+(twice.length-1):''}</b><span>Сегодня главное вернуться. Сделай хотя бы минимум${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Это не провал. Важно не дать пропускам стать новой привычкой.</span></div>`}
     else if(once.length){const h=once[0];html+=`<div class="banner"><b>Не пропускай дважды: ${esc(h.name)}${once.length>1?' и ещё '+(once.length-1):''}</b><span>Вчера не получилось. Сегодня хватит минимума${h.tiny?': '+esc(h.tiny):''}.</span><span class="small">Один пропуск ничего не ломает. Два подряд уже начинают новую привычку.</span></div>`}
-    else if(on.length&&dn===on.length){html+=`<div class="banner" style="background:var(--accent-soft)"><b style="color:var(--accent)">Всё на сегодня сделано</b><span>Каждая отметка — голос за того, кем ты становишься.</span></div>`}
     if(!tipSeen()&&act.length===1&&!dn)html+=`<div class="tip"><b>Отлично, привычка есть 👏</b><span>Теперь главное: когда сделаешь хотя бы минимум, нажми на кружок слева. Это твой первый голос.</span><button class="btn small" type="button" data-tip-ok>Понятно</button></div>`;
-    html+=on.length?`<ul class="list">${on.map(h=>card(h,k)).join('')}</ul>`:`<p class="muted">На сегодня ничего не запланировано. Отдыхай.</p>`;
+    html+=on.length?groupedList(on,k):`<p class="muted">На сегодня ничего не запланировано. Отдыхай.</p>`;
     if(off.length)html+=`<details class="later"><summary>Не по плану сегодня (${off.length})</summary><ul class="list">${off.map(h=>card(h,k)).join('')}</ul></details>`;
   }
   $('#v-today').innerHTML=html;
@@ -891,7 +1066,7 @@ function insHTML(name,idx,withMore){
 }
 
 /* ---------- wizard ---------- */
-function blank(type){return {id:null,type:type||'build',name:'',identity:'',cueMode:'stack',after:'',time:'',where:'',alarm:true,days:ALL.slice(),tiny:'',prep:'',bundle:'',reward:'',trigger:'',invisible:'',hard:'',stake:'',replace:''}}
+function blank(type){return {id:null,type:type||'build',name:'',identity:'',cueMode:'stack',after:'',time:'',where:'',alarm:true,part:'',days:ALL.slice(),tiny:'',prep:'',bundle:'',reward:'',trigger:'',invisible:'',hard:'',stake:'',replace:''}}
 function stepsFor(t){return t==='brk'?['start','what','invisible','hard','replace','review']:['start','what','obvious','easy','attractive','review']}
 function openWizard(opts){
   opts=opts||{};
@@ -919,6 +1094,7 @@ function stepHTML(s){
     <div class="seg"><button type="button" class="opt" data-mode="stack" aria-pressed="${draft.cueMode==='stack'}"><b>После другой привычки</b><span>лучше всего работает</span></button><button type="button" class="opt" data-mode="time" aria-pressed="${draft.cueMode==='time'}"><b>Время и место</b><span>чёткий план</span></button></div>
     ${draft.cueMode==='stack'?fld('after','После того как я…','налью утренний кофе','Выбери то, что ты и так делаешь каждый день в одно время.'):`<div class="field"><label for="w-time">Во сколько</label><input class="input" type="time" id="w-time" data-f="time" value="${esc(draft.time)}">${sg('time')?`<button type="button" class="fill" data-fill="time" ${draft.time?'hidden':''}>Подставить ${esc(sg('time'))}</button>`:''}</div>${fld('where','Где','дома в кресле')}<label class="toggle" for="w-alarm"><input type="checkbox" id="w-alarm" data-fc="alarm" ${draft.alarm!==false?'checked':''}><span><b>Будильник в это время</b><small>Звук и экран с мотивацией. Отключить его можно, только прочитав цитату.</small></span></label>`}
     ${daysPicker()}
+    ${partPicker()}
     <div class="hint"><b>Сигнал.</b> Без конкретного «когда и где» привычка остаётся намерением. Формула: «После [то, что уже делаю] я буду [новая привычка]».</div>`;
   case 'easy':return `<h2>Сделай лёгкой</h2>
     ${fld('tiny','Версия на 2 минуты','прочитать 1 страницу','Настолько маленькая, что отказаться неловко.')}
@@ -939,6 +1115,7 @@ function stepHTML(s){
   case 'replace':return `<h2>Чем заменишь?</h2>
     ${fld('replace','Вместо этого я…','открываю книгу или иду пройтись','Привычка закрывает какую-то потребность. Найди способ закрыть её иначе.')}
     ${daysPicker()}
+    ${partPicker()}
     <div class="hint"><b>Отметка.</b> Каждый день без срыва отмечай кружком. Это твоя мгновенная награда.</div>`;
   case 'review':{const h=draft;return `<h2>Твой план</h2>
     ${h.identity?`<p class="ident">Я — ${esc(h.identity)}</p>`:''}
@@ -973,7 +1150,7 @@ function renderSheet(opt){
     if(ov&&!ov.classList.contains('closing')){ov.classList.add('closing');setTimeout(()=>{const o=layer.querySelector('.overlay.closing');if(o)o.remove()},230)}
     return;
   }
-  const html=sheet.kind==='detail'?renderDetail():renderWizard();
+  const html=sheet.kind==='detail'?renderDetail():sheet.kind==='pet'?renderPetSheet():renderWizard();
   if(!sheet)return;
   let fresh=false;
   if(ov&&ov.dataset.kind===sheet.kind&&!ov.classList.contains('closing')){
@@ -1038,6 +1215,8 @@ function celebrate(h,el){
   const k=dk(today()),r=el&&el.getBoundingClientRect?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
   burst(r.left+r.width/2,r.top+r.height/2);buzz(18);
   if(k!==dk(today()))return;
+  const v=totalVotes();if(stageOf(v)>stageOf(v-1)){setTimeout(()=>showEvolve(stageOf(v)),450);return}
+  const pb=document.querySelector('.petcard .bob,.petcard .egg');if(pb){pb.classList.remove('jump');void pb.getBBox;pb.classList.add('jump')}
   const st=streak(h);
   if(MILESTONES[st]){setTimeout(()=>showMilestone(h,st),450);return}
   const t=today(),on=S.habits.filter(x=>!x.archived&&(sched(x,t)||done(x,k)));
@@ -1091,6 +1270,8 @@ document.addEventListener('click',e=>{
   if(d.overlay!==undefined){if(e.target===el)closeSheet();return}
   if(d.ins){const box=el.closest('#w-ins,#d-ins');const nm=box&&box.id==='w-ins'?(draft&&draft.name):(sheet&&S.habits.find(x=>x.id===sheet.id)||{}).name;if(box){box.innerHTML=insHTML(nm,+d.ins,true);const c=box.querySelector('.ins');if(c)c.classList.add('swap')}return}
   if(d.pal){setPal(d.pal);renderProgress();return}
+  if(d.pet!==undefined){petTap(el);return}
+  if(d.petOpen!==undefined){sheet={kind:'pet'};renderSheet();return}
   if(d.tab){setTab(d.tab);return}
   if(d.range){setRange(d.range);render();return}
   if(d.cal){calOff=Math.min(0,calOff+(+d.cal));renderSheet();return}
@@ -1108,12 +1289,13 @@ document.addEventListener('click',e=>{
   if(d.delYes!==undefined&&sheet){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
   if(d.edit){openWizard({edit:d.edit});return}
   if(d.export!==undefined){doExport();return}
-  if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log};pendingImport=null;persist();render();toast('Данные восстановлены');return}
+  if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log,pet:pendingImport.pet||S.pet||{name:'Атомчик'}};pendingImport=null;persist();render();toast('Данные восстановлены');return}
   if(d.importNo!==undefined){pendingImport=null;renderProgress();return}
   if(!draft)return;
   if(d.reset!==undefined){const t=draft.type;clearDraftLocal();draft=blank(t);step=0;renderSheet({anim:'back'});return}
   if(d.type){if(draft.type!==d.type){draft=blank(d.type)}renderSheet();return}
   if(d.wtpl){applyTpl(d.wtpl);step=1;renderSheet({anim:'fwd'});return}
+  if(d.part){draft.part=d.part;document.querySelectorAll('[data-part]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.part===d.part));saveDraftLocal(true);return}
   if(d.mode){draft.cueMode=d.mode;draft._modeTouched=true;renderSheet();return}
   if(d.fill){const v=sg(d.fill),i=$('#w-'+d.fill);draft[d.fill]=v;if(i){i.value=v}el.hidden=true;saveDraftLocal(true);return}
   if(d.dayT!==undefined){const i=+d.dayT,a=draft.days;const p=a.indexOf(i);if(p>=0)a.splice(p,1);else a.push(i);el.setAttribute('aria-pressed',p<0);saveDraftLocal(true);return}
@@ -1121,6 +1303,7 @@ document.addEventListener('click',e=>{
   if(d.next!==undefined){const st=stepsFor(draft.type);if(step>=st.length-1)saveDraft();else{step++;if(st[step]==='obvious'&&!draft._modeTouched&&!draft.id){const m=topicFor();if(m&&m.mode)draft.cueMode=m.mode}renderSheet({anim:'fwd'})}return}
 });
 document.addEventListener('input',e=>{
+  if(e.target.dataset&&e.target.dataset.petName!==undefined){S.pet=S.pet||{};S.pet.name=e.target.value.trim()||'Атомчик';persist();clearTimeout(rTimer);rTimer=setTimeout(renderToday,400);return}
   if(e.target.dataset&&e.target.dataset.fc&&draft){draft[e.target.dataset.fc]=e.target.checked;saveDraftLocal(true);return}
   if(e.target.id==='al-phrase'){const b=$('#al-skip-ok');if(b)b.disabled=norm(e.target.value)!==norm(skipPhrase());return}
   const f=e.target.dataset&&e.target.dataset.f;if(!f||!draft)return;
@@ -1215,7 +1398,7 @@ setTimeout(()=>checkAlarms(false),800);
 
 /* ---------- boot ---------- */
 applyPal(curPal());
-const local=loadLocal();if(local)S={v:1,habits:local.habits,log:local.log||{}};
+const local=loadLocal();if(local)S={v:1,habits:local.habits,log:local.log||{},pet:local.pet||{name:'Атомчик'}};
 renderGuide();render();
 const h0=(location.hash||'').slice(1);setTab(['today','progress','guide'].includes(h0)?h0:'today');
 let lastDay=dk(today());
