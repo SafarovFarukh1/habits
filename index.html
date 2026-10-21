@@ -523,13 +523,13 @@ button.cwd,button.cmd{cursor:pointer}
 .nextu{display:flex;align-items:center;gap:12px;background:var(--surface-2);border-radius:16px;padding:10px 12px}
 .nextu>div:last-child{display:flex;flex-direction:column;gap:2px;min-width:0}
 .nextu b{font-size:1rem}.nextu .muted{font-size:.8rem}
-.mini{position:relative;width:64px;height:64px;flex:none}
-.mini .pet-svg *{animation:none!important}
+.pmini{position:relative;width:64px;height:64px;flex:none}
+.pmini .pet-svg *{animation:none!important}
 .locked .pet-svg{filter:grayscale(1) brightness(1.1);opacity:.4}
 .lock{position:absolute;right:-2px;bottom:-2px;font-size:15px}
 .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .gi2{background:var(--surface);border-radius:16px;padding:8px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;box-shadow:var(--shadow)}
-.gi2 .mini{width:72px;height:72px}
+.gi2 .pmini{width:72px;height:72px}
 .gi2 b{font-size:.78rem;line-height:1.2}
 .gi2 span{font-size:.7rem;color:var(--muted)}
 .gi2.locked b{color:var(--muted)}
@@ -646,8 +646,11 @@ function planRows(h){
 }
 
 /* ---------- persistence ---------- */
-function loadLocal(){try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);if(o&&Array.isArray(o.habits))return o}}catch(e){}return null}
-function persist(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast('Не получилось сохранить. Освободи место на телефоне.')}}
+function loadLocal(){let o=null;try{const r=localStorage.getItem(LS);if(r)o=JSON.parse(r)}catch(e){}
+  if(!(o&&Array.isArray(o.habits)&&o.habits.length)){try{const b=JSON.parse(localStorage.getItem(LS+'-safe')||'null');if(b&&Array.isArray(b.habits)&&b.habits.length)return b}catch(e){}}
+  return o&&Array.isArray(o.habits)?o:null}
+function persist(){try{if(S.habits.length)localStorage.setItem(LS+'-safe',JSON.stringify(S))}catch(e){}
+  try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){toast('Не получилось сохранить. Освободи место на телефоне.')}}
 function syncLabel(){return 'Данные хранятся только на этом телефоне. Раз в пару недель делай бэкап.'}
 
 /* ---------- backup ---------- */
@@ -832,11 +835,11 @@ function renderPetTab(){
   <div class="card lvlcard">
     <div class="lvlrow"><b>${titleOf(L)}</b><span class="muted num">${L<MAXL?`${v-cur} / ${nx-cur} до ур. ${L+1}`:'Максимум'}</span></div>
     <div class="pbar big"><i style="width:${prog}%"></i></div>
-    ${nxt?`<div class="nextu"><div class="mini locked">${petSVG(nxt[0],'ok')}<span class="lock">🔒</span></div><div><span class="eyebrow">Следующая награда</span><b>${esc(nxt[1])}</b><span class="muted">на ${nxt[0]} уровне · ещё ${needL(nxt[0])-v} ${plural(needL(nxt[0])-v,'голос','голоса','голосов')}</span></div></div>`:'<p><b>Все награды собраны. Ты легенда.</b></p>'}
+    ${nxt?`<div class="nextu"><div class="pmini locked">${petSVG(nxt[0],'ok')}<span class="lock">🔒</span></div><div><span class="eyebrow">Следующая награда</span><b>${esc(nxt[1])}</b><span class="muted">на ${nxt[0]} уровне · ещё ${needL(nxt[0])-v} ${plural(needL(nxt[0])-v,'голос','голоса','голосов')}</span></div></div>`:'<p><b>Все награды собраны. Ты легенда.</b></p>'}
   </div>
   <div class="stats"><div class="stat"><b class="num">${v}</b><span>${plural(v,'голос','голоса','голосов')}</span></div><div class="stat"><b class="num">${days}</b><span>${plural(days,'день','дня','дней')} вместе</span></div><div class="stat"><b class="num">${got}/${UNLOCKS.length}</b><span>наград</span></div></div>
   <section class="gsec"><h2>Награды</h2>
-    <div class="gal">${UNLOCKS.map(u=>{const ok=u[0]<=L;return `<div class="gi2${ok?'':' locked'}"><div class="mini">${petSVG(u[0],'ok')}${ok?'':'<span class="lock">🔒</span>'}</div><b>${esc(u[1])}</b><span class="num">ур. ${u[0]}</span></div>`}).join('')}</div>
+    <div class="gal">${UNLOCKS.map(u=>{const ok=u[0]<=L;return `<div class="gi2${ok?'':' locked'}"><div class="pmini">${petSVG(u[0],'ok')}${ok?'':'<span class="lock">🔒</span>'}</div><b>${esc(u[1])}</b><span class="num">ур. ${u[0]}</span></div>`}).join('')}</div>
   </section>
   <div class="card"><div class="field"><label for="pet-name">Имя питомца</label><input class="input" id="pet-name" data-pet-name value="${esc(petName())}" maxlength="20" autocomplete="off"></div>
   <p class="muted" style="font-size:.86rem">Каждая отметка — голос. ${esc(petName())} растёт с каждым уровнем и получает новые детали на особых уровнях. Пропуски его расстраивают, но он никогда не исчезает: вернулся — и он снова рядом.</p></div>`;
@@ -1402,7 +1405,7 @@ document.addEventListener('click',e=>{
   if(d.day&&sheet&&sheet.kind==='detail'){toggle(sheet.id,d.day,null,el);return}
   if(d.del!==undefined){confirmDel=true;renderSheet();return}
   if(d.delNo!==undefined){confirmDel=false;renderSheet();return}
-  if(d.delYes!==undefined&&sheet){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
+  if(d.delYes!==undefined&&sheet){const id=sheet.id;S.habits=S.habits.filter(h=>h.id!==id);delete S.log[id];if(!S.habits.length){try{localStorage.removeItem(LS+'-safe')}catch(e){}}persist();closeSheet();render();setTab(tab);toast('Привычка удалена');return}
   if(d.edit){openWizard({edit:d.edit});return}
   if(d.export!==undefined){doExport();return}
   if(d.importYes!==undefined&&pendingImport){S={v:1,habits:pendingImport.habits,log:pendingImport.log,pet:pendingImport.pet||S.pet||{name:'Атомчик'}};pendingImport=null;persist();render();toast('Данные восстановлены');return}
